@@ -92,6 +92,8 @@ namespace SpiderBot
         // Update is called once per frame
         void Update()
         {
+            if (Destination == null)
+                return;
             // Do we have to approach the target?
             //Vector3 direction = (Destination.position - Effector.transform.position).normalized;
             Vector3 direction = (Destination.position - transform.position).normalized;
