@@ -6,7 +6,9 @@ public class QuitHandler : MonoBehaviour {
 
     public CanvasGroup uiCanvasGroup;
     public CanvasGroup confirmQuitCanvasGroup;
+    public CanvasGroup splashCanvasGroup;
 
+    bool splashMenuVisible = true;
     bool uiMenuVisible = false;
     bool confirmMenuVisible = false;
 
@@ -16,6 +18,14 @@ public class QuitHandler : MonoBehaviour {
         {
             uiMenuVisible = !uiMenuVisible;
         }
+        else if(Input.GetKeyDown(KeyCode.H))
+        {
+            splashMenuVisible = !splashMenuVisible;
+        }
+
+        splashCanvasGroup.alpha = 0;
+        splashCanvasGroup.interactable = false;
+        splashCanvasGroup.blocksRaycasts = false;
 
         uiCanvasGroup.alpha = 0;
         uiCanvasGroup.interactable = false;
@@ -40,16 +50,24 @@ public class QuitHandler : MonoBehaviour {
             }
         }
         else
+        {
             confirmMenuVisible = false;
+            if (splashMenuVisible)
+            {
+                splashCanvasGroup.alpha = 1;
+                splashCanvasGroup.interactable = true;
+                splashCanvasGroup.blocksRaycasts = true;
+            }
+        }
     }
 
-    // Use this for initialization
+    /*// Use this for initialization
     private void Awake()
     {
         //disable the quit confirmation panel
         DoConfirmQuitNo();
     }
-
+    */
     /// <summary>
     /// Called if clicked on No (confirmation)
     /// </summary>
@@ -87,5 +105,10 @@ public class QuitHandler : MonoBehaviour {
     public void DoNewGame()
     {
         Debug.Log("Launch a new game");
+    }
+
+    public void DoInstructionsClose()
+    {
+        splashMenuVisible = false;
     }
 }

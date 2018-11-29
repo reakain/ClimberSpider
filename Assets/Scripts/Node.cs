@@ -64,7 +64,7 @@ class Program
             g.AddEdge(qnear, qnew);
         }
 
-        Console.WriteLine("Done.");
-        Console.ReadLine();
+        //Console.WriteLine("Done.");
+        //Console.ReadLine();
     }
 }
