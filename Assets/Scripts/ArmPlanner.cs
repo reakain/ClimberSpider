@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ArmPlanner : MonoBehaviour {
 
+
+
 	// Use this for initialization
 	void Start () {
 		
@@ -15,6 +17,16 @@ public class ArmPlanner : MonoBehaviour {
 	}
 
     public void StartSearch()
+    {
+
+    }
+
+    void FindGoal()
+    {
+
+    }
+
+    void VerifyGoal()
     {
 
     }
