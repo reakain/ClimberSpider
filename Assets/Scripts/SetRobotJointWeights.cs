@@ -15,7 +15,7 @@ namespace SpiderBot.Arm.IK
 
         public Vector3[] Axes;
 
-        [ExposeInEditor(RuntimeOnly = false)]
+        //[ExposeInEditor(RuntimeOnly = false)]
         public void ChangeAngles()
         {
             for (int i = 0; i < IK.Joints.Length; i++)

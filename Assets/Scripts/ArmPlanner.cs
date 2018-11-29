@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,6 +22,12 @@ namespace SpiderBot
 
         }
 
+        /*public void GraspRRT(Transform qStart, Transform po)
+        {
+            RRT.AddConfiguration(qstart);
+            while ()
+        }
+        */
         // https://core.ac.uk/download/pdf/41776685.pdf
         public void StartSearch()
         {
@@ -31,7 +38,7 @@ namespace SpiderBot
                 p = randomUniform(0, 1);
                 if (p < 0.2)
                 {
-                    camp = cspaceUniformSampling();
+                    csmp = cspaceUniformSampling();
                     extendTree(startTree);
                 }
                 else
@@ -48,7 +55,7 @@ namespace SpiderBot
             p = randomUniform(0, 1);
             if (p < 0.8)
             {
-                indTree = whichTreetoConnect();
+                indTree = WhichTreetoConnect();
                 if connectTrees(startTree, listGoalTrees[indTree])
                     {
                     return path to Grasp;
@@ -69,10 +76,10 @@ namespace SpiderBot
 
         void FindGoal()
         {
-            /*
-            Vector3 handPos = sampleHandPosition();
-            Tobject_hand = computeTransformation(handPos);
-            var cgoal = IK(Tobject_hand);
+            
+            Vector3 handPos = SampleHandPosition();
+            Pose Tobject_hand = ComputeTransformation(handPos);
+            /*var cgoal = IK(Tobject_hand);
             if (cgoal != null)
             {
                 if VerifyGoal(Tobject_hand)
@@ -87,16 +94,28 @@ namespace SpiderBot
                 */
         }
 
-        void VerifyGoal()
+        Vector3 SampleHandPosition()
+        {
+            // Get x,y,z from object pca
+            return new Vector3() { x = 1, y = 1, z = 1 };
+        }
+
+        Pose ComputeTransformation(Vector3 position)
+        {
+            // Get T of object/hand from the position in samplehandposition
+            return new Pose() {position = position, rotation = new Quaternion() };
+        }
+
+        void VerifyGoal(Pose T)
         {
             /*
-             * regions = ICR(Toject_hand);
+             * regions = ICR(T);
              * if (regions.length >= 2)
              * {
-             *      ICRquality = computeICRqual();
+             *      ICRquality = ComputeICRQuality();
              *      if (ICRquality >= minICRquality)
              *      {
-             *          findCollfreeHandConfig(Toject_hands, regions);
+             *          findCollfreeHandConfig(T, regions);
              *          return true;
              *      }
              *      else
@@ -105,6 +124,28 @@ namespace SpiderBot
              * else
              *      return false;
              */
+        }
+
+        void ICR(Pose T)
+        {
+            // Find regions that are useful?
+        }
+
+        void ComputeICRQuality()
+        {
+            int n; // number of fingers with contact regions
+            int[] m; // number of discrete points in each region ICR_i
+            //QICR = Math.Prod(m_i) from i=1 to n; 
+        }
+
+        void WhichTreeToConnect()
+        {
+            //probabilities_i = QICR_i / Math.Sum(QCIR);
+        }
+
+        void FindCollisionFreeHandConfig(Pose T, int regions)
+        {
+            // Iteratively explore hand positions that work with the region
         }
     }
 }

@@ -36,10 +36,10 @@ namespace SpiderBot
         [Header("Joints")]
         public Transform BaseJoint;
         //[HideInInspector]
-        [ReadOnly]
+        //[ReadOnly]
         public RobotJoint[] Joints = null;
         // The current angles
-        [ReadOnly]
+        //[ReadOnly]
         public float[] Solution = null;
 
         [Header("Destination")]
@@ -80,7 +80,7 @@ namespace SpiderBot
                 ErrorFunction = DistanceFromTarget;
         }
 
-        [ExposeInEditor(RuntimeOnly = false)]
+        //[ExposeInEditor(RuntimeOnly = false)]
         public void GetJoints()
         {
             Joints = BaseJoint.GetComponentsInChildren<RobotJoint>();
