@@ -41,7 +41,7 @@ class Graph
     public void AddVertex(object qnew) { }
 }
 
-class Program
+class RRT
 {
     static object RAND_CONF() { return null; }
     static object NEAREST_VERTEX(object qrand, Graph g) { return null; }
