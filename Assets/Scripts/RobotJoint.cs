@@ -13,11 +13,11 @@ namespace SpiderBot
 
         [Header("Initial position")]
         // The offset at resting position
-        //[ReadOnly]
+        [ReadOnly]
         public Vector3 StartOffset;
 
         // The initial one
-        //[ReadOnly]
+        [ReadOnly]
         public Vector3 ZeroEuler;
 
 

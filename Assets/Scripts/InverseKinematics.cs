@@ -36,10 +36,10 @@ namespace SpiderBot
         [Header("Joints")]
         public Transform BaseJoint;
         //[HideInInspector]
-        //[ReadOnly]
+        [ReadOnly]
         public RobotJoint[] Joints = null;
         // The current angles
-        //[ReadOnly]
+        [ReadOnly]
         public float[] Solution = null;
 
         [Header("Destination")]

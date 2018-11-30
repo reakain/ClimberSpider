@@ -175,6 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 57271132}
   - component: {fileID: 57271133}
+  - component: {fileID: 57271134}
   m_Layer: 0
   m_Name: Right_Gripper_Joint 0
   m_TagString: Untagged
@@ -196,7 +197,7 @@ Transform:
   - {fileID: 637117192}
   - {fileID: 1577066982}
   m_Father: {fileID: 1860622408}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &57271133
 MonoBehaviour:
@@ -217,6 +218,17 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+--- !u!114 &57271134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 57271131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a738edc54e73ab94f96dc2c23f3a93b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &72331898
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,9 +259,9 @@ Transform:
   m_GameObject: {fileID: 72331898}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5000102, z: 0.5000081}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
-  m_Father: {fileID: 1159843534}
+  m_Father: {fileID: 1860622408}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &72331900
@@ -20440,7 +20452,7 @@ GameObject:
   - component: {fileID: 300345860}
   - component: {fileID: 300345859}
   m_Layer: 0
-  m_Name: Gripper_joint1
+  m_Name: mesh_Gripper_joint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22938,7 +22950,7 @@ GameObject:
   - component: {fileID: 415581290}
   - component: {fileID: 415581289}
   m_Layer: 0
-  m_Name: joint1
+  m_Name: mesh_joint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25864,7 +25876,7 @@ GameObject:
   - component: {fileID: 637117194}
   - component: {fileID: 637117193}
   m_Layer: 0
-  m_Name: Gripper_joint0
+  m_Name: mesh_Gripper_joint0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29657,7 +29669,7 @@ GameObject:
   - component: {fileID: 976647008}
   - component: {fileID: 976647007}
   m_Layer: 0
-  m_Name: joint2
+  m_Name: mesh_joint2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33568,7 +33580,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 2.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 72331899}
   - {fileID: 1283776944}
   m_Father: {fileID: 149093889}
   m_RootOrder: 1
@@ -33705,7 +33716,7 @@ GameObject:
   - component: {fileID: 1258857657}
   - component: {fileID: 1258857659}
   m_Layer: 0
-  m_Name: Gripper_joint0
+  m_Name: mesh_Gripper_joint0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36002,7 +36013,7 @@ Transform:
   m_Children:
   - {fileID: 1393104066}
   m_Father: {fileID: 1159843534}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1283776945
 MonoBehaviour:
@@ -36193,7 +36204,7 @@ GameObject:
   - component: {fileID: 1382641302}
   - component: {fileID: 1382641301}
   m_Layer: 0
-  m_Name: joint0
+  m_Name: mesh_joint0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38522,6 +38533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1487027962}
   - component: {fileID: 1487027963}
+  - component: {fileID: 1487027964}
   m_Layer: 0
   m_Name: Left_Gripper_Joint 0
   m_TagString: Untagged
@@ -38543,7 +38555,7 @@ Transform:
   - {fileID: 1258857656}
   - {fileID: 1747566368}
   m_Father: {fileID: 1860622408}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1487027963
 MonoBehaviour:
@@ -38564,6 +38576,17 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+--- !u!114 &1487027964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1487027961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a738edc54e73ab94f96dc2c23f3a93b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1536160670
 Mesh:
   m_ObjectHideFlags: 0
@@ -38984,6 +39007,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577066982}
   - component: {fileID: 1577066983}
+  - component: {fileID: 1577066984}
   m_Layer: 0
   m_Name: Right_Gripper_Joint 1
   m_TagString: Untagged
@@ -39026,6 +39050,17 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+--- !u!114 &1577066984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1577066981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adcb9d2ab5b50ed44bc60773b06db6db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1604005240
 GameObject:
   m_ObjectHideFlags: 0
@@ -39036,6 +39071,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1604005241}
   - component: {fileID: 1604005242}
+  - component: {fileID: 1604005243}
   m_Layer: 0
   m_Name: Left_Gripper_Tip
   m_TagString: Untagged
@@ -39076,6 +39112,17 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+--- !u!114 &1604005243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1604005240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adcb9d2ab5b50ed44bc60773b06db6db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1615193136
 GameObject:
   m_ObjectHideFlags: 0
@@ -39104,7 +39151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.9999796, z: 0.9999838}
   m_Children: []
   m_Father: {fileID: 1860622408}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1630557318
 GameObject:
@@ -39116,6 +39163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1630557319}
   - component: {fileID: 1630557320}
+  - component: {fileID: 1630557321}
   m_Layer: 0
   m_Name: Right_Gripper_Tip
   m_TagString: Untagged
@@ -39156,6 +39204,17 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+--- !u!114 &1630557321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1630557318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adcb9d2ab5b50ed44bc60773b06db6db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1641713314
 GameObject:
   m_ObjectHideFlags: 0
@@ -39170,7 +39229,7 @@ GameObject:
   - component: {fileID: 1641713317}
   - component: {fileID: 1641713316}
   m_Layer: 0
-  m_Name: Base
+  m_Name: mesh_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41689,6 +41748,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1747566368}
   - component: {fileID: 1747566369}
+  - component: {fileID: 1747566370}
   m_Layer: 0
   m_Name: Left_Gripper_Joint 1
   m_TagString: Untagged
@@ -41731,6 +41791,17 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+--- !u!114 &1747566370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1747566367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adcb9d2ab5b50ed44bc60773b06db6db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1783473282
 Mesh:
   m_ObjectHideFlags: 0
@@ -42336,6 +42407,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1860622408}
   - component: {fileID: 1860622409}
+  - component: {fileID: 1860622410}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -42354,6 +42426,7 @@ Transform:
   m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1.0000204, z: 1.0000162}
   m_Children:
+  - {fileID: 72331899}
   - {fileID: 1615193137}
   - {fileID: 1487027962}
   - {fileID: 57271132}
@@ -42379,6 +42452,17 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+--- !u!114 &1860622410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1860622407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da9e7ce77b2f5f43bbdf9df9772ebbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1914725003
 GameObject:
   m_ObjectHideFlags: 0
@@ -42406,7 +42490,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1fb0116790d571439aac0e4f3cd83f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hand: {fileID: 1159843534}
+  HandObject: {fileID: 0}
+  doSearch: 0
+  Delta: 0
+  angleDelta: 0
 --- !u!4 &1914725005
 Transform:
   m_ObjectHideFlags: 0
@@ -42591,7 +42678,7 @@ GameObject:
   - component: {fileID: 2074940055}
   - component: {fileID: 2074940057}
   m_Layer: 0
-  m_Name: Gripper_joint1
+  m_Name: mesh_Gripper_joint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,13 +6,21 @@ namespace SpiderBot
 {
     public class ArmPlanner : MonoBehaviour
     {
-        public Transform Hand;
+        public Hand HandObject;
+        public bool doSearch;
+        public float Delta;
+        public float angleDelta;
+        private Tree ArmTree;
+        private Tree GoalTree;
 
 
         // Use this for initialization
         void Start()
         {
-
+            ArmTree = new Tree();
+            GoalTree = new Tree();
+            var startConfig = GetStartConfiguration();
+            ArmTree.Add(new Node(startConfig, null, true));
         }
 
         // Update is called once per frame
@@ -22,12 +29,89 @@ namespace SpiderBot
 
         }
 
+        public Configuration GetStartConfiguration()
+        {
+            Configuration startConfig = new Configuration(HandObject);
+            return startConfig;
+        }
         /*public void GraspRRT(Transform qStart, Transform po)
         {
             RRT.AddConfiguration(qstart);
             while ()
         }
         */
+        public void RRTSearch()
+        {
+            while (doSearch)
+            {
+                var p = Random.Range(0f,1f);
+                if (p < 0.2) // Expand the tree
+                {
+                    ExpandTree();
+                }
+                else // Find a goal
+                {
+                    FindGoal();
+                }
+            }
+        }
+
+        public void ExpandTree()
+        {
+            var foundNext = false;
+            while (!foundNext)
+            {
+                var cFree = SampleFreeSpace();
+                var parentNode = ArmTree[0];
+                foreach (var node in ArmTree)
+                {
+                    // Check if this node is closer than the last node
+                    if (node.Point.Distance(cFree) <= parentNode.Point.Distance(cFree))
+                    {
+                        // Check for collisions
+                        if (true)
+                        {
+                            foundNext = true;
+                            parentNode = node;
+                        }
+                    }
+                }
+
+                // Move only a little bit
+                var cClose = parentNode.Point.MoveTowards(cFree);
+                ArmTree.Add(new Node(cClose, parentNode));
+
+                if (IsReachedGoal())
+                    {
+
+                }
+            }
+        }
+
+        public bool IsReachedGoal(bool forward = true)
+        {
+            var connectionFound = false;
+
+            if (forward)
+            {
+                foreach (var node in GoalTree)
+                {
+                    if (node.Point.Distance(ArmTree[ArmTree.Count-1].Point) <= Delta)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return connectionFound;
+        }
+
+        public Configuration SampleFreeSpace()
+        {
+            Configuration bluh = new Configuration(new Hand());
+            return bluh;
+        }
+
         // https://core.ac.uk/download/pdf/41776685.pdf
         public void StartSearch()
         {
