@@ -2,23 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node { 
+public class Node {
+    public Configuration HandConfiguration { get; private set; }
+    public Node ParentNode { get; private set; }
+    public bool IsGoal { get; private set; }
+    public bool IsStart { get; private set; }
 
-    public Node()
+    public Node(Configuration handConfiguration, Node parentNode = null, bool start = false, bool goal = false)
     {
-
+        HandConfiguration = handConfiguration;
+        ParentNode = parentNode;
+        IsStart = start;
+        IsGoal = goal;
     }
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
+
+public struct Configuration
+{
+    public Pose HandPose;
+    public Pose LeftJoint0Pose;
+    public Pose LeftJoint1Pose;
+    public Pose RightJoint0Pose;
+    public Pose RightJoint1Pose;
+}
+
+public class Tree : List<Node>
+{
+
+}
+
 
 /*
  * Algorithm BuildRRT
@@ -34,6 +46,7 @@ public class Node {
     G.add_edge(qnear, qnew)
   return G
   */
+  /*
 class Graph
 {
     public void Init(object qinit) { }
@@ -66,5 +79,5 @@ class RRT
 
         //Console.WriteLine("Done.");
         //Console.ReadLine();
-    }
-}
+    } 
+}*/

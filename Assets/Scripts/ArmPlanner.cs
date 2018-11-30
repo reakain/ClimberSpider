@@ -7,7 +7,7 @@ namespace SpiderBot
 {
     public class ArmPlanner : MonoBehaviour
     {
-
+        public Transform Hand;
 
 
         // Use this for initialization
@@ -72,6 +72,7 @@ namespace SpiderBot
                 }
             }
             */
+
         }
 
         void FindGoal()
