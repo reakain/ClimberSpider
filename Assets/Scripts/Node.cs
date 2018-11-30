@@ -19,11 +19,34 @@ namespace SpiderBot
             IsStart = start;
             IsGoal = goal;
         }
+
+        public bool LinkToNode(Node node)
+        {
+            if (ParentNode == null)
+            {
+                ParentNode = node;
+                return true;
+            }
+            return false;
+        }
     }
 
     public class Tree : List<Node>
     {
-
+        public bool ConnectNode(Node newNode)
+        {
+            foreach (var node in this)
+            {
+                if (node.Point.Distance(newNode.Point) <= Toolbox.Instance.GetConnectionDistance())
+                {
+                    if (node.Point.Angle(newNode.Point) <= Toolbox.Instance.GetConnectionAngle())
+                    {
+                        return node.LinkToNode(newNode); ;
+                    }
+                }
+            }
+            return false;
+        }
     }
 
 

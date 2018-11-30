@@ -6,13 +6,20 @@ namespace SpiderBot
 {
     public class ArmPlanner : MonoBehaviour
     {
+        [Header("Grabber")]
         public Hand HandObject;
-        public bool doSearch;
-        public float Delta;
-        public float angleDelta;
+        [Header("Destination")]
+        public Transform Destination;
+        [Space]
+
+        private float Delta = Toolbox.Instance.GetConnectionDistance();
+        private float angleDelta = Toolbox.Instance.GetConnectionDistance();
+
         private Tree ArmTree;
         private Tree GoalTree;
 
+        [HideInInspector]
+        public bool doSearch;
 
         // Use this for initialization
         void Start()
@@ -81,29 +88,11 @@ namespace SpiderBot
                 var cClose = parentNode.Point.MoveTowards(cFree);
                 ArmTree.Add(new Node(cClose, parentNode));
 
-                if (IsReachedGoal())
-                    {
-
-                }
-            }
-        }
-
-        public bool IsReachedGoal(bool forward = true)
-        {
-            var connectionFound = false;
-
-            if (forward)
-            {
-                foreach (var node in GoalTree)
+                if (GoalTree.ConnectNode(ArmTree[ArmTree.Count - 1]))
                 {
-                    if (node.Point.Distance(ArmTree[ArmTree.Count-1].Point) <= Delta)
-                    {
-                        return true;
-                    }
+                    // Move I guess?
                 }
             }
-
-            return connectionFound;
         }
 
         public Configuration SampleFreeSpace()

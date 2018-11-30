@@ -42490,10 +42490,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1fb0116790d571439aac0e4f3cd83f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HandObject: {fileID: 0}
+  HandObject: {fileID: 1860622410}
+  Destination: {fileID: 0}
   doSearch: 0
-  Delta: 0
-  angleDelta: 0
 --- !u!4 &1914725005
 Transform:
   m_ObjectHideFlags: 0

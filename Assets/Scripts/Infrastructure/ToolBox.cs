@@ -22,7 +22,11 @@ namespace SpiderBot
 
         // Define all required global components here. These are hard-codded components
         // that will always be added. Unlike the optional components added at runtime.
+        private float m_delta = 10;
+        public float GetConnectionDistance() { return m_delta; }
 
+        private float m_angleDelta = 10;
+        public float GetConnectionAngle() { return m_angleDelta; }
 
         // The methods below allow us to add global components at runtime.
         // TODO: Convert from string IDs to component types.

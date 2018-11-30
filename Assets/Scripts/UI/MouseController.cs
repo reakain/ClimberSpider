@@ -6,8 +6,8 @@ namespace SpiderBot
     {
 
         [Header("Robot Selection")]
-        public InverseKinematics LeftControlRobot;
-        public InverseKinematics RightControlRobot;
+        public ArmPlanner LeftControlRobot;
+        public ArmPlanner RightControlRobot;
 
         [Header("Movement Tuning")]
         public float mouseSensitivity = 100.0f;
@@ -38,7 +38,7 @@ namespace SpiderBot
                     // do whatever you want
                     //LeftControlRobot.Destination = hit.transform;
                     if (LeftControlRobot == null)
-                        LeftControlRobot = hit.transform.GetComponent<InverseKinematics>();
+                        LeftControlRobot = hit.transform.GetComponent<ArmPlanner>();
                     else
                         LeftControlRobot.Destination = hit.transform;
                 }
@@ -54,7 +54,7 @@ namespace SpiderBot
                     // do whatever you want
                     //LeftControlRobot.Destination = hit.transform;
                     if (RightControlRobot == null)
-                        RightControlRobot = hit.transform.GetComponent<InverseKinematics>();
+                        RightControlRobot = hit.transform.GetComponent<ArmPlanner>();
                     else
                         RightControlRobot.Destination = hit.transform;
                 }

@@ -9,9 +9,6 @@ namespace SpiderBot
         public Transform cPose { get; private set; }
         public Finger[] FingerList { get; private set; }
 
-        public float Delta = 10;
-        public float AngleDelta = 10;
-
         public Configuration(Hand Hand)
         {
             cPose = Hand.transform;
@@ -41,8 +38,8 @@ namespace SpiderBot
         {
             var cNew = c;
 
-            cNew.cPose.position = Vector3.MoveTowards(cPose.position, c.cPose.position, Delta);
-            cNew.cPose.rotation = Quaternion.RotateTowards(cPose.rotation, c.cPose.rotation, AngleDelta);
+            cNew.cPose.position = Vector3.MoveTowards(cPose.position, c.cPose.position, Toolbox.Instance.GetConnectionDistance());
+            cNew.cPose.rotation = Quaternion.RotateTowards(cPose.rotation, c.cPose.rotation, Toolbox.Instance.GetConnectionAngle());
 
             return cNew;
         }
