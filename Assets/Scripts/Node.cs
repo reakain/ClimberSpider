@@ -33,7 +33,7 @@ namespace SpiderBot
 
     public class Tree : List<Node>
     {
-        public bool ConnectNode(Node newNode)
+        public Node ConnectNode(Node newNode)
         {
             foreach (var node in this)
             {
@@ -41,11 +41,64 @@ namespace SpiderBot
                 {
                     if (node.Point.Angle(newNode.Point) <= Toolbox.Instance.GetConnectionAngle())
                     {
-                        return node.LinkToNode(newNode); ;
+                        return node ;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void AddPathToList(Node newNode)
+        {
+            // Take your successful node and build the path and add it to a rated list
+        }
+    }
+
+    public class Solution : LinkedList<Configuration>
+    {
+        public Solution(Node linkedNode, Node goalNode)
+        {
+            AddFirst(goalNode.Point);
+            AddFirst(linkedNode.Point);
+
+            Node parent = linkedNode.ParentNode;
+            while (parent != null)
+            {
+                AddFirst(parent.Point);
+                parent = parent.ParentNode;
+            }
+        }
+    }
+
+    public class SolutionList : List<Solution>
+    {
+        public bool AddSolutionIfExists(Node linkedNode, Tree goalTree)
+        {
+            foreach (var node in goalTree)
+            {
+                if (node.Point.Distance(linkedNode.Point) <= Toolbox.Instance.GetConnectionDistance())
+                {
+                    if (node.Point.Angle(linkedNode.Point) <= Toolbox.Instance.GetConnectionAngle())
+                    {
+                        Add(new Solution(linkedNode, node));
+                        return true;
                     }
                 }
             }
             return false;
+        }
+
+        public Solution ShortestPath()
+        {
+            var shortest = this[0];
+            foreach (var soln in this)
+            {
+                if (soln.Count < shortest.Count)
+                {
+                    shortest = soln;
+                }
+            }
+            return shortest;
         }
     }
 

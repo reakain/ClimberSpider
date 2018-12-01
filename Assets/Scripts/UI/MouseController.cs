@@ -40,7 +40,7 @@ namespace SpiderBot
                     if (LeftControlRobot == null)
                         LeftControlRobot = hit.transform.GetComponent<ArmPlanner>();
                     else
-                        LeftControlRobot.Destination = hit.transform;
+                        LeftControlRobot.Destination = hit.transform.GetComponent<GraspRegion>();
                 }
             }
             else if (Input.GetMouseButton(1))
@@ -56,7 +56,7 @@ namespace SpiderBot
                     if (RightControlRobot == null)
                         RightControlRobot = hit.transform.GetComponent<ArmPlanner>();
                     else
-                        RightControlRobot.Destination = hit.transform;
+                        RightControlRobot.Destination = hit.transform.GetComponent<GraspRegion>();
                 }
             }
             else

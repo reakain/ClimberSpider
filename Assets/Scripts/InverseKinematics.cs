@@ -5,13 +5,12 @@ using UnityEngine;
 namespace SpiderBot
 {
     // A typical error function to minimise
-    public delegate float ErrorFunction(Vector3 target, float[] solution);
+    public delegate float ErrorFunction(PositionRotation target, float[] solution);
 
     //[ExecuteInEditMode]
     public class InverseKinematics : MonoBehaviour
     {
         [Header("Joints")]
-        public Transform BaseJoint;
         //[HideInInspector]
         [ReadOnly]
         public RobotJoint[] Joints = null;
@@ -20,11 +19,10 @@ namespace SpiderBot
         public float[] Solution = null;
 
         [Header("Destination")]
-        public Transform Effector;
+        public Hand Effector;
         [Space]
-        public Transform Destination;
-        public float DistanceFromDestination;
-        private Vector3 target;
+        public Configuration Destination;
+        private PositionRotation target;
 
         [Header("Inverse Kinematics")]
         [Range(0, 1f)]
@@ -45,7 +43,8 @@ namespace SpiderBot
         [Header("Debug")]
         public bool DebugDraw = true;
 
-
+        private SolutionList m_SolutionList;
+        private Solution m_Solution;
 
         // Use this for initialization
         void Start()
@@ -57,10 +56,10 @@ namespace SpiderBot
                 ErrorFunction = DistanceFromTarget;
         }
 
-        //[ExposeInEditor(RuntimeOnly = false)]
+        [ExposeInEditor(RuntimeOnly = false)]
         public void GetJoints()
         {
-            Joints = BaseJoint.GetComponentsInChildren<RobotJoint>();
+            Joints = GetComponentsInChildren<RobotJoint>();
             Solution = new float[Joints.Length];
         }
 
@@ -69,24 +68,39 @@ namespace SpiderBot
         // Update is called once per frame
         void Update()
         {
-            if (Destination == null)
+            if (m_SolutionList == null)
                 return;
+            else if(m_Solution == null)
+            {
+                m_Solution = m_SolutionList.ShortestPath();
+                Destination = m_Solution.First.Value;
+                m_Solution.RemoveFirst();
+            }
+
+            if (Destination == null)
+            {
+                return;
+            }
             // Do we have to approach the target?
             //Vector3 direction = (Destination.position - Effector.transform.position).normalized;
-            Vector3 direction = (Destination.position - transform.position).normalized;
-            target = Destination.position - direction * DistanceFromDestination;
+            Vector3 direction = (Destination.transform - transform.position).normalized;
+            target = Destination.transform;
             //if (Vector3.Distance(Effector.position, target) > Threshold)
             if (ErrorFunction(target, Solution) > StopThreshold)
                 ApprochTarget(target);
+            else
+            {
+                Destination = m_Solution.First.Value;
+            }
 
             if (DebugDraw)
             {
                 Debug.DrawLine(Effector.transform.position, target, Color.green);
-                Debug.DrawLine(Destination.transform.position, target, new Color(0, 0.5f, 0));
+                Debug.DrawLine(Destination.transform, target, new Color(0, 0.5f, 0));
             }
         }
 
-        public void ApprochTarget(Vector3 target)
+        public void ApprochTarget(PositionRotation target)
         {
             // Starts from the end, up to the base
             // Starts from joints[end-2]
@@ -124,7 +138,7 @@ namespace SpiderBot
          * It returns the gradient (suggested changes for the i-th joint)
          * to approach the target. In range (-1,+1)
          */
-        public float CalculateGradient(Vector3 target, float[] Solution, int i, float delta)
+        public float CalculateGradient(PositionRotation target, float[] Solution, int i, float delta)
         {
             // Saves the angle,
             // it will be restored later
@@ -146,10 +160,10 @@ namespace SpiderBot
         }
 
         // Returns the distance from the target, given a solution
-        public float DistanceFromTarget(Vector3 target, float[] Solution)
+        public float DistanceFromTarget(PositionRotation target, float[] Solution)
         {
-            Vector3 point = ForwardKinematics(Solution);
-            return Vector3.Distance(point, target);
+            PositionRotation point = ForwardKinematics(Solution);
+            return Vector3.Distance(point, target) + Quaternion.Angle(point,target);
         }
 
 
@@ -176,6 +190,11 @@ namespace SpiderBot
 
             // The end of the effector
             return new PositionRotation(prevPoint, rotation);
+        }
+
+        public void UpdateSolutionList(SolutionList solutionList)
+        {
+            m_SolutionList = solutionList;
         }
     }
 }

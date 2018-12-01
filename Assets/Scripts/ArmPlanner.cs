@@ -9,14 +9,16 @@ namespace SpiderBot
         [Header("Grabber")]
         public Hand HandObject;
         [Header("Destination")]
-        public Transform Destination;
+        public GraspRegion Destination;
         [Space]
 
-        private float Delta = Toolbox.Instance.GetConnectionDistance();
-        private float angleDelta = Toolbox.Instance.GetConnectionDistance();
+        private float Delta = 0;
+        private float angleDelta = 0;
 
-        private Tree ArmTree;
-        private Tree GoalTree;
+
+        private Tree ArmTree = new Tree();
+        private Tree GoalTree = new Tree();
+        private SolutionList SolutionPathList = new SolutionList();
 
         [HideInInspector]
         public bool doSearch;
@@ -24,8 +26,8 @@ namespace SpiderBot
         // Use this for initialization
         void Start()
         {
-            ArmTree = new Tree();
-            GoalTree = new Tree();
+            Delta = Toolbox.Instance.GetConnectionDistance();
+            angleDelta = Toolbox.Instance.GetConnectionDistance();
             var startConfig = GetStartConfiguration();
             ArmTree.Add(new Node(startConfig, null, true));
         }
@@ -33,7 +35,17 @@ namespace SpiderBot
         // Update is called once per frame
         void Update()
         {
+            if (Destination == null)
+                return;
+            if (Destination.HandObject == null)
+            {
+                Destination.HandObject = HandObject;
+            }
+            if (Destination.GoalTree == null)
+                return;
 
+            GoalTree = Destination.GoalTree;
+            ExpandTree();
         }
 
         public Configuration GetStartConfiguration()
@@ -51,7 +63,7 @@ namespace SpiderBot
         {
             while (doSearch)
             {
-                var p = Random.Range(0f,1f);
+                var p = Random.value;
                 if (p < 0.2) // Expand the tree
                 {
                     ExpandTree();
@@ -65,46 +77,58 @@ namespace SpiderBot
 
         public void ExpandTree()
         {
-            var foundNext = false;
-            while (!foundNext)
+            var node = ArmTree[Random.Range(0, ArmTree.Count - 1)];
+
+            var cFree = SampleFreeSpace(node.Point);
+
+            // Check for collisions
+            if (IsCollisionFree(cFree))
             {
-                var cFree = SampleFreeSpace();
-                var parentNode = ArmTree[0];
-                foreach (var node in ArmTree)
-                {
-                    // Check if this node is closer than the last node
-                    if (node.Point.Distance(cFree) <= parentNode.Point.Distance(cFree))
-                    {
-                        // Check for collisions
-                        if (true)
-                        {
-                            foundNext = true;
-                            parentNode = node;
-                        }
-                    }
-                }
+                var cClose = node.Point.MoveTowards(cFree);
+                var newNode = new Node(cClose, node);
 
-                // Move only a little bit
-                var cClose = parentNode.Point.MoveTowards(cFree);
-                ArmTree.Add(new Node(cClose, parentNode));
+                ArmTree.Add(newNode);
 
-                if (GoalTree.ConnectNode(ArmTree[ArmTree.Count - 1]))
+                if (SolutionPathList.AddSolutionIfExists(newNode, GoalTree))
                 {
-                    // Move I guess?
+                    GetComponent<InverseKinematics>().UpdateSolutionList(SolutionPathList);
                 }
             }
         }
 
-        public Configuration SampleFreeSpace()
+        public bool IsCollisionFree(Configuration c)
         {
-            Configuration bluh = new Configuration(new Hand());
-            return bluh;
+            return true;
         }
 
+        public Configuration SampleFreeSpace(Configuration c)
+        {
+
+            Vector3 randPos = c.transform;
+            randPos += new Vector3(Random.Range(-Delta, Delta), Random.Range(-Delta, Delta), Random.Range(-Delta, Delta));
+            Quaternion randRot = Random.rotationUniform;
+            //Pose newPose = new Pose(randPos, randRot);
+
+
+            Configuration cNew = new Configuration(randPos,randRot,c.FingerList);
+            return cNew;
+        }
+
+        public void FindGoal()
+        {
+
+        }
+
+        public Configuration SampleHandPosition()
+        {
+            return new Configuration(new Hand());
+        }
+
+        /*
         // https://core.ac.uk/download/pdf/41776685.pdf
         public void StartSearch()
         {
-            /*
+            
             startTree = cinit;
             while (numgoaltrees == 0)
             {
@@ -144,16 +168,17 @@ namespace SpiderBot
                     listGoalTrees = updateGoalTrees(tree);
                 }
             }
-            */
+            
 
         }
+        
 
         void FindGoal()
         {
             
             Vector3 handPos = SampleHandPosition();
             Pose Tobject_hand = ComputeTransformation(handPos);
-            /*var cgoal = IK(Tobject_hand);
+            var cgoal = IK(Tobject_hand);
             if (cgoal != null)
             {
                 if VerifyGoal(Tobject_hand)
@@ -165,7 +190,7 @@ namespace SpiderBot
             }
             else
                 return null;
-                */
+                
         }
 
         Vector3 SampleHandPosition()
@@ -182,22 +207,22 @@ namespace SpiderBot
 
         void VerifyGoal(Pose T)
         {
-            /*
-             * regions = ICR(T);
-             * if (regions.length >= 2)
-             * {
-             *      ICRquality = ComputeICRQuality();
-             *      if (ICRquality >= minICRquality)
-             *      {
-             *          findCollfreeHandConfig(T, regions);
-             *          return true;
-             *      }
-             *      else
-             *          return false;
-             * }
-             * else
-             *      return false;
-             */
+            
+             regions = ICR(T);
+             if (regions.length >= 2)
+             {
+                  ICRquality = ComputeICRQuality();
+                  if (ICRquality >= minICRquality)
+                  {
+                      findCollfreeHandConfig(T, regions);
+                      return true;
+                  }
+                  else
+                      return false;
+             }
+             else
+                  return false;
+             
         }
 
         void ICR(Pose T)
@@ -221,5 +246,6 @@ namespace SpiderBot
         {
             // Iteratively explore hand positions that work with the region
         }
+    */
     }
 }

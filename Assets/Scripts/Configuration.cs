@@ -6,40 +6,43 @@ namespace SpiderBot
 {
     public class Configuration
     {
-        public Transform cPose { get; private set; }
+        public PositionRotation transform { get; private set; }
         public Finger[] FingerList { get; private set; }
 
         public Configuration(Hand Hand)
         {
-            cPose = Hand.transform;
-            //cPose.rotation = Hand.transform.rotation;
+            transform = new PositionRotation(Hand.transform.position, Hand.transform.rotation);
+            //transform.position = Hand.transform.position;
+            //transform.rotation = Hand.transform.rotation;
             FingerList = Hand.FingerList;
         }
 
         public Configuration(Vector3 position, Quaternion rotation, Finger[] fingerList)
         {
-            cPose.SetPositionAndRotation(position, rotation);
-            //cPose.position = position;
-            //cPose.rotation = rotation;
+            transform = new PositionRotation(position, rotation);
+            //transform.position = position;
+            //transform.rotation = rotation;
             FingerList = fingerList;
         }
 
         public float Distance(Configuration c)
         {
-            return Vector3.Distance(cPose.position, c.cPose.position);
+            return Vector3.Distance(transform, c.transform);
         }
 
         public float Angle(Configuration c)
         {
-            return Quaternion.Angle(cPose.rotation, c.cPose.rotation);
+            return Quaternion.Angle(transform, c.transform);
         }
 
         public Configuration MoveTowards(Configuration c)
         {
-            var cNew = c;
+            var cNew = new Configuration(Vector3.MoveTowards(transform, c.transform, Toolbox.Instance.GetConnectionDistance()),
+                Quaternion.RotateTowards(transform, c.transform, Toolbox.Instance.GetConnectionAngle()), c.FingerList);
 
-            cNew.cPose.position = Vector3.MoveTowards(cPose.position, c.cPose.position, Toolbox.Instance.GetConnectionDistance());
-            cNew.cPose.rotation = Quaternion.RotateTowards(cPose.rotation, c.cPose.rotation, Toolbox.Instance.GetConnectionAngle());
+             
+            //cNew.transform = Vector3.MoveTowards(transform, c.transform, Toolbox.Instance.GetConnectionDistance());
+            //cNew.transform = Quaternion.RotateTowards(transform, c.transform, Toolbox.Instance.GetConnectionAngle());
 
             return cNew;
         }

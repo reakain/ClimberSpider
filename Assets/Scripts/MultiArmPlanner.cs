@@ -28,7 +28,7 @@ namespace SpiderBot
         {
             foreach (var arm in Arms)
             {
-                arm.StartSearch();
+                //arm.StartSearch();
             }
 
             while (makingPlan)
