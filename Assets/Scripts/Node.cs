@@ -68,6 +68,18 @@ namespace SpiderBot
                 parent = parent.ParentNode;
             }
         }
+
+        public override string ToString()
+        {
+            Vector3[] positions = new Vector3[this.Count];
+            var i = 0;
+            foreach (var node in this)
+            {
+                positions[i] = node.transform;
+                i++;
+            }
+            return positions.ToString();
+        }
     }
 
     public class SolutionList : List<Solution>

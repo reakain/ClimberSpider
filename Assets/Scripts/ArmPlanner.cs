@@ -78,22 +78,28 @@ namespace SpiderBot
         public void ExpandTree()
         {
             var node = ArmTree[Random.Range(0, ArmTree.Count - 1)];
+            //for (var i = 0; i < ArmTree.Count; i++)
+            //{
+                //var node = ArmTree[i];
+                var cFree = SampleFreeSpace(node.Point);
 
-            var cFree = SampleFreeSpace(node.Point);
-
-            // Check for collisions
-            if (IsCollisionFree(cFree))
-            {
-                var cClose = node.Point.MoveTowards(cFree);
-                var newNode = new Node(cClose, node);
-
-                ArmTree.Add(newNode);
-
-                if (SolutionPathList.AddSolutionIfExists(newNode, GoalTree))
+                // Check for collisions
+                if (IsCollisionFree(cFree))
                 {
-                    GetComponent<InverseKinematics>().UpdateSolutionList(SolutionPathList);
+                    var cClose = node.Point.MoveTowards(cFree);
+                    var newNode = new Node(cClose, node);
+
+                    ArmTree.Add(newNode);
+                    Debug.Log("Added node: " + cClose.transform);
+
+                    if (SolutionPathList.AddSolutionIfExists(newNode, GoalTree))
+                    {
+                        Debug.Log("Found a solution!");
+                        Debug.Log("Solution: " + SolutionPathList[0]);
+                        GetComponent<InverseKinematics>().UpdateSolutionList(SolutionPathList);
+                    }
                 }
-            }
+            //}
         }
 
         public bool IsCollisionFree(Configuration c)

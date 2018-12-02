@@ -38,9 +38,15 @@ namespace SpiderBot
                     // do whatever you want
                     //LeftControlRobot.Destination = hit.transform;
                     if (LeftControlRobot == null)
+                    {
                         LeftControlRobot = hit.transform.GetComponent<ArmPlanner>();
+                        Debug.Log("Selected Arm: " + hit.transform.name);
+                    }
                     else
+                    {
                         LeftControlRobot.Destination = hit.transform.GetComponent<GraspRegion>();
+                        Debug.Log("Selected Obstacle: " + hit.transform.name);
+                    }
                 }
             }
             else if (Input.GetMouseButton(1))
@@ -54,9 +60,15 @@ namespace SpiderBot
                     // do whatever you want
                     //LeftControlRobot.Destination = hit.transform;
                     if (RightControlRobot == null)
+                    {
                         RightControlRobot = hit.transform.GetComponent<ArmPlanner>();
+                        Debug.Log("Selected Arm: " + hit.transform.name);
+                    }
                     else
+                    {
                         RightControlRobot.Destination = hit.transform.GetComponent<GraspRegion>();
+                        Debug.Log("Selected Obstacle: " + hit.transform.name);
+                    }
                 }
             }
             else

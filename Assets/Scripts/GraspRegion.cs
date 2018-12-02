@@ -20,6 +20,8 @@ namespace SpiderBot
 
         public Hand HandObject;
 
+        Vector3[] PointCloud;
+
         // Use this for initialization
         void Start() {
             //Fetch the GameObject's collider (make sure they have a Collider component)
@@ -48,6 +50,25 @@ namespace SpiderBot
             var z = Convert.ToSingle(a3 * Math.Pow(Math.Sin(eta), e1));
 
             return new Vector3() { x = x, y = y, z = z };
+        }
+
+        void GetPointCloud()
+        {
+            float fingerX = 0.6f;
+            float fingerY = 0.6f;
+            float fingerZ = 0.6f;
+            Vector3[] PointCloud = GetComponent<MeshFilter>().mesh.vertices;
+            for (var i = 0; i < PointCloud.Length; i++)
+            {
+                var vertex = PointCloud[i];
+                vertex.x = vertex.x * fingerX;
+                vertex.y = vertex.y * fingerY;
+                vertex.z = vertex.z * fingerZ;
+                PointCloud[i] = vertex;
+            }
+
+            //mesh.SetIndices(mesh.GetIndices(0), MeshTopology.Points, 0);
+            PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis();
         }
 
         void DefineGoalRegion()

@@ -25,6 +25,11 @@ namespace SpiderBot
         {
             return pr.rotation;
         }
+
+        public override string ToString()
+        {
+            return position.ToString();
+        }
     }
 
     public class Utilities : MonoBehaviour

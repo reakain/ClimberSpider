@@ -71,7 +71,7 @@ namespace SpiderBot
             if (Axis.y == 1) transform.localEulerAngles = new Vector3(0, angle, 0);
             else
             if (Axis.z == 1) transform.localEulerAngles = new Vector3(0, 0, angle);
-            Debug.Log("Moved to axis " + Axis + " to angle " + angle);
+            //Debug.Log("Moved to axis " + Axis + " to angle " + angle);
             return angle;
         }
 
@@ -80,7 +80,7 @@ namespace SpiderBot
         // Moves the angle to reach 
         public float MoveArm(float angle)
         {
-            Debug.Log("Try to move " + this.name);
+            //Debug.Log("Try to move " + this.name);
             return SetAngle(angle);
         }
 
