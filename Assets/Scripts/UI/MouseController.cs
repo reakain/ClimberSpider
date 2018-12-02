@@ -4,11 +4,6 @@ namespace SpiderBot
 {
     public class MouseController : MonoBehaviour
     {
-
-        [Header("Robot Selection")]
-        public ArmPlanner LeftControlRobot;
-        public ArmPlanner RightControlRobot;
-
         [Header("Movement Tuning")]
         public float mouseSensitivity = 100.0f;
         public float clampAngle = 80.0f;
@@ -17,59 +12,45 @@ namespace SpiderBot
         private float rotY = 0.0f; // rotation around the up/y axis
         private float rotX = 0.0f; // rotation around the right/x axis
 
+        private ArmPlanner m_SelectedArm;
+
         void Start()
         {
             Vector3 rot = transform.localRotation.eulerAngles;
             rotY = rot.y;
             rotX = rot.x;
         }
-
+        void MouseClickEvent()
+        {
+            Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                // the object identified by hit.transform was clicked
+                // do whatever you want
+                //LeftControlRobot.Destination = hit.transform;
+                if (hit.transform.GetComponent<ArmPlanner>() != null)
+                {
+                    m_SelectedArm = hit.transform.GetComponent<ArmPlanner>();
+                    //Debug.Log("Selected Arm: " + hit.transform.name);
+                }
+                else if (m_SelectedArm != null && hit.transform.GetComponent<GraspRegion>() != null)
+                {
+                    m_SelectedArm.SetNewObject(hit.transform.GetComponent<GraspRegion>());
+                    //Debug.Log("Selected Object: " + hit.transform.name);
+                }
+            }
+        }
         // Update is called once per frame
         void Update()
         {
             if (Input.GetMouseButton(0))
             {
-                Debug.Log(Input.mousePosition);
-                Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
-                {
-                    // the object identified by hit.transform was clicked
-                    // do whatever you want
-                    //LeftControlRobot.Destination = hit.transform;
-                    if (LeftControlRobot == null)
-                    {
-                        LeftControlRobot = hit.transform.GetComponent<ArmPlanner>();
-                        Debug.Log("Selected Arm: " + hit.transform.name);
-                    }
-                    else
-                    {
-                        LeftControlRobot.Destination = hit.transform.GetComponent<GraspRegion>();
-                        Debug.Log("Selected Obstacle: " + hit.transform.name);
-                    }
-                }
+                MouseClickEvent();
             }
             else if (Input.GetMouseButton(1))
             {
-                Debug.Log(Input.mousePosition);
-                Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
-                {
-                    // the object identified by hit.transform was clicked
-                    // do whatever you want
-                    //LeftControlRobot.Destination = hit.transform;
-                    if (RightControlRobot == null)
-                    {
-                        RightControlRobot = hit.transform.GetComponent<ArmPlanner>();
-                        Debug.Log("Selected Arm: " + hit.transform.name);
-                    }
-                    else
-                    {
-                        RightControlRobot.Destination = hit.transform.GetComponent<GraspRegion>();
-                        Debug.Log("Selected Obstacle: " + hit.transform.name);
-                    }
-                }
+                MouseClickEvent();
             }
             else
             {

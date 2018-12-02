@@ -8,9 +8,11 @@ namespace SpiderBot
     public delegate float ErrorFunction(PositionRotation target, float[] solution);
 
     //[ExecuteInEditMode]
-    public class InverseKinematics : MonoBehaviour
+    public class IKSolver : MonoBehaviour
     {
         public int MaximumSteps = 10;
+
+        public int MaximumLoop = 100;
 
         [Header("Joints")]
         //[HideInInspector]
@@ -19,12 +21,6 @@ namespace SpiderBot
         // The current angles
         [ReadOnly]
         public float[] Solution = null;
-        
-        [Header("Destination")]
-        public Hand Effector;
-        [Space]
-        public Configuration Destination;
-        private PositionRotation target;
 
         [Header("Inverse Kinematics")]
         [Range(0, 1f)]
@@ -40,23 +36,17 @@ namespace SpiderBot
 
         public ErrorFunction ErrorFunction;
 
-
-        [Header("Debug")]
-        public bool DebugDraw = true;
-
-        private SolutionList m_SolutionList;
-        private Solution m_Solution;
+        private List<float[]> SolutionSteps = null;
+        private List<PositionRotation[]> JointSteps = null;
+        private PositionRotation[] JointSim = null;
 
         // Use this for initialization
         void Start()
         {
-            if (Effector == null)
-                Effector = GetComponentInChildren<Hand>();
             if (Joints == null)
                 GetJoints();
 
-            else
-                ErrorFunction = DistanceFromTarget;
+            ErrorFunction = DistanceFromTarget;
         }
 
         [ExposeInEditor(RuntimeOnly = false)]
@@ -66,52 +56,60 @@ namespace SpiderBot
             Solution = new float[Joints.Length];
         }
 
+        public List<float[]> TestPath(Node startPoint, PositionRotation endPoint)
+        {
+            SolutionSteps = startPoint.SolutionSteps;
 
+            JointSim = startPoint.Point.Joints;
+
+            var target = endPoint;
+            for (var i; i < MaximumLoop; i++)
+            {
+                if (ErrorFunction(target, Solution) > StopThreshold)
+                {
+                    if (ApprochTarget(target))
+                    {
+                        SolutionSteps.Add(Solution);
+                        UpdateJointPosition();
+                    }
+                }
+                else
+                {
+                    return SolutionSteps;
+                }
+            }
+            return null;
+        }
+
+        public PositionRotation[] GetJointAngles(List<float[]> SolutionPath)
+        {
+            var jointStart = new PositionRotation[Joints.Length];
+            for (var i = 0; i<Joints.Length; i++)
+            {
+                jointStart[i] = new PositionRotation(Joints[i].transform.position, Joints[i].transform.rotation);
+            }
+            for (var i = 0; i < SolutionPath.Count; i++)
+            {
+                jointStart = ForwardKinematics(jointStart,SolutionPath[i]);
+            }
+            return jointStart;
+        }
 
         // Update is called once per frame
         void Update()
         {
-            if (m_SolutionList == null)
-                return;
-            else if(m_Solution == null && Destination == null)
-            {
-                var bestSol = m_SolutionList.ShortestPath();
-                if (bestSol.Count <= MaximumSteps)
-                {
-                    m_Solution = m_SolutionList.ShortestPath();
-                    Destination = m_Solution.First.Value;
-                    Debug.Log("Starting solution: " + m_Solution);
-                    Debug.Log("Move to " + Destination.transform + " in solution");
-                    m_Solution.RemoveFirst();
-                }
-            }
 
-            if (Destination == null)
-            {
-                return;
-            }
-            // Do we have to approach the target?
-            //Vector3 direction = (Destination.position - Effector.transform.position).normalized;
-            Vector3 direction = (Destination.transform - transform.position).normalized;
-            target = Destination.transform;
-            //if (Vector3.Distance(Effector.position, target) > Threshold)
-            if (ErrorFunction(target, Solution) > StopThreshold)
-                ApprochTarget(target);
-            else if (m_Solution.First != null)
-            {
-                Destination = m_Solution.First.Value;
-                Debug.Log("Moving to " + Destination.transform + " in solution");
-                m_Solution.RemoveFirst();
-            }
-
-            if (DebugDraw && Effector != null)
-            {
-                Debug.DrawLine(Effector.transform.position, target, Color.green);
-                Debug.DrawLine(Destination.transform, target, new Color(0, 0.5f, 0));
-            }
         }
 
-        public void ApprochTarget(PositionRotation target)
+        public float[] GetStartingAngles()
+        {
+            var startAngle = new float[Joints.Length];
+            for (var i = Joints.Length - 1; i >= 0; i--)
+                startAngle[i] = Joints[i].GetAngle();
+            return startAngle;
+        }
+
+        public bool ApprochTarget(PositionRotation target)
         {
             // Starts from the end, up to the base
             // Starts from joints[end-2]
@@ -132,14 +130,9 @@ namespace SpiderBot
 
                 // Early termination
                 if (ErrorFunction(target, Solution) <= StopThreshold)
-                    break;
+                    return false;
             }
-
-
-            for (int i = 0; i < Joints.Length - 1; i++)
-            {
-                Joints[i].MoveArm(Solution[i]);
-            }
+            return true;
         }
 
         /* Calculates the gradient for the invetse kinematic.
@@ -182,11 +175,12 @@ namespace SpiderBot
          * given a solution. */
         public PositionRotation ForwardKinematics(float[] Solution)
         {
-            Vector3 prevPoint = Joints[0].transform.position;
+            Vector3 prevPoint = JointSim[0];
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = transform.rotation;
+            Quaternion rotation = JointSim[0];
+
             for (int i = 1; i < Joints.Length; i++)
             {
                 // Rotates around a new axis
@@ -203,9 +197,51 @@ namespace SpiderBot
             return new PositionRotation(prevPoint, rotation);
         }
 
-        public void UpdateSolutionList(SolutionList solutionList)
+        public void UpdateJointPosition()
         {
-            m_SolutionList = solutionList;
+            var newJointSim = new PositionRotation[JointSim.Length];
+
+            Vector3 prevPoint = JointSim[0];
+            //Quaternion rotation = Quaternion.identity;
+
+            // Takes object initial rotation into account
+            Quaternion rotation = JointSim[0];
+
+            newJointSim[0] = new PositionRotation(prevPoint, rotation);
+            for (int i = 1; i < JointSim.Length; i++)
+            {
+                // Rotates around a new axis
+                rotation *= Quaternion.AngleAxis(Solution[i - 1], Joint[i - 1].Axis);
+                Vector3 nextPoint = prevPoint + rotation * Joint[i].StartOffset;
+
+                prevPoint = nextPoint;
+                newJointSim[i] = new PositionRotation(prevPoint, rotation);
+            }
+            JointSim = newJointSim;
+        }
+
+        public PositionRotation[] ForwardKinematics(PositionRotation[] prevJoints, float[] newAngles)
+        {
+            var newJointSim = new PositionRotation[prevJoints.Length];
+
+            Vector3 prevPoint = prevJoints[0];
+            //Quaternion rotation = Quaternion.identity;
+
+            // Takes object initial rotation into account
+            Quaternion rotation = prevJoints[0];
+
+            newJointSim[0] = new PositionRotation(prevPoint, rotation);
+            for (int i = 1; i < prevJoints.Length; i++)
+            {
+                // Rotates around a new axis
+                rotation *= Quaternion.AngleAxis(newAngles[i - 1], Joint[i - 1].Axis);
+                Vector3 nextPoint = prevPoint + rotation * Joint[i].StartOffset;
+
+                prevPoint = nextPoint;
+                newJointSim[i] = new PositionRotation(prevPoint, rotation);
+            }
+
+            return newJointSim;
         }
     }
 }

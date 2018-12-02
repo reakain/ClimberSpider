@@ -15,96 +15,129 @@ namespace SpiderBot
         private float Delta = 0;
         private float angleDelta = 0;
 
+        public Tree ArmTree { get; private set; }
+        public Tree GoalTree { get; private set; }
+        public SolutionList SolutionPathList { get; private set; }
 
-        private Tree ArmTree = new Tree();
-        private Tree GoalTree = new Tree();
-        private SolutionList SolutionPathList = new SolutionList();
-
-        [HideInInspector]
-        public bool doSearch;
+        public bool doSearch { get; private set; }
 
         // Use this for initialization
         void Start()
         {
+            // Initialize Trees and solutions
+            ArmTree = new Tree();
+            GoalTree = new Tree();
+            SolutionPathList = new SolutionList();
+
+            // Initialize distance tolerances
             Delta = Toolbox.Instance.GetConnectionDistance();
             angleDelta = Toolbox.Instance.GetConnectionDistance();
-            var startConfig = GetStartConfiguration();
-            ArmTree.Add(new Node(startConfig, null, true));
+
+            if (HandObject == null)
+            {
+                HandObject = GetComponentInChildren<Hand>();
+            }
+            
+            doSearch = true; // Placeholder until multiarm is built
+        }
+
+        public void SetNewObject(GraspRegion target)
+        {
+            if (Destination != null && Destination != target)
+            {
+                Destination.Disconnect();
+                Destination = null;
+            }
+            if (Destination == null)
+            {
+                Destination = target;
+                ArmTree = new Tree();
+                GoalTree = new Tree();
+                SolutionPathList = new SolutionList();
+                Destination.Connect(this);
+            }
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Destination == null)
+            if (Destination == null || HandObject == null)
                 return;
-            if (Destination.HandObject == null)
+            if (!Destination.IsConnected(this))
             {
-                Destination.HandObject = HandObject;
+                Destination.Connect(this);
             }
-            if (Destination.GoalTree == null)
+            if (ArmTree.Count == 0)
+            {
+                ArmTree.Add(new Node(new Configuration(HandObject), null, true));
+            }
+            if (GoalTree.Count == 0)
                 return;
 
-            GoalTree = Destination.GoalTree;
-            ExpandTree();
+            if (doSearch)
+            {
+                RRTSearch();
+            }
         }
 
-        public Configuration GetStartConfiguration()
+        public void StartSearch()
         {
-            Configuration startConfig = new Configuration(HandObject);
-            return startConfig;
+            doSearch = true;
         }
-        /*public void GraspRRT(Transform qStart, Transform po)
+
+        public void AddGoalNode(Node goalPoint)
         {
-            RRT.AddConfiguration(qstart);
-            while ()
+            GoalTree.Add(goalPoint);
         }
-        */
+
         public void RRTSearch()
         {
-            while (doSearch)
+            var p = Random.value;
+            if (p < 0.5) // Expand the tree
             {
-                var p = Random.value;
-                if (p < 0.2) // Expand the tree
-                {
-                    ExpandTree();
-                }
-                else // Find a goal
-                {
-                    FindGoal();
-                }
+                ExpandTree(ArmTree,GoalTree);
+            }
+            else // Find a goal
+            {
+                ExpandTree(GoalTree,ArmTree);
             }
         }
 
-        public void ExpandTree()
+        public void ExpandTree(Tree expansionTree, Tree endTree)
         {
-            var node = ArmTree[Random.Range(0, ArmTree.Count - 1)];
+            //var node = expansionTree[Random.Range(0, expansionTree.Count - 1)];
             //for (var i = 0; i < ArmTree.Count; i++)
             //{
                 //var node = ArmTree[i];
-                var cFree = SampleFreeSpace(node.Point);
+            var newNode = expansionTree.SampleFreeSpace();
+            var movePath = GetComponent<IKSolver>().TestPath(newNode.ParentNode, newNode.Point.transform);
+            if (movePath != null)
+            {
+                newNode.AddSolutionSteps(movePath);
+                newNode.Point.AddJointAngles(GetComponent<IKSolver>().GetJointAngles(movePath));
+            }
 
-                // Check for collisions
-                if (IsCollisionFree(cFree))
+            // Check for collisions
+            if (IsCollisionFree(newNode.Point))
+            {
+                expansionTree.Add(newNode);
+
+                //Debug.Log("Added node: " + cClose.transform);
+                var soln = SolutionPathList.AddSolutionIfExists(newNode, endTree);
+                if (soln != null)
                 {
-                    var cClose = node.Point.MoveTowards(cFree);
-                    var newNode = new Node(cClose, node);
-
-                    ArmTree.Add(newNode);
-                    Debug.Log("Added node: " + cClose.transform);
-
-                    if (SolutionPathList.AddSolutionIfExists(newNode, GoalTree))
-                    {
-                        Debug.Log("Found a solution!");
-                        Debug.Log("Solution: " + SolutionPathList[0]);
-                        GetComponent<InverseKinematics>().UpdateSolutionList(SolutionPathList);
-                    }
+                    //Debug.Log("Found a solution!");
+                    //Debug.Log("Solution: " + soln);
+                    GetComponent<InverseKinematics>().UpdateSolutionList(SolutionPathList);
                 }
+            }
             //}
         }
 
         public bool IsCollisionFree(Configuration c)
         {
-            return true;
+            var collisionFree = true;
+            return collisionFree;
         }
 
         public Configuration SampleFreeSpace(Configuration c)

@@ -16,9 +16,11 @@ namespace SpiderBot
         Collider m_ObjectCollider;
 
         [ReadOnly]
-        public Tree GoalTree = new Tree();
+        public ArmPlanner Arm;
 
         public Hand HandObject;
+
+        private bool getGrasps = false;
 
         Vector3[] PointCloud;
 
@@ -26,16 +28,36 @@ namespace SpiderBot
         void Start() {
             //Fetch the GameObject's collider (make sure they have a Collider component)
             m_ObjectCollider = gameObject.GetComponent<Collider>();
-            //Output the GameObject's Collider Bound extents
-            Debug.Log("extents : " + m_ObjectCollider.bounds.extents);
-            Debug.Log("minimum : " + m_ObjectCollider.bounds.min);
-            Debug.Log("maximum : " + m_ObjectCollider.bounds.max);
+
             DefineGoalRegion();
+        }
+
+        public void Connect(ArmPlanner arm)
+        {
+            Arm = arm;
+            HandObject = Arm.HandObject;
+            getGrasps = true;
+        }
+
+        public void Disconnect()
+        {
+            getGrasps = false;
+            Arm = null;
+            HandObject = null;
+        }
+
+        public bool IsConnected(ArmPlanner arm)
+        {
+            if (arm == Arm && HandObject == arm.HandObject && getGrasps)
+            {
+                return true;
+            }
+            return false;
         }
 
         // Update is called once per frame
         void Update() {
-            if (HandObject == null)
+            if (!getGrasps || Arm == null || HandObject == null)
             {
                 return;
             }
@@ -126,9 +148,9 @@ namespace SpiderBot
 
         void VerifyGoal()
         {
-            if (GoalTree.Count == 0)
+            if (Arm.GoalTree.Count == 0)
             {
-                GoalTree.Add(new Node(new Configuration(transform.position, transform.rotation, HandObject.FingerList), null, false, true));
+                Arm.AddGoalNode(new Node(new Configuration(transform.position, transform.rotation, HandObject.FingerList), null, false, true));
             }
             //Check if it's a good grab pose
             //Check which regions it can touch without collision
