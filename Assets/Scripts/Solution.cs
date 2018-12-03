@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace SpiderBot
 {
-    public class Solution : LinkedList<Configuration>
+    public class Solution : LinkedList<float[]>
     {
         public Solution()
         {
@@ -12,9 +12,13 @@ namespace SpiderBot
 
         public Solution(Node linkedNode, Node goalNode)
         {
-            var flip = false;
+            foreach (var solution in linkedNode.SolutionSteps)
+            {
+                AddLast(solution);
+            }
+           /* var flip = false;
             // Build backward tree half
-            AddFirst(goalNode.Point);
+            AddFirst(goalNode.Point.);
             var parent = goalNode.ParentNode;
             while (parent != null)
             {
@@ -42,14 +46,15 @@ namespace SpiderBot
             {
                 ReverseList();
             }
+            */
         }
 
-        public void Push(Configuration point)
+        public void Push(float[] point)
         {
             AddFirst(point);
         }
 
-        public Configuration Pop()
+        public float[] Pop()
         {
             var point = First;
             RemoveFirst();
@@ -83,7 +88,7 @@ namespace SpiderBot
             string positions = "";
             foreach (var node in this)
             {
-                positions += node.transform.ToString() + "\n";
+                positions += node.ToString() + "\n";
             }
             return positions.ToString();
         }

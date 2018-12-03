@@ -13,7 +13,6 @@ namespace SpiderBot
         [Space]
 
         private float Delta = 0;
-        private float angleDelta = 0;
 
         public Tree ArmTree { get; private set; }
         public Tree GoalTree { get; private set; }
@@ -31,7 +30,6 @@ namespace SpiderBot
 
             // Initialize distance tolerances
             Delta = Toolbox.Instance.GetConnectionDistance();
-            angleDelta = Toolbox.Instance.GetConnectionDistance();
 
             if (HandObject == null)
             {
@@ -69,7 +67,23 @@ namespace SpiderBot
             }
             if (ArmTree.Count == 0)
             {
-                ArmTree.Add(new Node(new Configuration(HandObject), null, true));
+                var startSoln = new List<float[]>
+                {
+                    GetComponent<IKSolver>().GetStartingAngles()
+                };
+
+                var startNode = new Node(new Configuration(HandObject), null);
+                startNode.AddSolutionSteps(startSoln);
+                startNode.Point.AddJointAngles(GetComponent<IKSolver>().GetJointAngles(startSoln));
+                ArmTree.Add(startNode);
+                Debug.Log("Got first point!");
+                string printsoln = "";
+                foreach (var soln in startSoln[0])
+                {
+                    printsoln += soln.ToString() + "\n";
+                }
+                Debug.Log(printsoln);
+
             }
             if (GoalTree.Count == 0)
                 return;
@@ -90,16 +104,24 @@ namespace SpiderBot
             GoalTree.Add(goalPoint);
         }
 
+        public void OnApplicationQuit()
+        {
+            if (Destination != null)
+            {
+                Destination.Disconnect();
+                Destination = null;
+            }
+        }
         public void RRTSearch()
         {
             var p = Random.value;
-            if (p < 0.5) // Expand the tree
+            //if (p < 0.5) // Expand the tree
             {
                 ExpandTree(ArmTree,GoalTree);
             }
-            else // Find a goal
+            //else // Find a goal
             {
-                ExpandTree(GoalTree,ArmTree);
+                //ExpandTree(GoalTree,ArmTree);
             }
         }
 
@@ -113,22 +135,23 @@ namespace SpiderBot
             var movePath = GetComponent<IKSolver>().TestPath(newNode.ParentNode, newNode.Point.transform);
             if (movePath != null)
             {
+                Debug.Log("Found a point");
                 newNode.AddSolutionSteps(movePath);
                 newNode.Point.AddJointAngles(GetComponent<IKSolver>().GetJointAngles(movePath));
-            }
 
-            // Check for collisions
-            if (IsCollisionFree(newNode.Point))
-            {
-                expansionTree.Add(newNode);
-
-                //Debug.Log("Added node: " + cClose.transform);
-                var soln = SolutionPathList.AddSolutionIfExists(newNode, endTree);
-                if (soln != null)
+                // Check for collisions
+                if (IsCollisionFree(newNode.Point))
                 {
-                    //Debug.Log("Found a solution!");
-                    //Debug.Log("Solution: " + soln);
-                    GetComponent<InverseKinematics>().UpdateSolutionList(SolutionPathList);
+                    expansionTree.Add(newNode);
+
+                    //Debug.Log("Added node: " + cClose.transform);
+                    var soln = SolutionPathList.AddSolutionIfExists(newNode, endTree);
+                    if (soln != null)
+                    {
+                        Debug.Log("Found a solution!");
+                        //Debug.Log("Solution: " + soln);
+                        GetComponent<ArmController>().UpdateSolutionList(SolutionPathList);
+                    }
                 }
             }
             //}

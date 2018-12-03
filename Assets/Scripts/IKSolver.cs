@@ -4,15 +4,10 @@ using UnityEngine;
 
 namespace SpiderBot
 {
-    // A typical error function to minimise
-    public delegate float ErrorFunction(PositionRotation target, float[] solution);
-
     //[ExecuteInEditMode]
     public class IKSolver : MonoBehaviour
     {
-        public int MaximumSteps = 10;
-
-        public int MaximumLoop = 100;
+        public int MaximumLoop = 1000;
 
         [Header("Joints")]
         //[HideInInspector]
@@ -37,7 +32,6 @@ namespace SpiderBot
         public ErrorFunction ErrorFunction;
 
         private List<float[]> SolutionSteps = null;
-        private List<PositionRotation[]> JointSteps = null;
         private PositionRotation[] JointSim = null;
 
         // Use this for initialization
@@ -59,11 +53,13 @@ namespace SpiderBot
         public List<float[]> TestPath(Node startPoint, PositionRotation endPoint)
         {
             SolutionSteps = startPoint.SolutionSteps;
+            Solution = SolutionSteps[SolutionSteps.Count-1];
 
             JointSim = startPoint.Point.Joints;
-
+            //Debug.Log(JointSim);
+            Debug.Log(endPoint);
             var target = endPoint;
-            for (var i; i < MaximumLoop; i++)
+            for (var i = 0; i < MaximumLoop; i++)
             {
                 if (ErrorFunction(target, Solution) > StopThreshold)
                 {
@@ -72,26 +68,39 @@ namespace SpiderBot
                         SolutionSteps.Add(Solution);
                         UpdateJointPosition();
                     }
+                    else
+                    {
+                        SolutionSteps.Add(Solution);
+                        return SolutionSteps;
+                    }
                 }
                 else
                 {
                     return SolutionSteps;
                 }
             }
+            Debug.Log("No path found");
             return null;
         }
 
         public PositionRotation[] GetJointAngles(List<float[]> SolutionPath)
         {
             var jointStart = new PositionRotation[Joints.Length];
-            for (var i = 0; i<Joints.Length; i++)
+            for (var i = 0; i < Joints.Length; i++)
             {
                 jointStart[i] = new PositionRotation(Joints[i].transform.position, Joints[i].transform.rotation);
             }
-            for (var i = 0; i < SolutionPath.Count; i++)
+            foreach (var soln in SolutionPath)
             {
-                jointStart = ForwardKinematics(jointStart,SolutionPath[i]);
+                jointStart = ForwardKinematics(jointStart, soln);
             }
+
+            var debugPrint = "";
+            foreach (var angle in jointStart)
+            {
+                debugPrint += angle.ToString() + "\n";
+            }
+            Debug.Log(debugPrint);
             return jointStart;
         }
 
@@ -187,9 +196,6 @@ namespace SpiderBot
                 rotation *= Quaternion.AngleAxis(Solution[i - 1], Joints[i - 1].Axis);
                 Vector3 nextPoint = prevPoint + rotation * Joints[i].StartOffset;
 
-                if (DebugDraw)
-                    Debug.DrawLine(prevPoint, nextPoint, Color.blue);
-
                 prevPoint = nextPoint;
             }
 
@@ -199,25 +205,7 @@ namespace SpiderBot
 
         public void UpdateJointPosition()
         {
-            var newJointSim = new PositionRotation[JointSim.Length];
-
-            Vector3 prevPoint = JointSim[0];
-            //Quaternion rotation = Quaternion.identity;
-
-            // Takes object initial rotation into account
-            Quaternion rotation = JointSim[0];
-
-            newJointSim[0] = new PositionRotation(prevPoint, rotation);
-            for (int i = 1; i < JointSim.Length; i++)
-            {
-                // Rotates around a new axis
-                rotation *= Quaternion.AngleAxis(Solution[i - 1], Joint[i - 1].Axis);
-                Vector3 nextPoint = prevPoint + rotation * Joint[i].StartOffset;
-
-                prevPoint = nextPoint;
-                newJointSim[i] = new PositionRotation(prevPoint, rotation);
-            }
-            JointSim = newJointSim;
+            JointSim = ForwardKinematics(JointSim, Solution); ;
         }
 
         public PositionRotation[] ForwardKinematics(PositionRotation[] prevJoints, float[] newAngles)
@@ -230,15 +218,15 @@ namespace SpiderBot
             // Takes object initial rotation into account
             Quaternion rotation = prevJoints[0];
 
-            newJointSim[0] = new PositionRotation(prevPoint, rotation);
+            newJointSim[0] = prevJoints[0];
             for (int i = 1; i < prevJoints.Length; i++)
             {
                 // Rotates around a new axis
-                rotation *= Quaternion.AngleAxis(newAngles[i - 1], Joint[i - 1].Axis);
-                Vector3 nextPoint = prevPoint + rotation * Joint[i].StartOffset;
+                rotation *= Quaternion.AngleAxis(newAngles[i - 1], Joints[i - 1].Axis);
+                Vector3 nextPoint = prevPoint + rotation * Joints[i].StartOffset;
 
                 prevPoint = nextPoint;
-                newJointSim[i] = new PositionRotation(prevPoint, rotation);
+                newJointSim[i] = new PositionRotation(prevPoint,rotation);
             }
 
             return newJointSim;

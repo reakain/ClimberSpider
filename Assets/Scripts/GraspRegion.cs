@@ -48,7 +48,7 @@ namespace SpiderBot
 
         public bool IsConnected(ArmPlanner arm)
         {
-            if (arm == Arm && HandObject == arm.HandObject && getGrasps)
+            if (getGrasps && Arm != null && Arm == arm && HandObject != null && HandObject == arm.HandObject)
             {
                 return true;
             }
@@ -150,7 +150,7 @@ namespace SpiderBot
         {
             if (Arm.GoalTree.Count == 0)
             {
-                Arm.AddGoalNode(new Node(new Configuration(transform.position, transform.rotation, HandObject.FingerList), null, false, true));
+                Arm.AddGoalNode(new Node(new Configuration(transform.position, transform.rotation, HandObject.FingerList), null, true));
             }
             //Check if it's a good grab pose
             //Check which regions it can touch without collision
