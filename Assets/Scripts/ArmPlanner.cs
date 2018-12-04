@@ -7,7 +7,7 @@ namespace SpiderBot
     public class ArmPlanner : MonoBehaviour
     {
         [Header("Grabber")]
-        public Hand HandObject;
+        public Wrist HandObject;
         [Header("Destination")]
         public GraspRegion Destination;
         [Space]
@@ -33,7 +33,7 @@ namespace SpiderBot
 
             if (HandObject == null)
             {
-                HandObject = GetComponentInChildren<Hand>();
+                HandObject = GetComponentInChildren<Wrist>();
             }
             
             doSearch = true; // Placeholder until multiarm is built
@@ -74,7 +74,7 @@ namespace SpiderBot
 
                 var startNode = new Node(new Configuration(HandObject), null);
                 startNode.AddSolutionSteps(startSoln);
-                startNode.Point.AddJointAngles(GetComponent<IKSolver>().GetJointAngles(startSoln));
+                startNode.Point.AddJointAngles(GetComponent<Arm>().GetJointAngles(startSoln));
                 ArmTree.Add(startNode);
                 Debug.Log("Got first point!");
                 string printsoln = "";
@@ -132,12 +132,12 @@ namespace SpiderBot
             //{
                 //var node = ArmTree[i];
             var newNode = expansionTree.SampleFreeSpace();
-            var movePath = GetComponent<IKSolver>().TestPath(newNode.ParentNode, newNode.Point.transform);
+            var movePath = GetComponent<Arm>().TestPath(newNode.ParentNode, newNode.Point.transform);
             if (movePath != null)
             {
                 Debug.Log("Found a point");
                 newNode.AddSolutionSteps(movePath);
-                newNode.Point.AddJointAngles(GetComponent<IKSolver>().GetJointAngles(movePath));
+                newNode.Point.AddJointAngles(GetComponent<Arm>().GetJointAngles(movePath));
 
                 // Check for collisions
                 if (IsCollisionFree(newNode.Point))
@@ -183,7 +183,7 @@ namespace SpiderBot
 
         public Configuration SampleHandPosition()
         {
-            return new Configuration(new Hand());
+            return new Configuration(new Wrist());
         }
 
         /*

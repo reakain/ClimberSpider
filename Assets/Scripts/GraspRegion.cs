@@ -18,7 +18,7 @@ namespace SpiderBot
         [ReadOnly]
         public ArmPlanner Arm;
 
-        public Hand HandObject;
+        public Wrist HandObject;
 
         private bool getGrasps = false;
 

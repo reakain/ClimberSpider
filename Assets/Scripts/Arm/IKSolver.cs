@@ -35,12 +35,15 @@ namespace SpiderBot
         private ArmJoint[] JointSim = null;
 
         // Use this for initialization
+
+        private void Awake()
+        {
+            ErrorFunction = DistanceFromTarget;
+        }
         void Start()
         {
             if (Joints == null)
                 GetJoints();
-
-            ErrorFunction = DistanceFromTarget;
         }
 
         [ExposeInEditor(RuntimeOnly = false)]
@@ -54,7 +57,13 @@ namespace SpiderBot
         {
             SolutionSteps = startPoint.SolutionSteps;
             Solution = SolutionSteps[SolutionSteps.Count-1];
-
+            Debug.Log("Did the solution get added?");
+            var printsoln = "";
+            foreach (var soln in Solution)
+            {
+                printsoln += soln.ToString() + "\n";
+            }
+            Debug.Log(printsoln);
             JointSim = startPoint.Point.Joints;
             //Debug.Log(JointSim);
             Debug.Log(endPoint);
@@ -177,6 +186,7 @@ namespace SpiderBot
         public float DistanceFromTarget(PositionRotation target, float[] Solution)
         {
             PositionRotation point = ForwardKinematics(Solution);
+            Debug.Log("Distance from target is: " + Vector3.Distance(point, target));
             return Vector3.Distance(point, target);// + Quaternion.Angle(point,target);
         }
 
@@ -189,7 +199,7 @@ namespace SpiderBot
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = JointSim[0].transform.rotation;
+            Quaternion rotation = transform.rotation;
 
             for (int i = 1; i < Joints.Length; i++)
             {

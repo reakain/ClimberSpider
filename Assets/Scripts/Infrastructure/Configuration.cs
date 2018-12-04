@@ -10,7 +10,7 @@ namespace SpiderBot
         public Finger[] FingerList { get; private set; }
         public ArmJoint[] Joints { get; private set; }
 
-        public Configuration(Hand Hand)
+        public Configuration(Wrist Hand)
         {
             transform = new PositionRotation(Hand.transform.position, Hand.transform.rotation);
             //transform.position = Hand.transform.position;
