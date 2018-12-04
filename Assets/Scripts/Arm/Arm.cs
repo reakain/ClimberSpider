@@ -6,12 +6,12 @@ namespace SpiderBot
 {
     public class Arm : IKSolver
     {
-        public ArmJoint[] JointList { get; private set; }
+        //public ArmJoint[] JointList { get; private set; }
 
         // Use this for initialization
         void Start()
         {
-            JointList = GetComponentsInChildren<ArmJoint>();
+            Joints = GetComponentsInChildren<ArmJoint>();
         }
 
         // Update is called once per frame

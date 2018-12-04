@@ -10,7 +10,7 @@ namespace SpiderBot
         public Configuration Point { get; private set; }
         public Node ParentNode { get; private set; }
         public bool IsGoal { get; private set; }
-        public List<float[]> SolutionSteps { get; private set; }
+        private List<float[]> SolutionSteps;
 
         public Node(Configuration handConfiguration, Node parentNode = null, bool goal = false)
         {
@@ -33,13 +33,18 @@ namespace SpiderBot
             }
             return false;
         }
+
+        public List<float[]> GetSolutionPath()
+        {
+            return SolutionSteps;
+        }
     }
 
     public class Tree : List<Node>
     {
         public Node SampleFreeSpace()
         {
-            var node = this[Random.Range(0, this.Count - 1)];
+            var node = this[Random.Range(0, Count - 1)];
             var c = node.Point;
             var Delta = Toolbox.Instance.GetConnectionDistance();
 

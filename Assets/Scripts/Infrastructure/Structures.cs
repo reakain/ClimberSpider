@@ -35,4 +35,24 @@ namespace SpiderBot
             return position.ToString();
         }
     }
+
+    public struct Solution
+    {
+        float[] solution;
+
+        public Solution(float[] solution)
+        {
+            this.solution = solution;
+        }
+    }
+
+    public struct SolutionPath
+    {
+        Solution[] solutionpath;
+
+        public SolutionPath(Solution[] solutionpath)
+        {
+            this.solutionpath = solutionpath;
+        }
+    }
 }

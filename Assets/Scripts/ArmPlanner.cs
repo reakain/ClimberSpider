@@ -77,13 +77,6 @@ namespace SpiderBot
                 startNode.Point.AddJointAngles(GetComponent<Arm>().GetJointAngles(startSoln));
                 ArmTree.Add(startNode);
                 Debug.Log("Got first point!");
-                string printsoln = "";
-                foreach (var soln in startSoln[0])
-                {
-                    printsoln += soln.ToString() + "\n";
-                }
-                Debug.Log(printsoln);
-
             }
             if (GoalTree.Count == 0)
                 return;
@@ -132,7 +125,15 @@ namespace SpiderBot
             //{
                 //var node = ArmTree[i];
             var newNode = expansionTree.SampleFreeSpace();
-            var movePath = GetComponent<Arm>().TestPath(newNode.ParentNode, newNode.Point.transform);
+            string printsoln = "";
+            foreach (var soln in newNode.ParentNode.GetSolutionPath()[0])
+            {
+                printsoln += soln.ToString() + "\n";
+            }
+            Debug.Log("First soln is: " + printsoln);
+            Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
+            var parent = newNode.ParentNode;
+            var movePath = GetComponent<Arm>().TestPath(parent.GetSolutionPath(), parent.Point.Joints, newNode.Point.transform);
             if (movePath != null)
             {
                 Debug.Log("Found a point");

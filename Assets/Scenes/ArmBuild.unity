@@ -19611,7 +19611,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13496
+  m_Name: pb_Mesh13494
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -22554,7 +22554,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13390
+  m_Name: pb_Mesh13388
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -27615,7 +27615,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13432
+  m_Name: pb_Mesh13430
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -28415,7 +28415,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13404
+  m_Name: pb_Mesh13402
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -28608,7 +28608,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
   Joints: []
-  Solution: []
   DeltaGradient: 0.1
   LearningRate: 0.1
   StopThreshold: 0.1
@@ -28698,11 +28697,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36ba8c1b5d187949b59886e7a1ffe65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaximumLoop: 1000
-  Joints: []
-  Solution: []
-  DeltaGradient: 0.1
-  LearningRate: 0.1
+  MaximumLoop: 50
+  Joints:
+  - {fileID: 693721912}
+  - {fileID: 695046958}
+  - {fileID: 21081116}
+  - {fileID: 149093890}
+  - {fileID: 1159843535}
+  DeltaGradient: 0.01
+  LearningRate: 25
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
 --- !u!1818360608 &862864227
@@ -31807,7 +31810,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13468
+  m_Name: pb_Mesh13466
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -33341,7 +33344,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
   Joints: []
-  Solution: []
   DeltaGradient: 0.1
   LearningRate: 0.1
   StopThreshold: 0.1
@@ -35938,7 +35940,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13418
+  m_Name: pb_Mesh13416
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -36131,7 +36133,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
   Joints: []
-  Solution: []
   DeltaGradient: 0.1
   LearningRate: 0.1
   StopThreshold: 0.1
@@ -38780,7 +38781,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13326
+  m_Name: pb_Mesh13324
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -38935,7 +38936,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13290
+  m_Name: pb_Mesh13288
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -42196,7 +42197,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13362
+  m_Name: pb_Mesh13360
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2

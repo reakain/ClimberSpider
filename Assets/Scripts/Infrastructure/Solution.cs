@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace SpiderBot
 {
-    public class Solution : LinkedList<float[]>
+    public class Solution1 : LinkedList<float[]>
     {
-        public Solution()
+        public Solution1()
         {
 
         }
 
-        public Solution(Node linkedNode, Node goalNode)
+        public Solution1(Node linkedNode, Node goalNode)
         {
-            foreach (var solution in linkedNode.SolutionSteps)
+            foreach (var solution in linkedNode.GetSolutionPath())
             {
                 AddLast(solution);
             }
@@ -71,7 +71,7 @@ namespace SpiderBot
 
         public void ReverseList()
         {
-            var newList = new Solution();
+            var newList = new Solution1();
             while (!IsEmpty())
             {
                 newList.Push(Pop());
@@ -94,9 +94,9 @@ namespace SpiderBot
         }
     }
 
-    public class SolutionList : List<Solution>
+    public class SolutionList : List<Solution1>
     {
-        public Solution AddSolutionIfExists(Node linkedNode, Tree goalTree)
+        public Solution1 AddSolutionIfExists(Node linkedNode, Tree goalTree)
         {
             foreach (var node in goalTree)
             {
@@ -104,7 +104,7 @@ namespace SpiderBot
                 {
                     if (node.Point.Angle(linkedNode.Point) <= Toolbox.Instance.GetConnectionAngle())
                     {
-                        var soln = new Solution(linkedNode, node);
+                        var soln = new Solution1(linkedNode, node);
                         Add(soln);
                         return soln;
                     }
@@ -113,7 +113,7 @@ namespace SpiderBot
             return null;
         }
 
-        public Solution ShortestPath()
+        public Solution1 ShortestPath()
         {
             var shortest = this[0];
             foreach (var soln in this)

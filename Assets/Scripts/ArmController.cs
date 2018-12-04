@@ -18,7 +18,7 @@ namespace SpiderBot
         public float[] Solution = null;
 
         private SolutionList m_SolutionList;
-        private Solution m_Solution;
+        private Solution1 m_Solution;
 
         // Use this for initialization
         void Start()
