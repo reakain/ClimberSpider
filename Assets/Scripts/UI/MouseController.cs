@@ -29,9 +29,9 @@ namespace SpiderBot
                 // the object identified by hit.transform was clicked
                 // do whatever you want
                 //LeftControlRobot.Destination = hit.transform;
-                if (hit.transform.GetComponent<ArmPlanner>() != null)
+                if (hit.transform.GetComponentInParent<ArmPlanner>() != null)
                 {
-                    m_SelectedArm = hit.transform.GetComponent<ArmPlanner>();
+                    m_SelectedArm = hit.transform.GetComponentInParent<ArmPlanner>();
                     //Debug.Log("Selected Arm: " + hit.transform.name);
                 }
                 else if (m_SelectedArm != null && hit.transform.GetComponent<GraspRegion>() != null)

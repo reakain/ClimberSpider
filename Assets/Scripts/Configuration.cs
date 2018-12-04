@@ -8,7 +8,7 @@ namespace SpiderBot
     {
         public PositionRotation transform { get; private set; }
         public Finger[] FingerList { get; private set; }
-        public PositionRotation[] Joints { get; private set; }
+        public ArmJoint[] Joints { get; private set; }
 
         public Configuration(Hand Hand)
         {
@@ -26,7 +26,7 @@ namespace SpiderBot
             FingerList = fingerList;
         }
 
-        public void AddJointAngles(PositionRotation[] joints)
+        public void AddJointAngles(ArmJoint[] joints)
         {
             Joints = joints;
         }

@@ -12,7 +12,7 @@ namespace SpiderBot
         [Header("Joints")]
         //[HideInInspector]
         [ReadOnly]
-        public RobotJoint[] Joints = null;
+        public ArmJoint[] Joints = null;
         // The current angles
         [ReadOnly]
         public float[] Solution = null;
@@ -32,7 +32,7 @@ namespace SpiderBot
         public ErrorFunction ErrorFunction;
 
         private List<float[]> SolutionSteps = null;
-        private PositionRotation[] JointSim = null;
+        private ArmJoint[] JointSim = null;
 
         // Use this for initialization
         void Start()
@@ -46,7 +46,7 @@ namespace SpiderBot
         [ExposeInEditor(RuntimeOnly = false)]
         public void GetJoints()
         {
-            Joints = GetComponentsInChildren<RobotJoint>();
+            Joints = GetComponentsInChildren<ArmJoint>();
             Solution = new float[Joints.Length];
         }
 
@@ -66,6 +66,12 @@ namespace SpiderBot
                     if (ApprochTarget(target))
                     {
                         SolutionSteps.Add(Solution);
+                        var debugPrint = "";
+                        foreach (var angle in Solution)
+                        {
+                            debugPrint += angle.ToString() + "\n";
+                        }
+                        //Debug.Log(debugPrint);
                         UpdateJointPosition();
                     }
                     else
@@ -83,13 +89,14 @@ namespace SpiderBot
             return null;
         }
 
-        public PositionRotation[] GetJointAngles(List<float[]> SolutionPath)
+        public ArmJoint[] GetJointAngles(List<float[]> SolutionPath)
         {
-            var jointStart = new PositionRotation[Joints.Length];
+            /*var jointStart = new PositionRotation[Joints.Length];
             for (var i = 0; i < Joints.Length; i++)
             {
                 jointStart[i] = new PositionRotation(Joints[i].transform.position, Joints[i].transform.rotation);
-            }
+            }*/
+            var jointStart = Joints;
             foreach (var soln in SolutionPath)
             {
                 jointStart = ForwardKinematics(jointStart, soln);
@@ -102,12 +109,6 @@ namespace SpiderBot
             }
             Debug.Log(debugPrint);
             return jointStart;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         public float[] GetStartingAngles()
@@ -184,11 +185,11 @@ namespace SpiderBot
          * given a solution. */
         public PositionRotation ForwardKinematics(float[] Solution)
         {
-            Vector3 prevPoint = JointSim[0];
+            Vector3 prevPoint = JointSim[0].transform.position;
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = JointSim[0];
+            Quaternion rotation = JointSim[0].transform.rotation;
 
             for (int i = 1; i < Joints.Length; i++)
             {
@@ -208,15 +209,15 @@ namespace SpiderBot
             JointSim = ForwardKinematics(JointSim, Solution); ;
         }
 
-        public PositionRotation[] ForwardKinematics(PositionRotation[] prevJoints, float[] newAngles)
+        public ArmJoint[] ForwardKinematics(ArmJoint[] prevJoints, float[] newAngles)
         {
-            var newJointSim = new PositionRotation[prevJoints.Length];
-
-            Vector3 prevPoint = prevJoints[0];
+            //var newJointSim = new PositionRotation[prevJoints.Length];
+            var newJointSim = prevJoints;
+            Vector3 prevPoint = prevJoints[0].transform.position;
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = prevJoints[0];
+            Quaternion rotation = prevJoints[0].transform.rotation;
 
             newJointSim[0] = prevJoints[0];
             for (int i = 1; i < prevJoints.Length; i++)
@@ -226,7 +227,9 @@ namespace SpiderBot
                 Vector3 nextPoint = prevPoint + rotation * Joints[i].StartOffset;
 
                 prevPoint = nextPoint;
-                newJointSim[i] = new PositionRotation(prevPoint,rotation);
+                newJointSim[i] = prevJoints[i];//new PositionRotation(prevPoint,rotation);
+                newJointSim[i].transform.position = nextPoint;
+                newJointSim[i].transform.rotation = rotation;
             }
 
             return newJointSim;

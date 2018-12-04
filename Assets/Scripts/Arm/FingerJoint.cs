@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpiderBot
 {
-    public class FingerJoint : MonoBehaviour
+    public class FingerJoint : RobotJoint
     {
 
         public FingerJoint ParentJoint { get; private set; }

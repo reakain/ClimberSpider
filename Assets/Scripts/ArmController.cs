@@ -12,7 +12,7 @@ namespace SpiderBot
         [Header("Joints")]
         //[HideInInspector]
         [ReadOnly]
-        public RobotJoint[] Joints = null;
+        public ArmJoint[] Joints = null;
         // The current angles
         [ReadOnly]
         public float[] Solution = null;
@@ -30,7 +30,7 @@ namespace SpiderBot
         [ExposeInEditor(RuntimeOnly = false)]
         public void GetJoints()
         {
-            Joints = GetComponentsInChildren<RobotJoint>();
+            Joints = GetComponentsInChildren<ArmJoint>();
         }
 
         // Update is called once per frame
