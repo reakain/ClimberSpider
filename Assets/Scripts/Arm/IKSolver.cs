@@ -50,23 +50,28 @@ namespace SpiderBot
 
         public List<float[]> TestPath(List<float[]> SolutionSteps, PositionRotation[] joints, PositionRotation endPoint)
         {
-            List<float[]> m_solutionSteps = new List<float[]>(SolutionSteps);
-            /*float[] m_Solution = new float[Joints.Length];
-            foreach (var soln in startPoint.SolutionSteps)
+            List<float[]> m_solutionSteps = new List<float[]>();
+            for (int i = 0; i < SolutionSteps.Count; i++)
             {
-                m_Solution = soln;
-                m_solutionSteps.Add(m_Solution);
-            }*/
+                float[] steps = new float[SolutionSteps[i].Length];
+                for (int j = 0; j < SolutionSteps[i].Length; j++)
+                {
+                    steps[j] = SolutionSteps[i][j];
+                }
+                m_solutionSteps.Add(steps);
+            }
             float[] m_Solution = new float[Joints.Length];
             m_Solution = m_solutionSteps[m_solutionSteps.Count-1];
             JointSim = new PositionRotation[Joints.Length];
+            string debugPrint = "";
             for (var i = 0; i < Joints.Length; i++)
             {
                 JointSim[i] = joints[i];
+                debugPrint += JointSim[i] + "\n";
             }
             //JointSim = joints;
-            //Debug.Log(JointSim);
-            Debug.Log(endPoint);
+            //Debug.Log(debugPrint);
+            //Debug.Log(endPoint);
             var target = endPoint;
             for (var i = 0; i < MaximumLoop; i++)
             {
@@ -75,14 +80,20 @@ namespace SpiderBot
                     if (ApprochTarget(target, ref m_Solution))
                     {
                         m_solutionSteps.Add(m_Solution);
-                        var debugPrint = "";
+                        debugPrint = "";
                         foreach (var angle in m_Solution)
                         {
                             debugPrint += angle.ToString() + "\n";
                         }
-                        Debug.Log("Intermediate soln " + i + ":\n" + debugPrint);
-                        Debug.Log("Solution list is " + m_solutionSteps.Count + " steps long");
+                        //Debug.Log("Intermediate soln " + i + ":\n" + debugPrint);
+                        //Debug.Log("Solution list is " + m_solutionSteps.Count + " steps long");
                         UpdateJointPosition(m_Solution);
+                        debugPrint = "";
+                        foreach (var angle in JointSim)
+                        {
+                            debugPrint += angle.ToString() + "\n";
+                        }
+                        //Debug.Log("Joints at " + i + " are: " + debugPrint);
                     }
                     else
                     {
@@ -95,7 +106,7 @@ namespace SpiderBot
                     return m_solutionSteps;
                 }
             }
-            Debug.Log("No path found");
+            //Debug.Log("No path found");
             return null;
         }
 
@@ -117,7 +128,7 @@ namespace SpiderBot
             {
                 debugPrint += angle.ToString() + "\n";
             }
-            Debug.Log(debugPrint);
+            //Debug.Log(debugPrint);
             return jointStart;
         }
 
@@ -200,13 +211,14 @@ namespace SpiderBot
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = JointSim[0];
+            Quaternion rotation = transform.rotation;
 
             for (int i = 1; i < Joints.Length; i++)
             {
                 // Rotates around a new axis
                 rotation *= Quaternion.AngleAxis(m_Solution[i - 1], Joints[i - 1].Axis);
                 Vector3 nextPoint = prevPoint + rotation * Joints[i].StartOffset;
+                //Debug.Log(rotation);
 
                 prevPoint = nextPoint;
             }
@@ -228,7 +240,7 @@ namespace SpiderBot
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = prevJoints[0];
+            Quaternion rotation = transform.rotation;
 
             newJointSim[0] = prevJoints[0];
             for (int i = 1; i < Joints.Length; i++)

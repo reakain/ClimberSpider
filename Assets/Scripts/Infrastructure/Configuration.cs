@@ -45,7 +45,7 @@ namespace SpiderBot
         {
             var cNew = new Configuration(Vector3.MoveTowards(transform, c.transform, Toolbox.Instance.GetConnectionDistance()),
                 Quaternion.RotateTowards(transform, c.transform, Toolbox.Instance.GetConnectionAngle()), c.FingerList);
-
+            //Debug.Log(cNew.transform);
              
             //cNew.transform = Vector3.MoveTowards(transform, c.transform, Toolbox.Instance.GetConnectionDistance());
             //cNew.transform = Quaternion.RotateTowards(transform, c.transform, Toolbox.Instance.GetConnectionAngle());

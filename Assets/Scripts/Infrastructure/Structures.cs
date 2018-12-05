@@ -32,7 +32,7 @@ namespace SpiderBot
 
         public override string ToString()
         {
-            return position.ToString();
+            return "Position " + position.ToString() + " and Rotation " + rotation.ToString();
         }
     }
 

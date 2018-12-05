@@ -123,39 +123,41 @@ namespace SpiderBot
             //var node = expansionTree[Random.Range(0, expansionTree.Count - 1)];
             //for (var i = 0; i < ArmTree.Count; i++)
             //{
-                //var node = ArmTree[i];
+            //var node = ArmTree[i];
             var newNode = expansionTree.SampleFreeSpace();
-            string printsoln = "";
-            foreach (var soln in newNode.ParentNode.GetSolutionPath()[0])
+            if (newNode != null)
             {
-                printsoln += soln.ToString() + "\n";
-            }
-            Debug.Log("First soln is: " + printsoln);
-            Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
-            var parent = newNode.ParentNode;
-            var movePath = GetComponent<Arm>().TestPath(parent.GetSolutionPath(), parent.Point.Joints, newNode.Point.transform);
-            if (movePath != null)
-            {
-                Debug.Log("Found a point");
-                newNode.AddSolutionSteps(movePath);
-                newNode.Point.AddJointAngles(GetComponent<Arm>().GetJointAngles(movePath));
-
-                // Check for collisions
-                if (IsCollisionFree(newNode.Point))
+                string printsoln = "";
+                foreach (var soln in newNode.ParentNode.GetSolutionPath()[0])
                 {
-                    expansionTree.Add(newNode);
+                    printsoln += soln.ToString() + "\n";
+                }
+                //Debug.Log("First soln is: " + printsoln);
+                //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
+                var parent = newNode.ParentNode;
+                var movePath = GetComponent<Arm>().TestPath(parent.GetSolutionPath(), parent.Point.Joints, newNode.Point.transform);
+                if (movePath != null)
+                {
+                    Debug.Log("Found a point");
+                    newNode.AddSolutionSteps(movePath);
+                    newNode.Point.AddJointAngles(GetComponent<Arm>().GetJointAngles(movePath));
 
-                    //Debug.Log("Added node: " + cClose.transform);
-                    var soln = SolutionPathList.AddSolutionIfExists(newNode, endTree);
-                    if (soln != null)
+                    // Check for collisions
+                    if (IsCollisionFree(newNode.Point))
                     {
-                        Debug.Log("Found a solution!");
-                        //Debug.Log("Solution: " + soln);
-                        GetComponent<ArmController>().UpdateSolutionList(SolutionPathList);
+                        expansionTree.Add(newNode);
+
+                        //Debug.Log("Added node: " + cClose.transform);
+                        var soln = SolutionPathList.AddSolutionIfExists(newNode, endTree);
+                        if (soln != null)
+                        {
+                            Debug.Log("Found a solution!");
+                            //Debug.Log("Solution: " + soln);
+                            GetComponent<ArmController>().UpdateSolutionList(SolutionPathList);
+                        }
                     }
                 }
             }
-            //}
         }
 
         public bool IsCollisionFree(Configuration c)

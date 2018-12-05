@@ -44,19 +44,25 @@ namespace SpiderBot
     {
         public Node SampleFreeSpace()
         {
-            var node = this[Random.Range(0, Count - 1)];
-            var c = node.Point;
+            //var node = this[Random.Range(0, Count - 1)];
+            //var c = node.Point;
             var Delta = Toolbox.Instance.GetConnectionDistance();
 
-            Vector3 randPos = c.transform;
-            randPos += new Vector3(Random.Range(-Delta, Delta), Random.Range(-Delta, Delta), Random.Range(-Delta, Delta));
+            //Vector3 randPos = c.transform;
+            //randPos += new Vector3(Random.Range(-Delta, Delta), Random.Range(-Delta, Delta), Random.Range(-Delta, Delta));
+            Vector3 randPos = Random.insideUnitSphere * 10;
             Quaternion randRot = Random.rotationUniform;
-
-            var cNew = node.Point.MoveTowards(new Configuration(randPos, randRot, c.FingerList));
-
-            if (!PointInList(cNew))
+            var best = this[0];
+            //var cNew = node.Point.MoveTowards(new Configuration(randPos, randRot, c.FingerList));
+            foreach (var node in this)
             {
-                return (new Node(cNew, node));
+                if (Vector3.Distance(node.Point.transform, randPos) < Vector3.Distance(best.Point.transform, randPos))
+                    best = node;
+            }
+            var cNew = best.Point.MoveTowards(new Configuration(randPos, randRot, best.Point.FingerList));
+            if (!PointInList(cNew) && randPos.y >= 0)
+            {
+                return (new Node(cNew, best));
             }
 
             return null;
