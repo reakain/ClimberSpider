@@ -89,8 +89,21 @@ namespace SpiderBot
                 PointCloud[i] = vertex;
             }
 
+            // https://arxiv.org/ftp/arxiv/papers/1210/1210.7463.pdf
             //mesh.SetIndices(mesh.GetIndices(0), MeshTopology.Points, 0);
+            /*Vector3[] mean = PointCloud.Mean();
+			Vector3[] PointCloudAdjust = PointCloud.Subtract(mean);
+			Vector3[] cov = PointCloudAdjust.Covariance();
+			
+			var evd = new EigenvalueDecompostion(cov);
+			Vector3[] eigenvalues = evd.RealEigenvalues;
+			Vector3[] eigenvectors = evd.Eigenvectors;
+			
+			eigenvectors = Matrix.Sort(eigenvalues, eigenvectors, new GeneralComparer(ComparerDirection.Descending, true));
+			*/
             PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis();
+			pca.Overwrite = true;
+			//pca.Compute();
         }
 
         void DefineGoalRegion()

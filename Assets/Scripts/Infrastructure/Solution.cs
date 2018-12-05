@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace SpiderBot
 {
-    public class Solution1 : LinkedList<float[]>
+    public struct SolutionStep
     {
-        public Solution1()
+        float[] solution;
+
+        public SolutionStep(float[] solution)
+        {
+            this.solution = solution;
+        }
+    }
+
+    public class Solution : LinkedList<float[]>
+    {
+        public Solution()
         {
 
         }
 
-        public Solution1(Node linkedNode, Node goalNode)
+        public Solution(Node linkedNode, Node goalNode)
         {
             foreach (var solution in linkedNode.GetSolutionPath())
             {
@@ -71,7 +81,7 @@ namespace SpiderBot
 
         public void ReverseList()
         {
-            var newList = new Solution1();
+            var newList = new Solution();
             while (!IsEmpty())
             {
                 newList.Push(Pop());
@@ -82,6 +92,11 @@ namespace SpiderBot
                 Push(newList.Pop());
             }
         }
+		
+		public bool HasCollision(Solution compare)
+		{
+			return true;
+		}
 
         public override string ToString()
         {
@@ -94,9 +109,9 @@ namespace SpiderBot
         }
     }
 
-    public class SolutionList : List<Solution1>
+    public class SolutionList : List<Solution>
     {
-        public Solution1 AddSolutionIfExists(Node linkedNode, Tree goalTree)
+        public Solution AddSolutionIfExists(Node linkedNode, Tree goalTree)
         {
             foreach (var node in goalTree)
             {
@@ -104,7 +119,7 @@ namespace SpiderBot
                 {
                     if (node.Point.Angle(linkedNode.Point) <= Toolbox.Instance.GetConnectionAngle())
                     {
-                        var soln = new Solution1(linkedNode, node);
+                        var soln = new Solution(linkedNode, node);
                         Add(soln);
                         return soln;
                     }
@@ -113,7 +128,7 @@ namespace SpiderBot
             return null;
         }
 
-        public Solution1 ShortestPath()
+        public Solution ShortestPath()
         {
             var shortest = this[0];
             foreach (var soln in this)
@@ -125,5 +140,60 @@ namespace SpiderBot
             }
             return shortest;
         }
+		
+
+		public int ShortestLength()
+        {
+            var shortest = 0;
+            foreach (var soln in this)
+            {
+                if (soln.Count < shortest)
+                {
+                    shortest = soln.Count;
+                }
+            }
+            return shortest;
+        }
+		
+		// Reads array of arm solution lists, finds all safe solns in own list versus these lists and returns that safe travel list
+		public SolutionList GetCollisionFreeList(SolutionList[] checkList)
+		{
+			
+			return null;
+		}
+		
+		public Solution PopShortest()
+		{
+			Solution shortest = ShortestPath();
+			this.Remove(shortest);
+			return shortest;
+		}
+		
+		
+		public Solution LongestPath()
+		{
+			var longest = this[0];
+			foreach (var soln in this)
+            {
+                if (soln.Count > longest.Count)
+                {
+                    longest = soln;
+                }
+            }
+			return longest;
+		}
+		
+		public int LongestLength()
+		{
+			int longest = 0;
+			foreach (var soln in this)
+            {
+                if (soln.Count > longest)
+                {
+                    longest = soln.Count;
+                }
+            }
+			return longest;
+		}
     }
 }

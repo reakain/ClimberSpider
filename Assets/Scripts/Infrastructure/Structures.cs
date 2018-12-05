@@ -36,15 +36,7 @@ namespace SpiderBot
         }
     }
 
-    public struct Solution
-    {
-        float[] solution;
 
-        public Solution(float[] solution)
-        {
-            this.solution = solution;
-        }
-    }
 
     public struct SolutionPath
     {
