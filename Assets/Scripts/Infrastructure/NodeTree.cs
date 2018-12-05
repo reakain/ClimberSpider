@@ -44,25 +44,23 @@ namespace SpiderBot
     {
         public Node SampleFreeSpace()
         {
-            //var node = this[Random.Range(0, Count - 1)];
-            //var c = node.Point;
-            var Delta = Toolbox.Instance.GetConnectionDistance();
+            Vector3 randPos = Random.insideUnitSphere * 8.7f;
+            if (randPos.y >= 0)
+            {
+                //var node = this[Random.Range(0, Count - 1)];
+                //var c = node.Point;
+                var Delta = Toolbox.Instance.GetConnectionDistance();
 
-            //Vector3 randPos = c.transform;
-            //randPos += new Vector3(Random.Range(-Delta, Delta), Random.Range(-Delta, Delta), Random.Range(-Delta, Delta));
-            Vector3 randPos = Random.insideUnitSphere * 10;
-            Quaternion randRot = Random.rotationUniform;
-            var best = this[0];
-            //var cNew = node.Point.MoveTowards(new Configuration(randPos, randRot, c.FingerList));
-            foreach (var node in this)
-            {
-                if (Vector3.Distance(node.Point.transform, randPos) < Vector3.Distance(best.Point.transform, randPos))
-                    best = node;
-            }
-            var cNew = best.Point.MoveTowards(new Configuration(randPos, randRot, best.Point.FingerList));
-            if (!PointInList(cNew) && randPos.y >= 0)
-            {
-                return (new Node(cNew, best));
+                //Vector3 randPos = c.transform;
+                //randPos += new Vector3(Random.Range(-Delta, Delta), Random.Range(-Delta, Delta), Random.Range(-Delta, Delta));
+
+                Quaternion randRot = Random.rotationUniform;
+                var best = FindClosest(randPos);
+                var cNew = best.Point.MoveTowards(new Configuration(randPos, randRot, best.Point.FingerList));
+                if (!PointInList(cNew))
+                {
+                    return (new Node(cNew, best));
+                }
             }
 
             return null;
@@ -76,6 +74,28 @@ namespace SpiderBot
                     return true;
             }
             return false;
+        }
+
+        public Node FindClosest(Vector3 c)
+        {
+            var best = this[0];
+            foreach (var node in this)
+            {
+                if (Vector3.Distance(node.Point.transform, c) < Vector3.Distance(best.Point.transform, c))
+                    best = node;
+            }
+            return best;
+        }
+
+        public Node FindClosest(Configuration c)
+        {
+            var best = this[0];
+            foreach (var node in this)
+            {
+                if (c.Distance(node.Point) < c.Distance(best.Point))
+                    best = node;
+            }
+            return best;
         }
     }
 

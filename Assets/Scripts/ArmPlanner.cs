@@ -17,6 +17,8 @@ namespace SpiderBot
         public Tree ArmTree { get; private set; }
         public Tree GoalTree { get; private set; }
         public SolutionList SolutionPathList { get; private set; }
+        private Collider[] ColliderList;
+        private Arm ikSolver;
 
         public bool doSearch { get; private set; }
 
@@ -27,6 +29,8 @@ namespace SpiderBot
             ArmTree = new Tree();
             GoalTree = new Tree();
             SolutionPathList = new SolutionList();
+            ColliderList = GetComponentsInChildren<Collider>();
+            ikSolver = GetComponent<Arm>();
 
             // Initialize distance tolerances
             Delta = Toolbox.Instance.GetConnectionDistance();
@@ -74,7 +78,7 @@ namespace SpiderBot
 
                 var startNode = new Node(new Configuration(HandObject), null);
                 startNode.AddSolutionSteps(startSoln);
-                startNode.Point.AddJointAngles(GetComponent<Arm>().GetJointAngles(startSoln));
+                startNode.Point.AddJointAngles(ikSolver.GetJointAngles(startSoln));
                 ArmTree.Add(startNode);
                 Debug.Log("Got first point!");
             }
@@ -118,6 +122,16 @@ namespace SpiderBot
             }
         }
 
+        public bool IsSelfCollision(Vector3 point)
+        {
+            foreach (var collider in ColliderList)
+            {
+                if (collider.bounds.Contains(point))
+                    return true;
+            }
+            return false;
+        }
+
         public void ExpandTree(Tree expansionTree, Tree endTree)
         {
             //var node = expansionTree[Random.Range(0, expansionTree.Count - 1)];
@@ -125,7 +139,12 @@ namespace SpiderBot
             //{
             //var node = ArmTree[i];
             var newNode = expansionTree.SampleFreeSpace();
-            if (newNode != null)
+            while (newNode == null)
+            {
+                newNode = expansionTree.SampleFreeSpace();
+            }
+
+            if (!IsSelfCollision(newNode.Point.transform))
             {
                 string printsoln = "";
                 foreach (var soln in newNode.ParentNode.GetSolutionPath()[0])
@@ -135,12 +154,12 @@ namespace SpiderBot
                 //Debug.Log("First soln is: " + printsoln);
                 //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
                 var parent = newNode.ParentNode;
-                var movePath = GetComponent<Arm>().TestPath(parent.GetSolutionPath(), parent.Point.Joints, newNode.Point.transform);
+                var movePath = ikSolver.TestPath(parent.GetSolutionPath(), parent.Point.Joints, newNode.Point.transform);
                 if (movePath != null)
                 {
                     Debug.Log("Found a point");
                     newNode.AddSolutionSteps(movePath);
-                    newNode.Point.AddJointAngles(GetComponent<Arm>().GetJointAngles(movePath));
+                    newNode.Point.AddJointAngles(ikSolver.GetJointAngles(movePath));
 
                     // Check for collisions
                     if (IsCollisionFree(newNode.Point))
