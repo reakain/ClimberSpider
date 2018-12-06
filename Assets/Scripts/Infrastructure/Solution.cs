@@ -103,7 +103,12 @@ namespace SpiderBot
             string positions = "";
             foreach (var node in this)
             {
-                positions += node.ToString() + "\n";
+                positions += "( ";
+                foreach (var point in node)
+                {
+                    positions += point.ToString() + ", ";
+                }
+                positions += ")\n";
             }
             return positions.ToString();
         }

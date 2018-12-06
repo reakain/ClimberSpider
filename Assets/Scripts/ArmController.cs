@@ -15,10 +15,10 @@ namespace SpiderBot
         public ArmJoint[] Joints = null;
         // The current angles
         [ReadOnly]
-        public float[] Solution = null;
+        public float[] nextPoint = null;
 
-        private SolutionList m_SolutionList;
-        private Solution m_Solution;
+        private SolutionList m_SolutionList = null;
+        private Solution m_Solution = null;
 
         // Use this for initialization
         void Start()
@@ -35,32 +35,48 @@ namespace SpiderBot
         // Update is called once per frame
         void Update()
         {
-            if (m_SolutionList == null)
+            if (m_Solution == null)
                 return;
-            else if(m_Solution == null && Solution == null)
+            else if(nextPoint == null)
             {
-                var bestSol = m_SolutionList.ShortestPath();
+                //var bestSol = m_SolutionList.ShortestPath();
                 //if (bestSol.Count <= MaximumSteps)
                 //{
-                    m_Solution = m_SolutionList.ShortestPath();
-                    Solution = m_Solution.First.Value;
-                    m_Solution.RemoveFirst();
+                nextPoint = m_Solution.Pop();
+                    //m_Solution.RemoveFirst();
                 //}
             }
+            Debug.Log("Moving!");
             for (int i = 0; i < Joints.Length - 1; i++)
             {
-                Joints[i].MoveArm(Solution[i]);
+                Joints[i].MoveArm(nextPoint[i]);
             }
-            if (!m_Solution.IsEmpty())
+            Debug.Log("Finished move!");
+            if (m_Solution != null || !m_Solution.IsEmpty())
             {
-                Solution = m_Solution.First.Value;
-                m_Solution.RemoveFirst();
+                nextPoint = m_Solution.Pop();
+                //m_Solution.RemoveFirst();
             }
         }
 
-        public void UpdateSolutionList(SolutionList solutionList)
+        public void StartSolutionRun(Solution solution)
         {
-            m_SolutionList = solutionList;
+            if (m_Solution == null)
+            {
+                m_Solution = new Solution();
+
+                //List<float[]> m_solutionSteps = new List<float[]>();
+                for (int i = 0; i < solution.Count; i++)
+                {
+                    var steps = solution.Pop();
+                    var addStep = new float[steps.Length];
+                    for (int j = 0; j < steps.Length; j++)
+                    {
+                        addStep[j] = steps[j];
+                    }
+                    m_Solution.AddLast(addStep);
+                }
+            }
         }
     }
 }

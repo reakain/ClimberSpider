@@ -186,7 +186,7 @@ namespace SpiderBot
                         {
                             Debug.Log("Found a solution!");
                             Debug.Log("Solution: " + soln.ToString());
-                            GetComponent<ArmController>().UpdateSolutionList(SolutionPathList);
+                            GetComponent<ArmController>().StartSolutionRun(soln);
                         }
                     }
                 }
