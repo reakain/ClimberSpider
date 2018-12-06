@@ -30,11 +30,29 @@ namespace SpiderBot
                 return;
 
             float[] stepPath = GetStartingAngles();
+            string debugPrint = "";
+            for (var i = 0; i < stepPath.Length; i++)
+            {
+                debugPrint += stepPath[i] + "\n";
+            }
+            Debug.Log("Before: " + debugPrint);
             PositionRotation target = new PositionRotation(GetComponentInParent<Wrist>().transform.position, GetComponentInParent<Wrist>().transform.rotation);
-            Debug.Log(target);
+            //Debug.Log(target);
             InitializeJointSim();
-            
+            debugPrint = "";
+            for (var i = 0; i < JointSim.Length; i++)
+            {
+                debugPrint += JointSim[i] + "\n";
+            }
+            Debug.Log("JointSim: " + debugPrint);
+
             stepPath = ApproachTarget(target, stepPath);
+            debugPrint = "";
+            for (var i = 0; i < stepPath.Length; i++)
+            {
+                debugPrint += stepPath[i] + "\n";
+            }
+            Debug.Log("After: " + debugPrint);
             // Call controller move step
             for (int i = 0; i < Joints.Length - 1; i++)
             {

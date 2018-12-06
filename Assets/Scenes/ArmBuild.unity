@@ -19551,7 +19551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
   MinAngle: -90
-  MaxAngle: 45
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -22831,7 +22831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
   MinAngle: -90
-  MaxAngle: 45
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -22858,14 +22858,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 229224647}
-  m_LocalRotation: {x: 0, y: -0.17364825, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: -0.24, y: 0.11466484, z: -0.08}
+  m_LocalRotation: {x: 0, y: 0.25881916, z: -0, w: -0.9659258}
+  m_LocalPosition: {x: -0.2165, y: 0.11466484, z: -0.125}
   m_LocalScale: {x: 1.0000081, y: 0.9999796, z: 0.9999756}
   m_Children:
   - {fileID: 95863006}
   m_Father: {fileID: 1860622408}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: -20, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 330, z: 0}
 --- !u!114 &229224649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22878,7 +22878,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
-  Joints: []
+  Joints:
+  - {fileID: 95863007}
+  - {fileID: 212947417}
+  - {fileID: 1800308185}
   DeltaGradient: 0.01
   LearningRate: 25
   StopThreshold: 0.1
@@ -22930,7 +22933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
   MinAngle: -90
-  MaxAngle: 45
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -28852,14 +28855,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 551653078}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.11466484, z: 0.25}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 0, y: 0.1146648, z: 0.25}
   m_LocalScale: {x: 1, y: 0.9999796, z: 0.9999838}
   m_Children:
   - {fileID: 1598845595}
   m_Father: {fileID: 1860622408}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!114 &551653080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30087,7 +30090,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
   MinAngle: -90
-  MaxAngle: 45
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -35954,14 +35957,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1105271952}
-  m_LocalRotation: {x: 0, y: -0.9848078, z: 0, w: 0.17364825}
-  m_LocalPosition: {x: 0.24, y: 0.11466484, z: -0.08}
+  m_LocalRotation: {x: 0, y: 0.9659259, z: -0, w: -0.25881898}
+  m_LocalPosition: {x: 0.2165, y: 0.11466484, z: -0.125}
   m_LocalScale: {x: 1.0000043, y: 0.9999796, z: 0.99998045}
   m_Children:
   - {fileID: 1555772255}
   m_Father: {fileID: 1860622408}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: -160, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 210, z: 0}
 --- !u!114 &1105271954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36667,7 +36670,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1180298275}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 836299020}
@@ -39763,7 +39766,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1500226747}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 251536769}
@@ -42216,7 +42219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
   MinAngle: -90
-  MaxAngle: 45
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -42510,7 +42513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
   MinAngle: -90
-  MaxAngle: 45
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -45615,13 +45618,13 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1717119754}
-  m_LocalRotation: {x: 0, y: 0.9914449, z: -0.13052616, w: 0}
-  m_LocalPosition: {x: 0, y: 8.43, z: 11.83}
+  m_LocalRotation: {x: -0, y: 0.96984774, z: -0.24371167, w: 0}
+  m_LocalPosition: {x: 0, y: 10.21, z: 2.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 15, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 28.211, y: 180.00002, z: 0}
 --- !u!1 &1759425338
 GameObject:
   m_ObjectHideFlags: 0
@@ -45901,7 +45904,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1800308182}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 212947416}

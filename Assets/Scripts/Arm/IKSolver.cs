@@ -28,7 +28,7 @@ namespace SpiderBot
 
         public ErrorFunction ErrorFunction;
 
-        private PositionRotation[] JointSim = null;
+        public PositionRotation[] JointSim = null;
 
         // Use this for initialization
 
@@ -117,7 +117,7 @@ namespace SpiderBot
             //var jointStart = Joints;
             foreach (var soln in SolutionPath)
             {
-                jointStart = ForwardKinematics(jointStart, soln);
+                jointStart = FKSimBuild(jointStart, soln);
             }
 
             var debugPrint = "";
@@ -143,7 +143,10 @@ namespace SpiderBot
         {
             var startAngle = new float[Joints.Length];
             for (var i = Joints.Length - 1; i >= 0; i--)
+            {
                 startAngle[i] = Joints[i].GetAngle();
+                Debug.Log(startAngle[i]);
+            }
             return startAngle;
         }
 
@@ -236,10 +239,10 @@ namespace SpiderBot
 
         public void UpdateJointPosition(float[] m_Solution)
         {
-            JointSim = ForwardKinematics(JointSim, m_Solution); ;
+            JointSim = FKSimBuild(JointSim, m_Solution); ;
         }
 
-        public PositionRotation[] ForwardKinematics(PositionRotation[] prevJoints, float[] newAngles)
+        public PositionRotation[] FKSimBuild(PositionRotation[] prevJoints, float[] newAngles)
         {
             //var newJointSim = new PositionRotation[prevJoints.Length];
             var newJointSim = prevJoints;
