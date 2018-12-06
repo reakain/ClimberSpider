@@ -36,35 +36,33 @@ namespace SpiderBot
         void Update()
         {
             if (m_Solution == null || m_Solution.IsEmpty())
-                return;
-            if(nextPoint == null)
             {
-                //var bestSol = m_SolutionList.ShortestPath();
-                //if (bestSol.Count <= MaximumSteps)
-                //{
+                return;
+            }
+            //if(nextPoint == null)
+            else
+            {
                 nextPoint = m_Solution.Pop();
-                    //m_Solution.RemoveFirst();
-                //}
+
+                /* Debug Print Array Start */
+                var printSoln = "( ";
+                foreach (var joint in nextPoint)
+                {
+                    printSoln += joint.ToString() + ", ";
+                }
+                printSoln += ")\n";
+                Debug.Log("Move Path is: " + printSoln);
+                /* Debug Print Array End */
+
+                Debug.Log("Solution path left is: " + m_Solution.ToString());
             }
 
-            string printsoln = "( ";
-            foreach (var joint in nextPoint)
-            {
-                printsoln += joint.ToString() + ", ";
-            }
-            printsoln += ")\n";
-            Debug.Log("Move Path is: " + printsoln);
             Debug.Log("Moving!");
             for (int i = 0; i < Joints.Length - 1; i++)
             {
                 Joints[i].MoveArm(nextPoint[i]);
             }
             Debug.Log("Finished move!");
-            if (m_Solution != null || !m_Solution.IsEmpty())
-            {
-                nextPoint = m_Solution.Pop();
-                //m_Solution.RemoveFirst();
-            }
         }
 
         public void StartSolutionRun(Solution solution)
@@ -82,6 +80,8 @@ namespace SpiderBot
                     {
                         addStep[j] = steps[j];
                     }
+
+                    /* Debug Print Array Start */
                     string printsoln = "( ";
                     foreach (var joint in addStep)
                     {
@@ -89,8 +89,11 @@ namespace SpiderBot
                     }
                     printsoln += ")\n";
                     Debug.Log("Solution step is: " + printsoln);
+                    /* Debug Print Array End */
+
                     m_Solution.AddLast(addStep);
                 }
+                Debug.Log("Solution path to move is: " + m_Solution.ToString());
             }
         }
     }
