@@ -73,7 +73,8 @@ namespace SpiderBot
             {
                 var startSoln = new List<float[]>
                 {
-                    GetComponent<IKSolver>().GetStartingAngles()
+                    //GetComponent<IKSolver>().GetStartingAngles()
+                    new float[ikSolver.Joints.Length]
                 };
 
                 var startNode = new Node(new Configuration(HandObject), null);

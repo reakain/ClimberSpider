@@ -11,10 +11,12 @@ namespace SpiderBot
 
         private bool CurlIn = false;
         private bool CurlOut = false;
+        private float[] curlSolution = null;
         // Use this for initialization
         void Start()
         {
             Joints = GetComponentsInChildren<FingerJoint>();
+            curlSolution = new float[Joints.Length];
         }
 
         // Update is called once per frame
@@ -29,11 +31,11 @@ namespace SpiderBot
             if (!CurlIn)
                 return;
 
-            float[] stepPath = GetStartingAngles();
+            //float[] stepPath = GetStartingAngles();
             string debugPrint = "";
-            for (var i = 0; i < stepPath.Length; i++)
+            for (var i = 0; i < curlSolution.Length; i++)
             {
-                debugPrint += stepPath[i] + "\n";
+                debugPrint += curlSolution[i] + "\n";
             }
             Debug.Log("Before: " + debugPrint);
             PositionRotation target = new PositionRotation(GetComponentInParent<Wrist>().transform.position, GetComponentInParent<Wrist>().transform.rotation);
@@ -46,19 +48,19 @@ namespace SpiderBot
             }
             Debug.Log("JointSim: " + debugPrint);
 
-            stepPath = ApproachTarget(target, stepPath);
+            curlSolution = ApproachTarget(target, curlSolution);
             debugPrint = "";
-            for (var i = 0; i < stepPath.Length; i++)
+            for (var i = 0; i < curlSolution.Length; i++)
             {
-                debugPrint += stepPath[i] + "\n";
+                debugPrint += curlSolution[i] + "\n";
             }
             Debug.Log("After: " + debugPrint);
             // Call controller move step
             for (int i = 0; i < Joints.Length - 1; i++)
             {
-                Joints[i].MoveArm(stepPath[i]);
+                Joints[i].MoveArm(curlSolution[i]);
             }
-            if (!(ErrorFunction(target, stepPath) > StopThreshold))
+            if (!(ErrorFunction(target, curlSolution) > StopThreshold))
                 CurlIn = false;
             // Check if collision
             //CurlIn = false;
@@ -69,14 +71,13 @@ namespace SpiderBot
             if (!CurlOut)
                 return;
 
-            float[] stepPath = GetStartingAngles();
             PositionRotation target = new PositionRotation(GetComponentInParent<Wrist>().transform.position, GetComponentInParent<Wrist>().transform.rotation);
             target -= Vector3.one * Vector3.Distance(transform.position, target)*2;
             InitializeJointSim();
-            stepPath = ApproachTarget(target, stepPath);
+            curlSolution = ApproachTarget(target, curlSolution);
             for (int i = 0; i < Joints.Length - 1; i++)
             {
-                Joints[i].MoveArm(stepPath[i]);
+                Joints[i].MoveArm(curlSolution[i]);
             }
 
             // Check if collision

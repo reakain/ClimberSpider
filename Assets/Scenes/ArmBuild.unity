@@ -158,8 +158,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
-  MinAngle: -180
-  MaxAngle: 180
+  MinAngle: -90
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -19550,7 +19550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
-  MinAngle: -90
+  MinAngle: -25
   MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
@@ -22882,7 +22882,7 @@ MonoBehaviour:
   - {fileID: 95863007}
   - {fileID: 212947417}
   - {fileID: 1800308185}
-  DeltaGradient: 0.01
+  DeltaGradient: 0.1
   LearningRate: 25
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
@@ -28855,14 +28855,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 551653078}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.1146648, z: 0.25}
   m_LocalScale: {x: 1, y: 0.9999796, z: 0.9999838}
   m_Children:
   - {fileID: 1598845595}
   m_Father: {fileID: 1860622408}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &551653080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28876,7 +28876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
   Joints: []
-  DeltaGradient: 0.01
+  DeltaGradient: 0.1
   LearningRate: 25
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
@@ -29150,8 +29150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
-  MinAngle: -180
-  MaxAngle: 180
+  MinAngle: -90
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -29200,8 +29200,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
-  MinAngle: -180
-  MaxAngle: 180
+  MinAngle: -90
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -35978,7 +35978,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
   Joints: []
-  DeltaGradient: 0.01
+  DeltaGradient: 0.1
   LearningRate: 25
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
@@ -37148,8 +37148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: {x: 1, y: 0, z: 0}
-  MinAngle: -180
-  MaxAngle: 180
+  MinAngle: -90
+  MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
@@ -42218,7 +42218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
-  MinAngle: -90
+  MinAngle: -25
   MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
@@ -42512,7 +42512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: {x: 0, y: 0, z: 1}
-  MinAngle: -90
+  MinAngle: -25
   MaxAngle: 90
   StartOffset: {x: 0, y: 0, z: 0}
   ZeroEuler: {x: 0, y: 0, z: 0}
