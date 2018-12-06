@@ -146,11 +146,7 @@ namespace SpiderBot
 
             if (!IsSelfCollision(newNode.Point.transform))
             {
-                string printsoln = "";
-                foreach (var soln in newNode.ParentNode.GetSolutionPath()[0])
-                {
-                    printsoln += soln.ToString() + "\n";
-                }
+                
                 //Debug.Log("First soln is: " + printsoln);
                 //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
                 var parent = newNode.ParentNode;
@@ -158,9 +154,26 @@ namespace SpiderBot
                 if (movePath != null)
                 {
                     Debug.Log("Found a point");
+                    string printsoln = "";
+                    foreach (var soln in movePath)
+                    {
+                        printsoln += "( ";
+                        foreach (var joint in soln)
+                        {
+                            printsoln += joint.ToString() + ", ";
+                        }
+                        printsoln += ")\n";
+                    }
+                    Debug.Log("Move Path is: " + printsoln);
                     newNode.AddSolutionSteps(movePath);
                     newNode.Point.AddJointAngles(ikSolver.GetJointAngles(movePath));
 
+                    printsoln = "";
+                    foreach (var soln in newNode.Point.Joints)
+                    {
+                            printsoln += soln.ToString() + "\n";
+                    }
+                    Debug.Log("Joint set is: " + printsoln);
                     // Check for collisions
                     if (IsCollisionFree(newNode.Point))
                     {
@@ -171,7 +184,7 @@ namespace SpiderBot
                         if (soln != null)
                         {
                             Debug.Log("Found a solution!");
-                            //Debug.Log("Solution: " + soln);
+                            Debug.Log("Solution: " + soln.ToString());
                             GetComponent<ArmController>().UpdateSolutionList(SolutionPathList);
                         }
                     }

@@ -12,7 +12,7 @@ namespace SpiderBot
         [Header("Joints")]
         //[HideInInspector]
         [ReadOnly]
-        public ArmJoint[] Joints = null;
+        public RobotJoint[] Joints = null;
 
         [Header("Inverse Kinematics")]
         [Range(0, 1f)]
@@ -38,14 +38,13 @@ namespace SpiderBot
         }
         void Start()
         {
-            if (Joints == null)
-                GetJoints();
+            //GetJoints();
         }
 
         [ExposeInEditor(RuntimeOnly = false)]
         public void GetJoints()
         {
-            Joints = GetComponentsInChildren<ArmJoint>();
+            Joints = GetComponentsInChildren<RobotJoint>();
         }
 
         public List<float[]> TestPath(List<float[]> SolutionSteps, PositionRotation[] joints, PositionRotation endPoint)
@@ -71,15 +70,19 @@ namespace SpiderBot
             }
             //JointSim = joints;
             //Debug.Log(debugPrint);
-            //Debug.Log(endPoint);
+            //Debug.Log("Step point is: " + endPoint);
             var target = endPoint;
             for (var i = 0; i < MaximumLoop; i++)
             {
                 if (ErrorFunction(target, m_Solution) > StopThreshold)
                 {
-                    if (ApprochTarget(target, ref m_Solution))
-                    {
-                        m_solutionSteps.Add(m_Solution);
+                    var newSoln = ApproachTarget(target, m_Solution);
+                        float[] steps = new float[m_Solution.Length];
+                        for (int j = 0; j < m_Solution.Length; j++)
+                        {
+                            steps[j] = m_Solution[j];
+                        }
+                        m_solutionSteps.Add(steps);
                         debugPrint = "";
                         foreach (var angle in m_Solution)
                         {
@@ -94,12 +97,6 @@ namespace SpiderBot
                             debugPrint += angle.ToString() + "\n";
                         }
                         //Debug.Log("Joints at " + i + " are: " + debugPrint);
-                    }
-                    else
-                    {
-                        m_solutionSteps.Add(m_Solution);
-                        return m_solutionSteps;
-                    }
                 }
                 else
                 {
@@ -132,6 +129,16 @@ namespace SpiderBot
             return jointStart;
         }
 
+        public void InitializeJointSim()
+        {
+            JointSim = new PositionRotation[Joints.Length];
+            for (var i = 0; i < Joints.Length; i++)
+            {
+                JointSim[i] = new PositionRotation(Joints[i].transform.position, Joints[i].transform.rotation);
+                //Debug.Log(JointSim[i]);
+            }
+        }
+
         public float[] GetStartingAngles()
         {
             var startAngle = new float[Joints.Length];
@@ -140,7 +147,7 @@ namespace SpiderBot
             return startAngle;
         }
 
-        public bool ApprochTarget(PositionRotation target, ref float[] m_Solution)
+        public float[] ApproachTarget(PositionRotation target, float[] m_Solution)
         {
             // Starts from the end, up to the base
             // Starts from joints[end-2]
@@ -161,9 +168,9 @@ namespace SpiderBot
 
                 // Early termination
                 if (ErrorFunction(target, m_Solution) <= StopThreshold)
-                    return false;
+                    return m_Solution;
             }
-            return true;
+            return m_Solution;
         }
 
         /* Calculates the gradient for the invetse kinematic.
@@ -197,7 +204,7 @@ namespace SpiderBot
         // Returns the distance from the target, given a solution
         public float DistanceFromTarget(PositionRotation target, float[] m_Solution)
         {
-            PositionRotation point = ForwardKinematics(m_Solution);
+            Vector3 point = ForwardKinematics(m_Solution);
             //Debug.Log("Distance from target is: " + Vector3.Distance(point, target));
             return Vector3.Distance(point, target);// + Quaternion.Angle(point,target);
         }
@@ -211,7 +218,7 @@ namespace SpiderBot
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = transform.rotation;
+            Quaternion rotation = JointSim[0];//.rotation;
 
             for (int i = 1; i < Joints.Length; i++)
             {
@@ -240,7 +247,7 @@ namespace SpiderBot
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = transform.rotation;
+            Quaternion rotation = prevJoints[0];// transform.rotation;
 
             newJointSim[0] = prevJoints[0];
             for (int i = 1; i < Joints.Length; i++)

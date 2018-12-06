@@ -22,6 +22,10 @@ namespace SpiderBot
 
         private bool getGrasps = false;
 
+        private float RegionSizing = 0;
+
+        private List<Mesh> RegionList = null;
+
         Vector3[] PointCloud;
 
         // Use this for initialization
@@ -29,7 +33,7 @@ namespace SpiderBot
             //Fetch the GameObject's collider (make sure they have a Collider component)
             m_ObjectCollider = gameObject.GetComponent<Collider>();
 
-            DefineGoalRegion();
+            GetPointCloud();
         }
 
         public void Connect(ArmPlanner arm)
@@ -37,6 +41,7 @@ namespace SpiderBot
             Arm = arm;
             HandObject = Arm.HandObject;
             getGrasps = true;
+            SetRegionSizing();
         }
 
         public void Disconnect()
@@ -44,6 +49,7 @@ namespace SpiderBot
             getGrasps = false;
             Arm = null;
             HandObject = null;
+            RegionList = null;
         }
 
         public bool IsConnected(ArmPlanner arm)
@@ -61,8 +67,19 @@ namespace SpiderBot
             {
                 return;
             }
-
+            if (RegionList == null)
+                AddNewRegions();
             FindGoal();
+        }
+
+        void AddNewRegions()
+        {
+            
+        }
+
+        void SetRegionSizing()
+        {
+            RegionSizing = HandObject.GetComponentInChildren<FingerPad>().GetComponent<MeshCollider>().bounds.size.magnitude;
         }
 
         Vector3 GetSuperEllipsoidPoint(float a1, float a2, float a3, double eta, double w)
@@ -76,9 +93,9 @@ namespace SpiderBot
 
         void GetPointCloud()
         {
-            float fingerX = 0.6f;
-            float fingerY = 0.6f;
-            float fingerZ = 0.6f;
+            float fingerX = 0.0f;
+            float fingerY = 0.0f;
+            float fingerZ = 0.0f;
             Vector3[] PointCloud = GetComponent<MeshFilter>().mesh.vertices;
             for (var i = 0; i < PointCloud.Length; i++)
             {
@@ -101,8 +118,8 @@ namespace SpiderBot
 			
 			eigenvectors = Matrix.Sort(eigenvalues, eigenvectors, new GeneralComparer(ComparerDirection.Descending, true));
 			*/
-            PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis();
-			pca.Overwrite = true;
+            //PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis();
+			//pca.Overwrite = true;
 			//pca.Compute();
         }
 

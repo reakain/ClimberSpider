@@ -23,8 +23,7 @@ namespace SpiderBot
         // Use this for initialization
         void Start()
         {
-            if (Joints == null)
-                GetJoints();
+            GetJoints();
         }
 
         [ExposeInEditor(RuntimeOnly = false)]
@@ -51,6 +50,11 @@ namespace SpiderBot
             for (int i = 0; i < Joints.Length - 1; i++)
             {
                 Joints[i].MoveArm(Solution[i]);
+            }
+            if (!m_Solution.IsEmpty())
+            {
+                Solution = m_Solution.First.Value;
+                m_Solution.RemoveFirst();
             }
         }
 

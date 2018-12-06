@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,16 @@ namespace SpiderBot
         public static implicit operator Quaternion(PositionRotation pr)
         {
             return pr.rotation;
+        }
+
+        public static PositionRotation operator +(PositionRotation pr, Vector3 v)
+        {
+            return new PositionRotation(pr.position + v,pr.rotation);
+        }
+
+        public static PositionRotation operator -(PositionRotation pr, Vector3 v)
+        {
+            return new PositionRotation(pr.position - v, pr.rotation);
         }
 
         public override string ToString()
