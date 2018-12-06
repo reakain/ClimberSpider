@@ -35,9 +35,9 @@ namespace SpiderBot
         // Update is called once per frame
         void Update()
         {
-            if (m_Solution == null)
+            if (m_Solution == null || m_Solution.IsEmpty())
                 return;
-            else if(nextPoint == null)
+            if(nextPoint == null)
             {
                 //var bestSol = m_SolutionList.ShortestPath();
                 //if (bestSol.Count <= MaximumSteps)
@@ -46,6 +46,14 @@ namespace SpiderBot
                     //m_Solution.RemoveFirst();
                 //}
             }
+
+            string printsoln = "( ";
+            foreach (var joint in nextPoint)
+            {
+                printsoln += joint.ToString() + ", ";
+            }
+            printsoln += ")\n";
+            Debug.Log("Move Path is: " + printsoln);
             Debug.Log("Moving!");
             for (int i = 0; i < Joints.Length - 1; i++)
             {
@@ -74,6 +82,13 @@ namespace SpiderBot
                     {
                         addStep[j] = steps[j];
                     }
+                    string printsoln = "( ";
+                    foreach (var joint in addStep)
+                    {
+                        printsoln += joint.ToString() + ", ";
+                    }
+                    printsoln += ")\n";
+                    Debug.Log("Solution step is: " + printsoln);
                     m_Solution.AddLast(addStep);
                 }
             }

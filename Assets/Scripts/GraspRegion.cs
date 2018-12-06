@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Accord.Statistics.Analysis;
+//using Accord.Statistics.Analysis;
 
 namespace SpiderBot
 {
@@ -136,7 +136,7 @@ namespace SpiderBot
             double wMin = 0;
             double wMax = 1;
             double wN = (wMax - wMin) / 100;
-            PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis();
+            //PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis();
 
             /*
             for (float i = aMin.x; i <= aMax.x; i += aN.x)
