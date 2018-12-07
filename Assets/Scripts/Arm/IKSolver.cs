@@ -253,7 +253,11 @@ namespace SpiderBot
 
         public void UpdateJointPosition(float[] m_Solution)
         {
-            JointSim = FKSimBuild(JointSim, m_Solution); ;
+            var newJoints = FKSimBuild(JointSim, m_Solution);
+            for (int i = 0; i < newJoints.Length; i++)
+            {
+                JointSim[i] = newJoints[i] ;
+            }
         }
 
         public PositionRotation[] FKSimBuild(PositionRotation[] prevJoints, float[] newAngles)
