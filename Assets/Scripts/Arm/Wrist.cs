@@ -4,15 +4,16 @@ using UnityEngine;
 
 namespace SpiderBot
 {
-    public class Wrist : IKSolver
+    public class Wrist : JointChainManager
     {
         public Finger[] FingerList { get; private set; }
-
         // Use this for initialization
         void Start()
         {
-            FingerList = GetComponentsInChildren<Finger>();
             Joints = GetComponentsInChildren<WristJoint>();
+            ikSolver = GetComponent<WristSolver>();
+            motionController = GetComponent<WristController>();
+            FingerList = GetComponentsInChildren<Finger>();
         }
 
         // Update is called once per frame
@@ -30,7 +31,7 @@ namespace SpiderBot
 
         public void CloseFingers()
         {
-            foreach( var finger in FingerList)
+            foreach (var finger in FingerList)
             {
                 finger.StartClose();
             }

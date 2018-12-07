@@ -164,6 +164,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &72331898
 GameObject:
   m_ObjectHideFlags: 0
@@ -19556,6 +19557,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &156519179
 GameObject:
   m_ObjectHideFlags: 0
@@ -22836,6 +22838,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &229224647
 GameObject:
   m_ObjectHideFlags: 0
@@ -22845,6 +22848,8 @@ GameObject:
   m_Component:
   - component: {fileID: 229224648}
   - component: {fileID: 229224649}
+  - component: {fileID: 229224650}
+  - component: {fileID: 229224651}
   m_Layer: 0
   m_Name: Gripper2
   m_TagString: Untagged
@@ -22878,14 +22883,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
-  Joints:
-  - {fileID: 95863007}
-  - {fileID: 212947417}
-  - {fileID: 1800308185}
   DeltaGradient: 0.1
   LearningRate: 25
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
+--- !u!114 &229224650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 229224647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34fd53285ccbc3f428b37903075a8a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Destination: {fileID: 0}
+--- !u!114 &229224651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 229224647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc23e269bf208e42ab07ceaa0a5dbd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaximumSteps: 10
+  Joints: []
+  nextPoint: []
 --- !u!1 &251536768
 GameObject:
   m_ObjectHideFlags: 0
@@ -22938,12 +22965,13 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!43 &298869967
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26296
+  m_Name: pb_Mesh15618
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -23098,7 +23126,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26594
+  m_Name: pb_Mesh15916
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -25669,7 +25697,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26008
+  m_Name: pb_Mesh15322
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -28842,6 +28870,8 @@ GameObject:
   m_Component:
   - component: {fileID: 551653079}
   - component: {fileID: 551653080}
+  - component: {fileID: 551653081}
+  - component: {fileID: 551653082}
   m_Layer: 0
   m_Name: Gripper3
   m_TagString: Untagged
@@ -28875,11 +28905,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
-  Joints: []
   DeltaGradient: 0.1
   LearningRate: 25
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
+--- !u!114 &551653081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 551653078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34fd53285ccbc3f428b37903075a8a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Destination: {fileID: 0}
+--- !u!114 &551653082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 551653078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc23e269bf208e42ab07ceaa0a5dbd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaximumSteps: 10
+  Joints: []
+  nextPoint: []
 --- !u!1 &617213912
 GameObject:
   m_ObjectHideFlags: 0
@@ -29089,6 +29144,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!4 &693721913
 Transform:
   m_ObjectHideFlags: 0
@@ -29156,6 +29212,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &715956408
 GameObject:
   m_ObjectHideFlags: 0
@@ -29206,6 +29263,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &754600006
 GameObject:
   m_ObjectHideFlags: 0
@@ -29738,7 +29796,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26148
+  m_Name: pb_Mesh15470
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -29893,7 +29951,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26182
+  m_Name: pb_Mesh15504
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -30095,6 +30153,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &859477410
 GameObject:
   m_ObjectHideFlags: 0
@@ -32390,6 +32449,7 @@ GameObject:
   - component: {fileID: 862864227}
   - component: {fileID: 862864226}
   - component: {fileID: 862864228}
+  - component: {fileID: 862864229}
   m_Layer: 0
   m_Name: Arm
   m_TagString: Arm
@@ -32444,12 +32504,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaximumLoop: 100
-  Joints:
-  - {fileID: 1054516572}
-  - {fileID: 693721912}
-  - {fileID: 695046958}
-  - {fileID: 21081116}
-  - {fileID: 1159843535}
   DeltaGradient: 0.05
   LearningRate: 25
   StopThreshold: 0.1
@@ -32482,6 +32536,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HandObject: {fileID: 0}
+  Destination: {fileID: 0}
+--- !u!114 &862864229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 862864223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86107cb51e9006b4ebf59dc52d4eaf7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   Destination: {fileID: 0}
 --- !u!1 &900085227
 GameObject:
@@ -35329,12 +35395,13 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!43 &1065892555
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26618
+  m_Name: pb_Mesh15930
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -35933,6 +36000,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1105271953}
   - component: {fileID: 1105271954}
+  - component: {fileID: 1105271955}
+  - component: {fileID: 1105271956}
   m_Layer: 0
   m_Name: Gripper1
   m_TagString: Untagged
@@ -35966,17 +36035,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
-  Joints: []
   DeltaGradient: 0.1
   LearningRate: 25
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
+--- !u!114 &1105271955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1105271952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34fd53285ccbc3f428b37903075a8a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Destination: {fileID: 0}
+--- !u!114 &1105271956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1105271952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc23e269bf208e42ab07ceaa0a5dbd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaximumSteps: 10
+  Joints: []
+  nextPoint: []
 --- !u!43 &1120238612
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh25910
+  m_Name: pb_Mesh15214
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -36577,6 +36671,8 @@ GameObject:
   - component: {fileID: 1159843534}
   - component: {fileID: 1159843535}
   - component: {fileID: 1159843536}
+  - component: {fileID: 1159843537}
+  - component: {fileID: 1159843538}
   m_Layer: 0
   m_Name: Wrist
   m_TagString: Untagged
@@ -36617,6 +36713,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 1
 --- !u!114 &1159843536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36629,11 +36726,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaximumLoop: 1000
-  Joints: []
   DeltaGradient: 0.1
   LearningRate: 0.1
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
+--- !u!114 &1159843537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1159843533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85f654376a071d349a86d8c12e0e24ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Destination: {fileID: 0}
+--- !u!114 &1159843538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1159843533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38359e4a08d6a2449a1a84a3438d8acf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaximumSteps: 10
+  Joints: []
+  nextPoint: []
 --- !u!1 &1180298275
 GameObject:
   m_ObjectHideFlags: 0
@@ -36683,6 +36805,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &1230016445
 GameObject:
   m_ObjectHideFlags: 0
@@ -36788,7 +36911,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26230
+  m_Name: pb_Mesh15542
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -36943,7 +37066,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh25944
+  m_Name: pb_Mesh15248
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -37143,12 +37266,13 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!43 &1336413096
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26080
+  m_Name: pb_Mesh15392
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -39631,6 +39755,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &1435170104
 GameObject:
   m_ObjectHideFlags: 0
@@ -39779,6 +39904,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &1549208612
 GameObject:
   m_ObjectHideFlags: 0
@@ -42213,6 +42339,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &1596641478
 GameObject:
   m_ObjectHideFlags: 0
@@ -42305,7 +42432,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26328
+  m_Name: pb_Mesh15648
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -42507,6 +42634,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &1615193136
 GameObject:
   m_ObjectHideFlags: 0
@@ -42542,7 +42670,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26444
+  m_Name: pb_Mesh15776
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -45718,7 +45846,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26380
+  m_Name: pb_Mesh15710
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -45917,6 +46045,7 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 0
 --- !u!1 &1803289319
 GameObject:
   m_ObjectHideFlags: 0
@@ -48693,12 +48822,13 @@ MonoBehaviour:
   ZeroEuler: {x: 0, y: 0, z: 0}
   SlowdownThreshold: 0.5
   Speed: 1
+  EndEffector: 1
 --- !u!43 &1979510163
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26536
+  m_Name: pb_Mesh15874
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -48853,7 +48983,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh25924
+  m_Name: pb_Mesh15228
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -49008,7 +49138,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26046
+  m_Name: pb_Mesh15368
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -49163,7 +49293,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh26502
+  m_Name: pb_Mesh15838
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -49318,7 +49448,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh25882
+  m_Name: pb_Mesh15194
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2

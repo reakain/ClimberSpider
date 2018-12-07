@@ -18,7 +18,7 @@ namespace SpiderBot
         public Tree GoalTree { get; private set; }
         public SolutionList SolutionPathList { get; private set; }
         private Collider[] ArmColliderList;
-        private Arm ikSolver;
+        private ArmSolver armSolver;
 
         public bool doSearch { get; private set; }
 
@@ -30,7 +30,7 @@ namespace SpiderBot
             GoalTree = new Tree();
             SolutionPathList = new SolutionList();
             ArmColliderList = GetComponentsInChildren<Collider>();
-            ikSolver = GetComponent<Arm>();
+            armSolver = GetComponent<ArmSolver>();
 
             // Initialize distance tolerances
             Delta = Toolbox.Instance.GetConnectionDistance();
@@ -74,12 +74,12 @@ namespace SpiderBot
                 var startSoln = new List<float[]>
                 {
                     //GetComponent<IKSolver>().GetStartingAngles()
-                    new float[ikSolver.Joints.Length]
+                    new float[armSolver.GetHomeAngles().Length]
                 };
 
                 var startNode = new Node(new Configuration(HandObject), null);
                 startNode.AddSolutionSteps(startSoln);
-                startNode.Point.AddJointAngles(ikSolver.GetJointPose(startSoln));
+                startNode.Point.AddJointAngles(armSolver.GetJointPose(startSoln));
                 ArmTree.Add(startNode);
                 Debug.Log("Got first point!");
             }
@@ -157,7 +157,7 @@ namespace SpiderBot
                 //Debug.Log("First soln is: " + printsoln);
                 //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
 
-            var movePath = ikSolver.TestPath(newNode.ParentNode.GetSolutionPath(), newNode.ParentNode.Point.Joints, newNode.Point.transform);
+            var movePath = armSolver.TestPath(newNode.ParentNode.GetSolutionPath(), newNode.ParentNode.Point.Joints, newNode.Point.transform);
             if (movePath == null) { return; }
             
             Debug.Log("Found a point");
@@ -177,7 +177,7 @@ namespace SpiderBot
             /* Debug Print Array End */
 
             newNode.AddSolutionSteps(movePath);
-            newNode.Point.AddJointAngles(ikSolver.GetJointPose(movePath));
+            newNode.Point.AddJointAngles(armSolver.GetJointPose(movePath));
 
             /* Debug Print Array Start */
             printsoln = "";

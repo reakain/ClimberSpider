@@ -30,8 +30,8 @@ namespace SpiderBot
         [Range(0, 360f)]
         public float Speed = 1f; // Degrees per second
 
-
-
+        [Header("Last Joint in Chain")]
+        public bool EndEffector = false;
 
         void Awake()
         {
@@ -93,7 +93,7 @@ namespace SpiderBot
 
 
         // Moves the angle to reach 
-        public float MoveArm(float angle)
+        public float MoveJoint(float angle)
         {
             //Debug.Log("Try to move " + this.name);
             return SetAngle(angle);

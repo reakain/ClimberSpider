@@ -16,11 +16,8 @@ namespace SpiderBot
             FingerList = new List<PositionRotation[]>();
             foreach (var finger in Hand.FingerList)
             {
-                var jointlist = new PositionRotation[finger.Joints.Length];
-                for(int i = 0; i < finger.Joints.Length; i++)
-                {
-                    jointlist[i] = new PositionRotation(finger.Joints[i].transform.position, finger.Joints[i].transform.rotation);
-                }
+                var jointlist = new PositionRotation[finger.JointNum];
+                jointlist = finger.GetJointsPose();
                 FingerList.Add(jointlist);
             }
         }
@@ -46,11 +43,8 @@ namespace SpiderBot
             FingerList = new List<PositionRotation[]>();
             foreach (var finger in fingerList)
             {
-                var jointlist = new PositionRotation[finger.Joints.Length];
-                for (int i = 0; i < finger.Joints.Length; i++)
-                {
-                    jointlist[i] = new PositionRotation(finger.Joints[i].transform.position, finger.Joints[i].transform.rotation);
-                }
+                var jointlist = new PositionRotation[finger.JointNum];
+                jointlist = finger.GetJointsPose();
                 FingerList.Add(jointlist);
             }
         }

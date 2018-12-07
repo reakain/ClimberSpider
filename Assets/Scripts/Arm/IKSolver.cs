@@ -12,7 +12,7 @@ namespace SpiderBot
         [Header("Joints")]
         //[HideInInspector]
         [ReadOnly]
-        public RobotJoint[] Joints = null;
+        protected RobotJoint[] Joints = null;
 
         [Header("Inverse Kinematics")]
         [Range(0, 1f)]
@@ -28,7 +28,7 @@ namespace SpiderBot
 
         public ErrorFunction ErrorFunction;
 
-        public PositionRotation[] JointSim = null;
+        protected PositionRotation[] JointSim = null;
 
         // Use this for initialization
 
@@ -38,13 +38,8 @@ namespace SpiderBot
         }
         void Start()
         {
-            //GetJoints();
-        }
+            if (Joints == null) { Joints = GetComponentsInChildren<RobotJoint>(); }
 
-        [ExposeInEditor(RuntimeOnly = false)]
-        public void GetJoints()
-        {
-            Joints = GetComponentsInChildren<RobotJoint>();
         }
 
         public List<float[]> TestPath(List<float[]> SolutionSteps, PositionRotation[] joints, PositionRotation endPoint)
@@ -163,7 +158,7 @@ namespace SpiderBot
             for (var i = Joints.Length - 1; i >= 0; i--)
             {
                 startAngle[i] = Joints[i].GetZeroAngle();
-                Debug.Log(startAngle[i]);
+                //Debug.Log(startAngle[i]);
             }
             return startAngle;
         }

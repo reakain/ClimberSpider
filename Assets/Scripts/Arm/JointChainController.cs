@@ -5,14 +5,14 @@ using UnityEngine;
 namespace SpiderBot
 {
     //[ExecuteInEditMode]
-    public class ArmController : MonoBehaviour
+    public class JointChainController : MonoBehaviour
     {
         public int MaximumSteps = 10;
 
         [Header("Joints")]
         //[HideInInspector]
         [ReadOnly]
-        public ArmJoint[] Joints = null;
+        public RobotJoint[] Joints = null;
         // The current angles
         [ReadOnly]
         public float[] nextPoint = null;
@@ -29,7 +29,7 @@ namespace SpiderBot
         [ExposeInEditor(RuntimeOnly = false)]
         public void GetJoints()
         {
-            Joints = GetComponentsInChildren<ArmJoint>();
+            Joints = GetComponentsInChildren<RobotJoint>();
         }
 
         // Update is called once per frame
@@ -58,10 +58,7 @@ namespace SpiderBot
             }
 
             Debug.Log("Moving!");
-            for (int i = 0; i < Joints.Length - 1; i++)
-            {
-                Joints[i].MoveArm(nextPoint[i]);
-            }
+            MoveJointChain(nextPoint);
             Debug.Log("Finished move!");
         }
 
@@ -94,6 +91,14 @@ namespace SpiderBot
                     m_Solution.AddLast(addStep);
                 }
                 Debug.Log("Solution path to move is: " + m_Solution.ToString());
+            }
+        }
+
+        public void MoveJointChain(float[] newAngles)
+        {
+            for (int i = 0; i < Joints.Length - 1; i++)
+            {
+                Joints[i].MoveJoint(newAngles[i]);
             }
         }
     }

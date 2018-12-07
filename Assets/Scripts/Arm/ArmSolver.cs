@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace SpiderBot
 {
-    public class Arm : JointChainManager
+    public class ArmSolver : IKSolver
     {
+        //public ArmJoint[] JointList { get; private set; }
+
         // Use this for initialization
         void Start()
         {
             Joints = GetComponentsInChildren<ArmJoint>();
-            ikSolver = GetComponent<ArmSolver>();
-            motionController = GetComponent<ArmController>();
         }
 
         // Update is called once per frame
