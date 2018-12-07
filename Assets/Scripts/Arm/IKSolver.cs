@@ -259,7 +259,7 @@ namespace SpiderBot
         public PositionRotation[] FKSimBuild(PositionRotation[] prevJoints, float[] newAngles)
         {
             //var newJointSim = new PositionRotation[prevJoints.Length];
-            var newJointSim = prevJoints;
+            var newJointSim = new PositionRotation[prevJoints.Length];
             Vector3 prevPoint = prevJoints[0];
             //Quaternion rotation = Quaternion.identity;
 
