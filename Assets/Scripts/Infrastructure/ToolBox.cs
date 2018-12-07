@@ -22,13 +22,13 @@ namespace SpiderBot
 
         // Define all required global components here. These are hard-codded components
         // that will always be added. Unlike the optional components added at runtime.
-        private float m_delta = 3.0f;
+        private float m_delta = 4.0f;
         public float GetConnectionDistance() { return m_delta; }
 
         private float fin_delta = 0.5f;
         public float GetGoalDistance() { return fin_delta; }
 
-        private float m_angleDelta = 1.0f;
+        private float m_angleDelta = 2.0f;
         public float GetConnectionAngle() { return m_angleDelta; }
 
         // The methods below allow us to add global components at runtime.

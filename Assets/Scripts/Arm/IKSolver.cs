@@ -239,7 +239,7 @@ namespace SpiderBot
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = JointSim[0];//.rotation;
+            Quaternion rotation = JointSim[0];
 
             for (int i = 1; i < Joints.Length; i++)
             {
@@ -266,13 +266,12 @@ namespace SpiderBot
 
         public PositionRotation[] FKSimBuild(PositionRotation[] prevJoints, float[] newAngles)
         {
-            //var newJointSim = new PositionRotation[prevJoints.Length];
             var newJointSim = new PositionRotation[prevJoints.Length];
             Vector3 prevPoint = prevJoints[0];
             //Quaternion rotation = Quaternion.identity;
 
             // Takes object initial rotation into account
-            Quaternion rotation = prevJoints[0];// transform.rotation;
+            Quaternion rotation = prevJoints[0];
 
             newJointSim[0] = prevJoints[0];
             for (int i = 1; i < Joints.Length; i++)
@@ -283,8 +282,6 @@ namespace SpiderBot
 
                 prevPoint = nextPoint;
                 newJointSim[i] = new PositionRotation(prevPoint,rotation);
-                //newJointSim[i].transform.position = nextPoint;
-                //newJointSim[i].transform.rotation = rotation;
             }
 
             return newJointSim;
