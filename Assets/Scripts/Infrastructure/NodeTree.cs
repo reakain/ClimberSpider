@@ -31,7 +31,6 @@ namespace SpiderBot
                 }
                 SolutionSteps.Add(steps);
             }
-            //SolutionSteps = solutionSteps;
         }
 
         public bool LinkToNode(Node node, bool overwrite = false)
@@ -46,6 +45,7 @@ namespace SpiderBot
 
         public List<float[]> GetSolutionPath()
         {
+            if (this.SolutionSteps == null) { return null; }
             List<float[]> solutionSteps = new List<float[]>();
             for (int i = 0; i < SolutionSteps.Count; i++)
             {
@@ -57,6 +57,15 @@ namespace SpiderBot
                 solutionSteps.Add(steps);
             }
             return solutionSteps;
+        }
+
+        public Node Clone()
+        {
+            Node copyNode = new Node(this.Point, this.ParentNode, this.IsGoal);
+            if (this.SolutionSteps == null) { return copyNode; }
+
+            copyNode.AddSolutionSteps(this.GetSolutionPath());
+            return copyNode;
         }
     }
 

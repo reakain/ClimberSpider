@@ -188,7 +188,7 @@ namespace SpiderBot
             //Debug.Log("Joint set is: " + printsoln);
             /* Debug Print Array End */
             
-            expansionTree.Add(newNode);
+            expansionTree.Add(newNode.Clone());
 
             //Debug.Log("Added node: " + cClose.transform);
             var soln = SolutionPathList.AddSolutionIfExists(newNode, endTree);
