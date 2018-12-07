@@ -21,7 +21,17 @@ namespace SpiderBot
 
         public void AddSolutionSteps(List<float[]> solutionSteps)
         {
-            SolutionSteps = solutionSteps;
+            SolutionSteps = new List<float[]>();
+            for (int i = 0; i < solutionSteps.Count; i++)
+            {
+                float[] steps = new float[solutionSteps[i].Length];
+                for (int j = 0; j < solutionSteps[i].Length; j++)
+                {
+                    steps[j] = solutionSteps[i][j];
+                }
+                SolutionSteps.Add(steps);
+            }
+            //SolutionSteps = solutionSteps;
         }
 
         public bool LinkToNode(Node node, bool overwrite = false)
@@ -36,7 +46,17 @@ namespace SpiderBot
 
         public List<float[]> GetSolutionPath()
         {
-            return SolutionSteps;
+            List<float[]> solutionSteps = new List<float[]>();
+            for (int i = 0; i < SolutionSteps.Count; i++)
+            {
+                float[] steps = new float[SolutionSteps[i].Length];
+                for (int j = 0; j < SolutionSteps[i].Length; j++)
+                {
+                    steps[j] = SolutionSteps[i][j];
+                }
+                solutionSteps.Add(steps);
+            }
+            return solutionSteps;
         }
     }
 

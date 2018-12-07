@@ -60,10 +60,14 @@ namespace SpiderBot
                 m_solutionSteps.Add(steps);
             }
             float[] m_Solution = new float[Joints.Length];
-            m_Solution = m_solutionSteps[m_solutionSteps.Count-1];
+            for (int j = 0; j < SolutionSteps[m_solutionSteps.Count - 1].Length; j++)
+            {
+                m_Solution[j] = m_solutionSteps[m_solutionSteps.Count - 1][j];
+            }
+
             JointSim = new PositionRotation[Joints.Length];
             string debugPrint = "";
-            for (var i = 0; i < Joints.Length; i++)
+            for (var i = 0; i < joints.Length; i++)
             {
                 JointSim[i] = joints[i];
                 debugPrint += JointSim[i] + "\n";
@@ -77,26 +81,33 @@ namespace SpiderBot
                 if (ErrorFunction(target, m_Solution) > StopThreshold)
                 {
                     var newSoln = ApproachTarget(target, m_Solution);
-                        float[] steps = new float[m_Solution.Length];
-                        for (int j = 0; j < m_Solution.Length; j++)
-                        {
-                            steps[j] = m_Solution[j];
-                        }
-                        m_solutionSteps.Add(steps);
-                        debugPrint = "";
-                        foreach (var angle in m_Solution)
-                        {
-                            debugPrint += angle.ToString() + "\n";
-                        }
-                        //Debug.Log("Intermediate soln " + i + ":\n" + debugPrint);
-                        //Debug.Log("Solution list is " + m_solutionSteps.Count + " steps long");
-                        UpdateJointPosition(m_Solution);
-                        debugPrint = "";
-                        foreach (var angle in JointSim)
-                        {
-                            debugPrint += angle.ToString() + "\n";
-                        }
-                        //Debug.Log("Joints at " + i + " are: " + debugPrint);
+                    float[] steps = new float[m_Solution.Length];
+                    for (int j = 0; j < m_Solution.Length; j++)
+                    {
+                        steps[j] = m_Solution[j];
+                    }
+                    m_solutionSteps.Add(steps);
+
+                    /* Debug Print Array Start */
+                    debugPrint = "";
+                    foreach (var angle in m_Solution)
+                    {
+                        debugPrint += angle.ToString() + "\n";
+                    }
+                    //Debug.Log("Intermediate soln " + i + ":\n" + debugPrint);
+                    //Debug.Log("Solution list is " + m_solutionSteps.Count + " steps long");
+                    /* Debug Print Array End */
+
+                    UpdateJointPosition(m_Solution);
+
+                    /* Debug Print Array Start */
+                    debugPrint = "";
+                    foreach (var angle in JointSim)
+                    {
+                        debugPrint += angle.ToString() + "\n";
+                    }
+                    //Debug.Log("Joints at " + i + " are: " + debugPrint);
+                    /* Debug Print Array End */
                 }
                 else
                 {
@@ -120,12 +131,15 @@ namespace SpiderBot
                 jointStart = FKSimBuild(jointStart, soln);
             }
 
+            /* Debug Print Array Start */
             var debugPrint = "";
             foreach (var angle in jointStart)
             {
                 debugPrint += angle.ToString() + "\n";
             }
-            //Debug.Log(debugPrint);
+            Debug.Log("Got to joint position: " + debugPrint);
+            /* Debug Print Array End */
+
             return jointStart;
         }
 
