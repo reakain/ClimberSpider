@@ -9,7 +9,11 @@ namespace SpiderBot
 
         public SolutionStep(float[] solution)
         {
-            this.solution = solution;
+            this.solution = new float[solution.Length];
+            for (int i = 0; i < solution.Length; i++)
+            {
+                this.solution[i] = solution[i];
+            }
         }
     }
 
@@ -24,7 +28,12 @@ namespace SpiderBot
         {
             foreach (var solution in linkedNode.GetSolutionPath())
             {
-                AddLast(solution);
+                float [] addSolution = new float[solution.Length];
+                for (int i = 0; i < solution.Length; i++)
+                {
+                    addSolution[i] = solution[i];
+                }
+                AddLast(addSolution);
             }
            /* var flip = false;
             // Build backward tree half
@@ -61,14 +70,25 @@ namespace SpiderBot
 
         public void Push(float[] point)
         {
-            AddFirst(point);
+            float[] pushedPoint = new float[point.Length];
+            for (int i = 0; i < point.Length; i++)
+            {
+                pushedPoint[i] = point[i];
+            }
+            AddFirst(pushedPoint);
         }
 
         public float[] Pop()
         {
-            var point = First;
+            float [] poppedPoint = First.Value;
             RemoveFirst();
-            return point.Value;
+
+            float[] point = new float[poppedPoint.Length];
+            for (int i = 0; i < poppedPoint.Length; i++)
+            {
+                point[i] = poppedPoint[i];
+            }
+            return point;
         }
 
         public bool IsEmpty()
