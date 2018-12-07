@@ -25,6 +25,9 @@ namespace SpiderBot
         private float m_delta = 3.0f;
         public float GetConnectionDistance() { return m_delta; }
 
+        private float fin_delta = 0.5f;
+        public float GetGoalDistance() { return fin_delta; }
+
         private float m_angleDelta = 1.0f;
         public float GetConnectionAngle() { return m_angleDelta; }
 

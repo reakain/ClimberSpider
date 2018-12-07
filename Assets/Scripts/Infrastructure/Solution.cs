@@ -120,7 +120,7 @@ namespace SpiderBot
         {
             foreach (var node in goalTree)
             {
-                if (node.Point.Distance(linkedNode.Point) <= Toolbox.Instance.GetConnectionDistance())
+                if (node.Point.Distance(linkedNode.Point) <= Toolbox.Instance.GetGoalDistance())
                 {
                     if (node.Point.Angle(linkedNode.Point) <= Toolbox.Instance.GetConnectionAngle())
                     {
