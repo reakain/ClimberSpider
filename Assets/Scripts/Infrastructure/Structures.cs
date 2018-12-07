@@ -55,7 +55,11 @@ namespace SpiderBot
 
         public SolutionPath(Solution[] solutionpath)
         {
-            this.solutionpath = solutionpath;
+            this.solutionpath = new Solution[solutionpath.Length];
+            for (int i = 0; i < solutionpath.Length; i++)
+            {
+                this.solutionpath[i] = solutionpath[i];
+            }
         }
     }
 }
