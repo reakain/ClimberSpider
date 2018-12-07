@@ -132,6 +132,21 @@ namespace SpiderBot
             }
             return positions.ToString();
         }
+
+        public Solution Clone()
+        {
+            Solution copySoln = new Solution();
+            foreach (var point in this)
+            {
+                var copypoint = new float[point.Length];
+                for (int i = 0; i < point.Length; i++)
+                {
+                    copypoint[i] = point[i];
+                }
+                copySoln.AddLast(copypoint);
+            }
+            return copySoln;
+        }
     }
 
     public class SolutionList : List<Solution>
@@ -146,7 +161,7 @@ namespace SpiderBot
                     {
                         var soln = new Solution(linkedNode, node);
                         Add(soln);
-                        return soln;
+                        return soln.Clone();
                     }
                 }
             }
@@ -155,12 +170,12 @@ namespace SpiderBot
 
         public Solution ShortestPath()
         {
-            var shortest = this[0];
+            var shortest = this[0].Clone();
             foreach (var soln in this)
             {
                 if (soln.Count < shortest.Count)
                 {
-                    shortest = soln;
+                    shortest = soln.Clone();
                 }
             }
             return shortest;
@@ -197,12 +212,12 @@ namespace SpiderBot
 		
 		public Solution LongestPath()
 		{
-			var longest = this[0];
+			var longest = this[0].Clone();
 			foreach (var soln in this)
             {
                 if (soln.Count > longest.Count)
                 {
-                    longest = soln;
+                    longest = soln.Clone();
                 }
             }
 			return longest;

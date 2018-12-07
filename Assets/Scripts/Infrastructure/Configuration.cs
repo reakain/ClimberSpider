@@ -13,8 +13,6 @@ namespace SpiderBot
         public Configuration(Wrist Hand)
         {
             transform = new PositionRotation(Hand.transform.position, Hand.transform.rotation);
-            //transform.position = Hand.transform.position;
-            //transform.rotation = Hand.transform.rotation;
             FingerList = new List<PositionRotation[]>();
             foreach (var finger in Hand.FingerList)
             {
@@ -30,8 +28,6 @@ namespace SpiderBot
         public Configuration(Vector3 position, Quaternion rotation, List<PositionRotation[]> fingerList)
         {
             transform = new PositionRotation(position, rotation);
-            //transform.position = position;
-            //transform.rotation = rotation;
             FingerList = new List<PositionRotation[]>();
             foreach (var finger in fingerList)
             {
@@ -47,8 +43,6 @@ namespace SpiderBot
         public Configuration(Vector3 position, Quaternion rotation, Finger[] fingerList)
         {
             transform = new PositionRotation(position, rotation);
-            //transform.position = position;
-            //transform.rotation = rotation;
             FingerList = new List<PositionRotation[]>();
             foreach (var finger in fingerList)
             {
@@ -59,6 +53,31 @@ namespace SpiderBot
                 }
                 FingerList.Add(jointlist);
             }
+        }
+
+        public Configuration(Configuration c)
+        {
+            transform = new PositionRotation(c.transform, c.transform);
+            FingerList = new List<PositionRotation[]>();
+            foreach (var finger in c.FingerList)
+            {
+                var jointlist = new PositionRotation[finger.Length];
+                for (int i = 0; i < finger.Length; i++)
+                {
+                    jointlist[i] = new PositionRotation(finger[i], finger[i]);
+                }
+                FingerList.Add(jointlist);
+            }
+
+            if (c.Joints != null)
+            {
+                AddJointAngles(c.Joints);
+            }
+        }
+
+        public Configuration Clone()
+        {
+            return new Configuration(this);
         }
 
         public void AddJointAngles(PositionRotation[] joints)
@@ -84,10 +103,6 @@ namespace SpiderBot
         {
             var cNew = new Configuration(Vector3.MoveTowards(transform, c.transform, Toolbox.Instance.GetConnectionDistance()),
                 Quaternion.RotateTowards(transform, c.transform, Toolbox.Instance.GetConnectionAngle()), c.FingerList);
-            //Debug.Log(cNew.transform);
-             
-            //cNew.transform = Vector3.MoveTowards(transform, c.transform, Toolbox.Instance.GetConnectionDistance());
-            //cNew.transform = Quaternion.RotateTowards(transform, c.transform, Toolbox.Instance.GetConnectionAngle());
 
             return cNew;
         }

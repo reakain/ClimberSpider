@@ -7,7 +7,6 @@ namespace SpiderBot
     public class Wrist : IKSolver
     {
         public Finger[] FingerList { get; private set; }
-        //public WristJoint[] JointList { get; private set; }
 
         // Use this for initialization
         void Start()

@@ -118,17 +118,21 @@ namespace SpiderBot
             return null;
         }
 
-        public PositionRotation[] GetJointAngles(List<float[]> SolutionPath)
+        public PositionRotation[] GetJointPose(List<float[]> SolutionPath)
         {
             var jointStart = new PositionRotation[Joints.Length];
             for (var i = 0; i < Joints.Length; i++)
             {
-                jointStart[i] = new PositionRotation(Joints[i].transform.position, Joints[i].transform.rotation);
+                jointStart[i] = new PositionRotation(Joints[i].HomePose, Joints[i].HomePose);
             }
-            //var jointStart = Joints;
+
             foreach (var soln in SolutionPath)
             {
-                jointStart = FKSimBuild(jointStart, soln);
+                var newJoints = FKSimBuild(jointStart, soln);
+                for (int i = 0; i < newJoints.Length; i++)
+                {
+                    jointStart[i] = newJoints[i];
+                }
             }
 
             /* Debug Print Array Start */
@@ -153,12 +157,12 @@ namespace SpiderBot
             }
         }
 
-        public float[] GetStartingAngles()
+        public float[] GetHomeAngles()
         {
             var startAngle = new float[Joints.Length];
             for (var i = Joints.Length - 1; i >= 0; i--)
             {
-                startAngle[i] = Joints[i].GetAngle();
+                startAngle[i] = Joints[i].GetZeroAngle();
                 Debug.Log(startAngle[i]);
             }
             return startAngle;

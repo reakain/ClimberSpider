@@ -16,6 +16,8 @@ namespace SpiderBot
         [ReadOnly]
         public Vector3 StartOffset;
 
+        public PositionRotation HomePose;
+
         // The initial one
         [ReadOnly]
         public Vector3 ZeroEuler;
@@ -35,6 +37,7 @@ namespace SpiderBot
         {
             ZeroEuler = transform.localEulerAngles;
             StartOffset = transform.localPosition;
+            HomePose = new PositionRotation(transform.position, transform.rotation);
         }
 
         // Update is called once per frame
@@ -49,6 +52,18 @@ namespace SpiderBot
         public float ClampAngle(float angle, float delta = 0)
         {
             return Mathf.Clamp(angle + delta, MinAngle, MaxAngle);
+        }
+
+        public float GetZeroAngle()
+        {
+            float angle = 0;
+            if (Axis.x == 1) angle = ZeroEuler.x;
+            else
+            if (Axis.y == 1) angle = ZeroEuler.y;
+            else
+            if (Axis.z == 1) angle = ZeroEuler.z;
+
+            return ClampAngle(angle);
         }
 
         // Get the current angle

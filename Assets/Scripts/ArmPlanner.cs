@@ -79,7 +79,7 @@ namespace SpiderBot
 
                 var startNode = new Node(new Configuration(HandObject), null);
                 startNode.AddSolutionSteps(startSoln);
-                startNode.Point.AddJointAngles(ikSolver.GetJointAngles(startSoln));
+                startNode.Point.AddJointAngles(ikSolver.GetJointPose(startSoln));
                 ArmTree.Add(startNode);
                 Debug.Log("Got first point!");
             }
@@ -155,6 +155,8 @@ namespace SpiderBot
                 if (movePath != null)
                 {
                     Debug.Log("Found a point");
+
+                    /* Debug Print Array Start */
                     string printsoln = "";
                     foreach (var soln in movePath)
                     {
@@ -166,15 +168,20 @@ namespace SpiderBot
                         printsoln += ")\n";
                     }
                     Debug.Log("Move Path is: " + printsoln);
-                    newNode.AddSolutionSteps(movePath);
-                    newNode.Point.AddJointAngles(ikSolver.GetJointAngles(movePath));
+                    /* Debug Print Array End */
 
+                    newNode.AddSolutionSteps(movePath);
+                    newNode.Point.AddJointAngles(ikSolver.GetJointPose(movePath));
+
+                    /* Debug Print Array Start */
                     printsoln = "";
                     foreach (var solnpoint in newNode.Point.Joints)
                     {
                             printsoln += solnpoint.ToString() + "\n";
                     }
                     //Debug.Log("Joint set is: " + printsoln);
+                    /* Debug Print Array End */
+
                     // Check for collisions
                     if (IsCollisionFree(newNode.Point))
                     {

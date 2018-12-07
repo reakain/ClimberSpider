@@ -14,7 +14,7 @@ namespace SpiderBot
 
         public Node(Configuration handConfiguration, Node parentNode = null, bool goal = false)
         {
-            Point = handConfiguration;
+            Point = handConfiguration.Clone();
             ParentNode = parentNode;
             IsGoal = goal;
         }

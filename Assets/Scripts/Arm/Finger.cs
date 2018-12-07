@@ -31,30 +31,43 @@ namespace SpiderBot
             if (!CurlIn)
                 return;
 
-            //float[] stepPath = GetStartingAngles();
+            /* Debug Print Array Start */
             string debugPrint = "";
             for (var i = 0; i < curlSolution.Length; i++)
             {
                 debugPrint += curlSolution[i] + "\n";
             }
             Debug.Log("Before: " + debugPrint);
+            /* Debug Print Array End */
+
             PositionRotation target = new PositionRotation(GetComponentInParent<Wrist>().transform.position, GetComponentInParent<Wrist>().transform.rotation);
             //Debug.Log(target);
             InitializeJointSim();
+
+            /* Debug Print Array Start */
             debugPrint = "";
             for (var i = 0; i < JointSim.Length; i++)
             {
                 debugPrint += JointSim[i] + "\n";
             }
             Debug.Log("JointSim: " + debugPrint);
+            /* Debug Print Array End */
 
-            curlSolution = ApproachTarget(target, curlSolution);
+            var newSolution = ApproachTarget(target, curlSolution);
+            for (int i = 0; i < newSolution.Length; i++)
+            {
+                curlSolution[i] = newSolution[i];
+            }
+
+            /* Debug Print Array Start */
             debugPrint = "";
             for (var i = 0; i < curlSolution.Length; i++)
             {
                 debugPrint += curlSolution[i] + "\n";
             }
             Debug.Log("After: " + debugPrint);
+            /* Debug Print Array End */
+
             // Call controller move step
             for (int i = 0; i < Joints.Length - 1; i++)
             {
@@ -73,12 +86,22 @@ namespace SpiderBot
 
             PositionRotation target = new PositionRotation(GetComponentInParent<Wrist>().transform.position, GetComponentInParent<Wrist>().transform.rotation);
             target -= Vector3.one * Vector3.Distance(transform.position, target)*2;
+
             InitializeJointSim();
-            curlSolution = ApproachTarget(target, curlSolution);
+
+            var newSolution = ApproachTarget(target, curlSolution);
+            for (int i = 0; i < newSolution.Length; i++)
+            {
+                curlSolution[i] = newSolution[i];
+            }
+
             for (int i = 0; i < Joints.Length - 1; i++)
             {
                 Joints[i].MoveArm(curlSolution[i]);
             }
+
+            if (!(ErrorFunction(target, curlSolution) > StopThreshold))
+                CurlOut = false;
 
             // Check if collision
             //CurlOut = false;
