@@ -4,6 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 //using Accord.Statistics.Analysis;
 
+/*
+ * To-do list:
+ * 
+ * get vertice list
+ * get grasp regions
+ * start defining goal poses from grasp regions
+ * IK solver calls to build reverse RRT?
+ * 
+ */
+
 namespace SpiderBot
 {
     public class GraspRegion : MonoBehaviour {

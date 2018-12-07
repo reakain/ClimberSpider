@@ -2,6 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * To-do list:
+ * 
+ * Build search call start
+ * Build deadlock checks
+ * Check for solns on update
+ * if soln in each arm, check solns for deadlocks
+ * if no deadlocks, stop search and move?
+ * 
+ */
+
 namespace SpiderBot
 {
     public class MultiArmPlanner : MonoBehaviour
