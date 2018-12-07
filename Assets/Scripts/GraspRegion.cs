@@ -74,6 +74,8 @@ namespace SpiderBot
 
         void AddNewRegions()
         {
+            //SetRegionSizing();
+
             
         }
 
@@ -138,7 +140,7 @@ namespace SpiderBot
             double wN = (wMax - wMin) / 100;
             //PrincipalComponentAnalysis pca = new PrincipalComponentAnalysis();
 
-            /*
+            /* THIS LOOP CRASHES EVERYTHING
             for (float i = aMin.x; i <= aMax.x; i += aN.x)
             {
                 for (float j = aMin.y; j <= aMax.y; j += aN.y)
@@ -160,7 +162,7 @@ namespace SpiderBot
 
         void DefineShapeParameters()
         {
-            // Gradient Descent in here to pick e1 and e2
+            // Gradient Descent in here to pick e1 and e2?
             e1 = 1;
             e2 = 1;
         }
