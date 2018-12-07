@@ -63,7 +63,11 @@ namespace SpiderBot
 
         public void AddJointAngles(PositionRotation[] joints)
         {
-            Joints = joints;
+            Joints = new PositionRotation[joints.Length];
+            for (int i = 0; i < joints.Length; i++)
+            {
+                Joints[i] = joints[i];
+            }
         }
 
         public float Distance(Configuration c)
