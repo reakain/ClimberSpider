@@ -170,11 +170,11 @@ namespace SpiderBot
                     newNode.Point.AddJointAngles(ikSolver.GetJointAngles(movePath));
 
                     printsoln = "";
-                    foreach (var soln in newNode.Point.Joints)
+                    foreach (var solnpoint in newNode.Point.Joints)
                     {
-                            printsoln += soln.ToString() + "\n";
+                            printsoln += solnpoint.ToString() + "\n";
                     }
-                    Debug.Log("Joint set is: " + printsoln);
+                    //Debug.Log("Joint set is: " + printsoln);
                     // Check for collisions
                     if (IsCollisionFree(newNode.Point))
                     {
