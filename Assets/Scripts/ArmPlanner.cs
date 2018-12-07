@@ -17,7 +17,7 @@ namespace SpiderBot
         public Tree ArmTree { get; private set; }
         public Tree GoalTree { get; private set; }
         public SolutionList SolutionPathList { get; private set; }
-        private Collider[] ColliderList;
+        private Collider[] ArmColliderList;
         private Arm ikSolver;
 
         public bool doSearch { get; private set; }
@@ -29,7 +29,7 @@ namespace SpiderBot
             ArmTree = new Tree();
             GoalTree = new Tree();
             SolutionPathList = new SolutionList();
-            ColliderList = GetComponentsInChildren<Collider>();
+            ArmColliderList = GetComponentsInChildren<Collider>();
             ikSolver = GetComponent<Arm>();
 
             // Initialize distance tolerances
@@ -123,9 +123,86 @@ namespace SpiderBot
             }
         }
 
+        // Deprecated??
+        /*
         public bool IsSelfCollision(Vector3 point)
         {
-            foreach (var collider in ColliderList)
+            foreach (var collider in ArmColliderList)
+            {
+                if (collider.bounds.Contains(point))
+                    return true;
+            }
+            return false;
+        }
+        */
+
+        public void ExpandTree(Tree expansionTree, Tree endTree)
+        {
+            // Get a free-ish space sample
+            var newNode = expansionTree.SampleFreeSpace();
+            int i = 0;
+            while (newNode == null && i < 100)
+            {
+                newNode = expansionTree.SampleFreeSpace();
+                i++;
+            }
+            if (newNode == null) { return; }
+
+            // Check for Self collisions
+            //if (IsSelfCollision(newNode.Point.transform)) { return; }
+
+            // Check for collisions
+            if (IsCollision(newNode.Point.transform)) { return; }
+
+                //Debug.Log("First soln is: " + printsoln);
+                //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
+
+            var movePath = ikSolver.TestPath(newNode.ParentNode.GetSolutionPath(), newNode.ParentNode.Point.Joints, newNode.Point.transform);
+            if (movePath == null) { return; }
+            
+            Debug.Log("Found a point");
+
+            /* Debug Print Array Start */
+            string printsoln = "";
+            foreach (var solnstep in movePath)
+            {
+                printsoln += "( ";
+                foreach (var joint in solnstep)
+                {
+                    printsoln += joint.ToString() + ", ";
+                }
+                printsoln += ")\n";
+            }
+            Debug.Log("Move Path is: " + printsoln);
+            /* Debug Print Array End */
+
+            newNode.AddSolutionSteps(movePath);
+            newNode.Point.AddJointAngles(ikSolver.GetJointPose(movePath));
+
+            /* Debug Print Array Start */
+            printsoln = "";
+            foreach (var solnpoint in newNode.Point.Joints)
+            {
+                    printsoln += solnpoint.ToString() + "\n";
+            }
+            //Debug.Log("Joint set is: " + printsoln);
+            /* Debug Print Array End */
+            
+            expansionTree.Add(newNode);
+
+            //Debug.Log("Added node: " + cClose.transform);
+            var soln = SolutionPathList.AddSolutionIfExists(newNode, endTree);
+            if (soln != null)
+            {
+                Debug.Log("Found a solution!");
+                Debug.Log("Solution: " + soln.ToString());
+                GetComponent<ArmController>().StartSolutionRun(soln);
+            }
+        }
+
+        public bool IsCollision(Vector3 point)
+        {
+            foreach (var collider in FindObjectsOfType<Collider>())
             {
                 if (collider.bounds.Contains(point))
                     return true;
@@ -133,82 +210,10 @@ namespace SpiderBot
             return false;
         }
 
-        public void ExpandTree(Tree expansionTree, Tree endTree)
-        {
-            //var node = expansionTree[Random.Range(0, expansionTree.Count - 1)];
-            //for (var i = 0; i < ArmTree.Count; i++)
-            //{
-            //var node = ArmTree[i];
-            var newNode = expansionTree.SampleFreeSpace();
-            while (newNode == null)
-            {
-                newNode = expansionTree.SampleFreeSpace();
-            }
-
-            if (!IsSelfCollision(newNode.Point.transform))
-            {
-                
-                //Debug.Log("First soln is: " + printsoln);
-                //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
-                var parent = newNode.ParentNode;
-                var movePath = ikSolver.TestPath(parent.GetSolutionPath(), parent.Point.Joints, newNode.Point.transform);
-                if (movePath != null)
-                {
-                    Debug.Log("Found a point");
-
-                    /* Debug Print Array Start */
-                    string printsoln = "";
-                    foreach (var soln in movePath)
-                    {
-                        printsoln += "( ";
-                        foreach (var joint in soln)
-                        {
-                            printsoln += joint.ToString() + ", ";
-                        }
-                        printsoln += ")\n";
-                    }
-                    Debug.Log("Move Path is: " + printsoln);
-                    /* Debug Print Array End */
-
-                    newNode.AddSolutionSteps(movePath);
-                    newNode.Point.AddJointAngles(ikSolver.GetJointPose(movePath));
-
-                    /* Debug Print Array Start */
-                    printsoln = "";
-                    foreach (var solnpoint in newNode.Point.Joints)
-                    {
-                            printsoln += solnpoint.ToString() + "\n";
-                    }
-                    //Debug.Log("Joint set is: " + printsoln);
-                    /* Debug Print Array End */
-
-                    // Check for collisions
-                    if (IsCollisionFree(newNode.Point))
-                    {
-                        expansionTree.Add(newNode);
-
-                        //Debug.Log("Added node: " + cClose.transform);
-                        var soln = SolutionPathList.AddSolutionIfExists(newNode, endTree);
-                        if (soln != null)
-                        {
-                            Debug.Log("Found a solution!");
-                            Debug.Log("Solution: " + soln.ToString());
-                            GetComponent<ArmController>().StartSolutionRun(soln);
-                        }
-                    }
-                }
-            }
-        }
-
-        public bool IsCollisionFree(Configuration c)
-        {
-            var collisionFree = true;
-            return collisionFree;
-        }
-
+        // Deprecated
+        /*
         public Configuration SampleFreeSpace(Configuration c)
         {
-
             Vector3 randPos = c.transform;
             randPos += new Vector3(Random.Range(-Delta, Delta), Random.Range(-Delta, Delta), Random.Range(-Delta, Delta));
             Quaternion randRot = Random.rotationUniform;
@@ -218,16 +223,23 @@ namespace SpiderBot
             Configuration cNew = new Configuration(randPos,randRot,c.FingerList);
             return cNew;
         }
+        */
 
+        // Deprecated
+        /*
         public void FindGoal()
         {
 
         }
+        */
 
+        // Deprecated
+        /*
         public Configuration SampleHandPosition()
         {
             return new Configuration(new Wrist());
         }
+        */
 
         /*
         // https://core.ac.uk/download/pdf/41776685.pdf
