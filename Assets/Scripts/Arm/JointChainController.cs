@@ -33,7 +33,7 @@ namespace SpiderBot
         }
 
         // Update is called once per frame
-        void Update()
+        protected void Update()
         {
             if (m_Solution == null || m_Solution.IsEmpty())
             {

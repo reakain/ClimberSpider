@@ -10,11 +10,12 @@ namespace SpiderBot
         void Start()
         {
             Joints = GetComponentsInChildren<ArmJoint>();
+
         }
 
-        private void Update()
+        private new void Update()
         {
-            
+            base.Update();
         }
     }
 }
