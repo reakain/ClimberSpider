@@ -47,6 +47,17 @@ namespace SpiderBot
         }
     }
 
+    public struct VertexNormal
+    {
+        public Vector3 vertex { get; private set; }
+        public Vector3 normal { get; private set; }
+
+        public VertexNormal(Vector3 vertex, Vector3 normal)
+        {
+            this.vertex = vertex;
+            this.normal = normal;
+        }
+    }
 
 
     public struct SolutionPath

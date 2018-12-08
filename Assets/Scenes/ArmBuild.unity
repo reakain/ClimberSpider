@@ -42284,6 +42284,25 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114849313772350708, guid: 131aa7366f2a08e42a122d65dd865fc3,
+        type: 2}
+      propertyPath: m_Text
+      value: '"Esc" to open menu
+
+        "H" to open instructions
+
+        Arrow keys to move camera
+
+        Mouse to rotate camera
+
+        Left or right click to set arm
+
+        Then left or right click to select object
+
+        "G" closes gripper
+
+        "O" opens gripper'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 131aa7366f2a08e42a122d65dd865fc3, type: 2}
   m_IsPrefabAsset: 0
