@@ -1,4 +1,4 @@
-﻿using System;
+﻿//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,8 +20,8 @@ namespace SpiderBot
 
         public List<Vector3> GoalPoints;
 
-        private double e1;
-        private double e2;
+        private float e1;
+        private float e2;
 
         Collider m_ObjectCollider;
 
@@ -37,6 +37,8 @@ namespace SpiderBot
         private List<Mesh> RegionList = null;
 
         Vector3[] PointCloud;
+
+        List<Vector3> UnusedCloud;
 
         // Use this for initialization
         void Start() {
@@ -86,6 +88,10 @@ namespace SpiderBot
         {
             //SetRegionSizing();
 
+            Vector3 point = UnusedCloud[Mathf.FloorToInt(Random.Range(0, UnusedCloud.Count - 1))];
+            UnusedCloud.Remove(point);
+            Vector3 otherCorner = UnusedCloud.Find(newpoint => Vector3.Distance(newpoint, point) <= RegionSizing + RegionSizing*0.1f && Vector3.Distance(newpoint,point) >= RegionSizing - RegionSizing*0.1f);
+
             
         }
 
@@ -94,11 +100,11 @@ namespace SpiderBot
             RegionSizing = HandObject.GetComponentInChildren<FingerPad>().GetComponent<MeshCollider>().bounds.size.magnitude;
         }
 
-        Vector3 GetSuperEllipsoidPoint(float a1, float a2, float a3, double eta, double w)
+        Vector3 GetSuperEllipsoidPoint(float a1, float a2, float a3, float eta, float w)
         {
-            var x = Convert.ToSingle(a1 * Math.Pow(Math.Cos(eta), e1) * Math.Pow(Math.Cos(w), e2));
-            var y = Convert.ToSingle(a2 * Math.Pow(Math.Cos(eta), e1) * Math.Pow(Math.Sin(w), e2));
-            var z = Convert.ToSingle(a3 * Math.Pow(Math.Sin(eta), e1));
+            var x = a1 * Mathf.Pow(Mathf.Cos(eta), e1) * Mathf.Pow(Mathf.Cos(w), e2);
+            var y = a2 * Mathf.Pow(Mathf.Cos(eta), e1) * Mathf.Pow(Mathf.Sin(w), e2);
+            var z = a3 * Mathf.Pow(Mathf.Sin(eta), e1);
 
             return new Vector3() { x = x, y = y, z = z };
         }
@@ -108,7 +114,8 @@ namespace SpiderBot
             float fingerX = 0.0f;
             float fingerY = 0.0f;
             float fingerZ = 0.0f;
-            Vector3[] PointCloud = GetComponent<MeshFilter>().mesh.vertices;
+            PointCloud = GetComponent<MeshFilter>().mesh.vertices;
+            UnusedCloud = new List<Vector3>();
             for (var i = 0; i < PointCloud.Length; i++)
             {
                 var vertex = PointCloud[i];
@@ -116,6 +123,7 @@ namespace SpiderBot
                 vertex.y = vertex.y * fingerY;
                 vertex.z = vertex.z * fingerZ;
                 PointCloud[i] = vertex;
+                UnusedCloud.Add(vertex);
             }
 
             // https://arxiv.org/ftp/arxiv/papers/1210/1210.7463.pdf
@@ -143,7 +151,7 @@ namespace SpiderBot
             var aMax = m_ObjectCollider.bounds.max + new Vector3() { x = 0.6f, y = 0.6f, z = 0.6f };
             var aN = (aMax - aMin) / 100;
 
-            double etaN = Math.PI / 20;
+            double etaN = Mathf.PI / 20;
 
             double wMin = 0;
             double wMax = 1;
