@@ -97,6 +97,11 @@ namespace SpiderBot
             doSearch = true;
         }
 
+        public void StopSearch()
+        {
+            doSearch = false;
+        }
+
         public void AddGoalNode(Node goalPoint)
         {
             GoalTree.Add(goalPoint);
@@ -110,6 +115,7 @@ namespace SpiderBot
                 Destination = null;
             }
         }
+
         public void RRTSearch()
         {
             var p = Random.value;

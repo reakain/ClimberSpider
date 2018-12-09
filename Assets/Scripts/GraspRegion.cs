@@ -206,13 +206,29 @@ namespace SpiderBot
         {
             GripPoints newGrip = new GripPoints(PossibleHoldPoints[Mathf.RoundToInt(Random.Range(0, PossibleHoldPoints.Count - 1))]);
 
+            PositionRotation[] points = new PositionRotation[HandObject.FingerList.Length];
+
+            for(int i = 0; i < HandObject.FingerList.Length, i++)
+            {
+                var pads = HandObject.FingerList[i].GetComponentsInChildren<FingerPad>();
+                points[i] = pads[pads.Length - 1].JointPositionFromPad(newGrip.GetGrip()[i]);
+            }
+            // From touch points back calculate finger poses;
+            // 
+        }
+
+        /*
+        int NumberGripCombinations()
+        {
+            int combos = PossibleHoldPoints[0].GetGrip().Length;
+            combos = Mathf.
             foreach (var finger in HandObject.FingerList)
             {
                 var pads = finger.GetComponentsInChildren<FingerPad>();
-
+                combos
             }
         }
-
+        */
 
 
 

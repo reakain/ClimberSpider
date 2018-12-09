@@ -57,12 +57,8 @@ namespace SpiderBot
 				for (int j = 0; j < armList.Count; j++)
 				{
 					var armSoln = armList[j];
-					/*Solution soln = new Solution[armSoln.Length];
-					for (int k = 0; k < armSoln.Length; k++)
-					{
-						soln[k] = armList[j][k];
-					}*/
-					ArmSolutions[i].Add(armSoln);
+                    var soln = armSoln.Clone();
+					ArmSolutions[i].Add(soln);
 				}
 			}
 			newSolution = false;
@@ -107,13 +103,17 @@ namespace SpiderBot
 		void StartArmMotions()
 		{
 			StopMultiRobotSearch();
+            for (int i = 0; i < Arms.Length; i++)
+            {
+                //Arms[i].StartMove(MovePath[i]);
+            }
 		}
 		
 		public void StartMultiRobotSearch()
 		{
 			foreach (var arm in Arms)
             {
-                //arm.StartSearch();
+                arm.StartSearch();
             }
 			makingPlan = true;
 		}
@@ -122,7 +122,7 @@ namespace SpiderBot
 		{
 			foreach (var arm in Arms)
             {
-                //arm.StartSearch();
+                arm.StopSearch();
             }
 			makingPlan = false;
 		}
