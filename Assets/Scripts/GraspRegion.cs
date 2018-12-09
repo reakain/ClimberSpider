@@ -109,7 +109,7 @@ namespace SpiderBot
             Vector3[] normals = GetComponent<MeshFilter>().mesh.normals;
             Vector3[] vertices = GetComponent<MeshFilter>().mesh.vertices;
             RegionList = new List<VertexNormal>();
-            for (var i = 0; i < PointCloud.Length; i++)
+            for (var i = 0; i < vertices.Length; i++)
             {
                 RegionList.Add(new VertexNormal(normals[i], vertices[i]));
             }
@@ -140,10 +140,14 @@ namespace SpiderBot
         {
             ResetCloud();
             SetFingerSpacing();
-            bool haveGrips = true;
-            while (UnusedCloud.Count > HandObject.FingerList.Length || haveGrips)
+            int i = 0;
+            PossibleHoldPoints = new List<GripPoints>();
+            while (UnusedCloud.Count > HandObject.FingerList.Length && i < 100)
             {
-                haveGrips = GetNewGrip();
+                if( !GetNewGrip())
+                {
+                    i++;
+                }
             }
         }
 
