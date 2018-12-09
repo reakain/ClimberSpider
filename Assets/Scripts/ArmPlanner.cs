@@ -179,7 +179,7 @@ namespace SpiderBot
                 }
                 printsoln += ")\n";
             }
-            Debug.Log("Move Path is: " + printsoln);
+            //Debug.Log("Move Path is: " + printsoln);
             /* Debug Print Array End */
 
             newNode.AddSolutionSteps(movePath);
@@ -191,7 +191,7 @@ namespace SpiderBot
             {
                     printsoln += solnpoint.ToString() + "\n";
             }
-            //Debug.Log("Joint set is: " + printsoln);
+            Debug.Log("Joint set is: " + printsoln);
             /* Debug Print Array End */
             
             expansionTree.Add(newNode.Clone());

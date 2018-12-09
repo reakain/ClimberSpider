@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandPose : MonoBehaviour {
+namespace SpiderBot
+{
+    public class HandPose
+    {
+        public PositionRotation transform { get; private set; }
+        public List<PositionRotation[]> FingerList { get; private set; }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        public HandPose()
+        {
+
+        }
+
+        public HandPose(GripPoints grip, Finger[] FingerList, List<int[]> PadContactList)
+        {
+
+        }
+    }
 }

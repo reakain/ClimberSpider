@@ -113,6 +113,7 @@ namespace SpiderBot
             {
                 RegionList.Add(new VertexNormal(normals[i], vertices[i]));
             }
+            Debug.Log("Got " + RegionList.Count + " regions in " + gameObject.name);
         }
 
         void SetRegionSizing()
@@ -149,6 +150,7 @@ namespace SpiderBot
                     i++;
                 }
             }
+            Debug.Log("Got " + PossibleHoldPoints.Count + " Grip point sets!");
         }
 
         bool GetNewGrip()
@@ -208,7 +210,7 @@ namespace SpiderBot
 
             PositionRotation[] points = new PositionRotation[HandObject.FingerList.Length];
 
-            for(int i = 0; i < HandObject.FingerList.Length, i++)
+            for(int i = 0; i < HandObject.FingerList.Length; i++)
             {
                 var pads = HandObject.FingerList[i].GetComponentsInChildren<FingerPad>();
                 points[i] = pads[pads.Length - 1].JointPositionFromPad(newGrip.GetGrip()[i]);
