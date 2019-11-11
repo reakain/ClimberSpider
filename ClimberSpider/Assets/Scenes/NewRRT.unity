@@ -336,7 +336,7 @@ MonoBehaviour:
   stepSize: 5
   maxIterations: 10000
   timeStep: 0.05
-  overlapRadius: 0.1
+  overlapRadius: 0.2
   step: 0
   disableStepping: 0
   obstacleMask:

@@ -22,6 +22,8 @@ namespace SpiderBot {
         private int counter = 0;
         private float timer = 0f;
         private bool goForward = true;
+        private Stack<Vector3> pointPath;
+
 
         // Debug drawing
         public bool enableDrawing = true;
@@ -30,6 +32,7 @@ namespace SpiderBot {
         public Color forwardColor;
         public Color backwardColor;
 
+
         private void Awake()
         {
 
@@ -37,17 +40,21 @@ namespace SpiderBot {
         
         private void Start()
         {
+            // Initialize forward tree RRT
             forwardTree = new PointTree(new Vector3(transform.position.x, transform.position.y, transform.position.z), true);
             forwardTree.lineWidth = lineWidth;
             forwardTree.enableDrawing = enableDrawing;
             forwardTree.lineMat = lineMat;
             forwardTree.lineColor = forwardColor;
 
+            // Initialize backward tree RRT
             backwardTree = new PointTree(new Vector3(target.transform.position.x, target.transform.position.y, target.transform.position.z), false);
             backwardTree.lineWidth = lineWidth;
             backwardTree.enableDrawing = enableDrawing;
             backwardTree.lineMat = lineMat;
             backwardTree.lineColor = backwardColor;
+
+            pointPath = new Stack<Vector3>();
         }
 
         private void Update()
@@ -103,15 +110,16 @@ namespace SpiderBot {
                     {
                         if (targPoint == otherTreeNode.position)
                         {
-                            PointNode finalNode = GetCompositePath(near, otherTreeNode);
+                            other = GetCompositePath(near, otherTreeNode);
                             if(goForward)
                             {
-                                forwardTree.AddFinalNode(ref finalNode);
+                                forwardTree.AddFinalNode(ref other);
                                 forwardTree.DrawCompletedPath();
+                                
                             }
                             else
                             {
-                                backwardTree.AddFinalNode(ref finalNode);
+                                backwardTree.AddFinalNode(ref other);
                                 backwardTree.DrawCompletedPath();
                             }
                         }
@@ -132,6 +140,17 @@ namespace SpiderBot {
                                 backwardTree.AddFinalNode(ref other);
                                 backwardTree.DrawCompletedPath();
                             }
+                        }
+
+                        GetCompletePath(other);
+                        if(!goForward)
+                        {
+                            pointPath = new Stack<Vector3>(pointPath.ToArray());
+                        }
+                        Debug.Log("PRINTING FINAL PATH");
+                        foreach (Vector3 point in pointPath)
+                        {
+                            Debug.Log(point.ToString());
                         }
                     }
                     else
@@ -240,6 +259,15 @@ namespace SpiderBot {
                 }
             }
             return false;
+        }
+
+        void GetCompletePath(PointNode node)
+        {
+            pointPath.Push(node.position);
+            if (node.parent != null)
+            {
+                GetCompletePath(node.parent);
+            }
         }
 
         bool IsReachedGoal(Vector3 from, Vector3 to, Vector3 closestOtherTree, Vector3 targetNode, out Vector3 targetPos)
