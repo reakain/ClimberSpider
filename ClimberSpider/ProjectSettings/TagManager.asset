@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Arm
   - Obstacle
+  - target
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
+  - Obstacle
+  - Target
   - 
   - 
   - 
