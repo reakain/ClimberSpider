@@ -24,6 +24,19 @@ namespace SpiderBot
 
         }
 
+        public Solution(List<float[]> path)
+        {
+            foreach (float[] step in path)
+            {
+                float[] addSolution = new float[step.Length];
+                for (int i = 0; i < step.Length; i++)
+                {
+                    addSolution[i] = step[i];
+                }
+                AddLast(addSolution);
+            }
+        }
+
         public Solution(Node linkedNode, Node goalNode)
         {
             foreach (var solution in linkedNode.GetSolutionPath())
