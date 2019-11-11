@@ -1,5 +1,7 @@
-ClimberSpider
-======
+# ClimberSpider
+[![Build Status](https://api.travis-ci.com/reakain/ClimberSpider.svg?branch=master)](https://travis-ci.com/reakain/ClimberSpider)
+[![unity version](https://img.shields.io/badge/unity%20version-2019.1.14f1-green.svg)]()
+
 Unity project to develop grasping and motion planning of a climbing 6-legged robot. Initial work focuses on development of single arm grasp selection and motion, then spread to double arm separate and parallelized actions, before expanding out to the final six leg concept. 
 
 Initial single and double arm build out is part of a term project for a motion planning class.
@@ -42,9 +44,6 @@ Third-Party Packages
 ------
 #### ProCore
 Package for Mesh building and rendering
-
-#### RockVR
-Package for recording. Used to make clips to shaaaare
 
 #### Accord
 Contains statistical modeling tools, in this case specifically PCA, which is attempted to use for grasp region planning
