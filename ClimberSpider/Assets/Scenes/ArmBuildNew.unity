@@ -3668,12 +3668,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 862864225}
-  - component: {fileID: 862864224}
   - component: {fileID: 862864227}
   - component: {fileID: 862864226}
-  - component: {fileID: 862864228}
-  - component: {fileID: 862864229}
-  - component: {fileID: 862864230}
   m_Layer: 10
   m_Name: Arm
   m_TagString: Arm
@@ -3681,27 +3677,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &862864224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114062219105840364, guid: 8e71c7cc0ebfdfd41b0526fb800da4c1,
-    type: 3}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862864223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10130974e74f55f41b4dc2a46bedaca3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaximumSteps: 1000
-  Joints:
-  - {fileID: 1054516572}
-  - {fileID: 693721912}
-  - {fileID: 695046958}
-  - {fileID: 21081116}
-  - {fileID: 1159843535}
-  nextPoint: []
 --- !u!4 &862864225
 Transform:
   m_ObjectHideFlags: 0
@@ -3727,14 +3702,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 862864223}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d36ba8c1b5d187949b59886e7a1ffe65, type: 3}
+  m_Script: {fileID: 11500000, guid: 15da64f2021dbaa44abd092094dbfb79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaximumLoop: 1000
-  DeltaGradient: 1
-  LearningRate: 79.6
-  StopThreshold: 0.25
-  SlowdownThreshold: 0.68
+  BaseJoint: {fileID: 1054516571}
+  Joints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  Solution: []
+  Effector: {fileID: 1159843534}
+  Destination: {fileID: 1230016449}
+  DistanceFromDestination: 0
+  DeltaGradient: 0.1
+  LearningRate: 25
+  StopThreshold: 0.1
+  SlowdownThreshold: 0.25
+  DebugDraw: 1
 --- !u!1818360608 &862864227
 PositionConstraint:
   m_ObjectHideFlags: 0
@@ -3752,73 +3736,6 @@ PositionConstraint:
   m_IsContraintActive: 1
   m_IsLocked: 1
   m_Sources: []
---- !u!114 &862864228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862864223}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1fb0116790d571439aac0e4f3cd83f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HandObject: {fileID: 0}
-  Destination: {fileID: 0}
---- !u!114 &862864229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862864223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86107cb51e9006b4ebf59dc52d4eaf7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsEndChain: 0
-  IsStartChain: 0
-  JointNum: 0
---- !u!114 &862864230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862864223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84e4ab8b29abb0944baa06dd83fb6ffb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HandObject: {fileID: 0}
-  Destination: {fileID: 1230016450}
-  target: {fileID: 1230016445}
-  xLow: -7
-  xHigh: 7
-  yLow: 0
-  yHigh: 7
-  zLow: -7
-  zHigh: 7
-  stepSize: 1
-  maxIterations: 10000
-  timeStep: 0
-  overlapRadius: 0.3
-  step: 0
-  disableStepping: 0
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 512
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  enableDrawing: 1
-  lineWidth: 0.1
-  lineMat: {fileID: 2100000, guid: 84b5ee9d9c7996945964ced123d541dd, type: 2}
-  forwardColor: {r: 0.048508644, g: 1, b: 0, a: 1}
-  backwardColor: {r: 0, g: 0.09511185, b: 1, a: 1}
 --- !u!1 &900085227
 GameObject:
   m_ObjectHideFlags: 0
@@ -5130,7 +5047,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159843533}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8da9e7ce77b2f5f43bbdf9df9772ebbb, type: 3}
   m_Name: 
@@ -5147,7 +5064,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159843533}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85f654376a071d349a86d8c12e0e24ac, type: 3}
   m_Name: 
@@ -5162,7 +5079,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1159843533}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38359e4a08d6a2449a1a84a3438d8acf, type: 3}
   m_Name: 
@@ -5332,7 +5249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GoalPoints: []
   Arm: {fileID: 0}
-  HandObject: {fileID: 0}
+  HandObject: {fileID: 1159843537}
   meshCount: 0
 --- !u!114 &1230016451
 MonoBehaviour:
@@ -5888,7 +5805,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283776943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b0a391bbfdadc44ea450f8c48460fcf, type: 3}
   m_Name: 
