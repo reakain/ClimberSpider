@@ -104,10 +104,16 @@ namespace SpiderBot {
             //}
             if(isComplete)
             {
+                
                 //Stack<Vector3> pointsCopy = new Stack<Vector3>(pointPath);
                 if (!IKsolver.moving && pointPath.Count > 0)
                 {
+                    IKsolver.RRTReady = true;
                     IKsolver.Destination = pointPath.Pop();
+                }
+                if (pointPath.Count <= 0)
+                {
+                    IKsolver.RRTReady = false;
                 }
                 //var startSoln = new List<float[]>
                 //{

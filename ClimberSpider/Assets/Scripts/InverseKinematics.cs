@@ -49,7 +49,8 @@ namespace SpiderBot
         public float DistanceFromDestination;
         private Vector3 target;
 
-        public bool moving { get; private set; }
+        public bool moving = false;
+        public bool RRTReady = false;
 
         [Header("Inverse Kinematics")]
         [Range(0, 1f)]
@@ -96,20 +97,22 @@ namespace SpiderBot
         // Update is called once per frame
         void Update()
         {
-            if (Destination == null)
+            if (!RRTReady)
                 return;
             // Do we have to approach the target?
-            //Vector3 direction = (Destination.position - Effector.transform.position).normalized;
-            Vector3 direction = (Destination - transform.position).normalized;
+            Vector3 direction = (Destination - Effector.transform.position).normalized;
+            //Vector3 direction = (Destination - transform.position).normalized;
             target = Destination - direction * DistanceFromDestination;
             //if (Vector3.Distance(Effector.position, target) > Threshold)
             if (ErrorFunction(target, Solution) > StopThreshold)
             {
-                moving = true;
+                //moving = true;
                 ApprochTarget(target);
             }
-            else
+            if (Vector3.Distance(Destination, Effector.transform.position) < StopThreshold)
                 moving = false;
+            else
+                moving = true;
 
             if (DebugDraw)
             {
