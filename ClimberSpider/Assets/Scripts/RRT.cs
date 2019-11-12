@@ -113,7 +113,7 @@ namespace SpiderBot {
                 }
                 if (pointPath.Count <= 0)
                 {
-                    IKsolver.RRTReady = false;
+                    //IKsolver.RRTReady = false;
                 }
                 //var startSoln = new List<float[]>
                 //{
