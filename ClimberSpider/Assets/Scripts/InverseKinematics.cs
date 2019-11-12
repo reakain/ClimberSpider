@@ -45,9 +45,11 @@ namespace SpiderBot
         [Header("Destination")]
         public Transform Effector;
         [Space]
-        public Transform Destination;
+        public Vector3 Destination;
         public float DistanceFromDestination;
         private Vector3 target;
+
+        public bool moving { get; private set; }
 
         [Header("Inverse Kinematics")]
         [Range(0, 1f)]
@@ -78,6 +80,8 @@ namespace SpiderBot
 
             //else
                 ErrorFunction = DistanceFromTarget;
+
+            moving = false;
         }
 
         //[ExposeInEditor(RuntimeOnly = false)]
@@ -96,16 +100,21 @@ namespace SpiderBot
                 return;
             // Do we have to approach the target?
             //Vector3 direction = (Destination.position - Effector.transform.position).normalized;
-            Vector3 direction = (Destination.position - transform.position).normalized;
-            target = Destination.position - direction * DistanceFromDestination;
+            Vector3 direction = (Destination - transform.position).normalized;
+            target = Destination - direction * DistanceFromDestination;
             //if (Vector3.Distance(Effector.position, target) > Threshold)
             if (ErrorFunction(target, Solution) > StopThreshold)
+            {
+                moving = true;
                 ApprochTarget(target);
+            }
+            else
+                moving = false;
 
             if (DebugDraw)
             {
                 Debug.DrawLine(Effector.transform.position, target, Color.green);
-                Debug.DrawLine(Destination.transform.position, target, new Color(0, 0.5f, 0));
+                Debug.DrawLine(Destination, target, new Color(0, 0.5f, 0));
             }
         }
 

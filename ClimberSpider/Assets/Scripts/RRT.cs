@@ -14,7 +14,8 @@ namespace SpiderBot {
         private float Delta = 0;
 
         private Collider[] ArmColliderList;
-        private ArmSolver armSolver;
+        //private ArmSolver armSolver;
+        private InverseKinematics IKsolver;
 
         private bool doSearch = true;
         private bool isComplete = false;
@@ -57,7 +58,9 @@ namespace SpiderBot {
             pointPath = new Stack<Vector3>();
 
             ArmColliderList = GetComponentsInChildren<Collider>();
-            armSolver = GetComponent<ArmSolver>();
+            //armSolver = GetComponent<ArmSolver>();
+            IKsolver = GetComponent<InverseKinematics>();
+
 
             // Initialize distance tolerances
             Delta = Toolbox.Instance.GetConnectionDistance();
@@ -102,20 +105,23 @@ namespace SpiderBot {
             if(isComplete)
             {
                 //Stack<Vector3> pointsCopy = new Stack<Vector3>(pointPath);
-                pointPath.Pop();
-                var startSoln = new List<float[]>
+                if (!IKsolver.moving && pointPath.Count > 0)
                 {
-                    //GetComponent<IKSolver>().GetStartingAngles()
-                    new float[armSolver.GetHomeAngles().Length]
-                };
-                var movePath = GenerateSolutionStep(startSoln, armSolver.GetJointPose(startSoln), pointPath);
-                if(movePath == null)
-                {
-                    Debug.Log("FAILED TO FIND SOLUTION");
-                    InitializeTrees();
-                    return;
+                    IKsolver.Destination = pointPath.Pop();
                 }
-                GetComponent<ArmController>().StartSolutionRun(new Solution(movePath));
+                //var startSoln = new List<float[]>
+                //{
+                //    //GetComponent<IKSolver>().GetStartingAngles()
+                //    new float[armSolver.GetHomeAngles().Length]
+                //};
+                //var movePath = GenerateSolutionStep(startSoln, armSolver.GetJointPose(startSoln), pointPath);
+                //if(movePath == null)
+                //{
+                //    Debug.Log("FAILED TO FIND SOLUTION");
+                //    InitializeTrees();
+                //    return;
+                //}
+                //GetComponent<ArmController>().StartSolutionRun(new Solution(movePath));
             }
 
             if(doSearch)
@@ -124,18 +130,18 @@ namespace SpiderBot {
             }
         }
 
-        List<float[]> GenerateSolutionStep(List<float[]> solution, Vector3[] jointPose, Stack<Vector3> pointsLeft)
-        {
-            var newPath = armSolver.TestPath(solution, jointPose, pointsLeft.Pop());
-            if (newPath != null)
-            {
-                if (pointsLeft.Count > 0)
-                {
-                    newPath = GenerateSolutionStep(newPath, armSolver.GetJointPose(newPath), pointsLeft);
-                }
-            }
-            return newPath;
-        }
+        //List<float[]> GenerateSolutionStep(List<float[]> solution, Vector3[] jointPose, Stack<Vector3> pointsLeft)
+        //{
+        //    var newPath = armSolver.TestPath(solution, jointPose, pointsLeft.Pop());
+        //    if (newPath != null)
+        //    {
+        //        if (pointsLeft.Count > 0)
+        //        {
+        //            newPath = GenerateSolutionStep(newPath, armSolver.GetJointPose(newPath), pointsLeft);
+        //        }
+        //    }
+        //    return newPath;
+        //}
 
         public void StartSearch()
         {
