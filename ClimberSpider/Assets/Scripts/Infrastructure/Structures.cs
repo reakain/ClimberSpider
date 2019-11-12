@@ -11,13 +11,13 @@ namespace SpiderBot
 
     public struct PositionRotation
     {
-        Vector3 position;
-        Quaternion rotation;
+        public Vector3 position;
+        public Quaternion rotation;
 
         public PositionRotation(Vector3 position, Quaternion rotation)
         {
-            this.position = position;
-            this.rotation = rotation;
+            this.position = new Vector3(position.x, position.y, position.z);
+            this.rotation = new Quaternion(rotation.x, rotation.y,rotation.z, rotation.w);
         }
 
         // PositionRotation to Vector3
@@ -54,8 +54,8 @@ namespace SpiderBot
 
         public VertexNormal(Vector3 vertex, Vector3 normal)
         {
-            this.vertex = vertex;
-            this.normal = normal;
+            this.vertex = new Vector3(vertex.x, vertex.y, vertex.z);
+            this.normal = new Vector3(normal.x, normal.y, normal.z);
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpiderBot
 {
-    public class WristSolver : IKSolverNew
+    public class WristSolver : IKSolverRebuild
     {
         
 

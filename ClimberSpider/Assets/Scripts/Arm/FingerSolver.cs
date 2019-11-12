@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpiderBot
 {
-    public class FingerSolver : IKSolverNew
+    public class FingerSolver : IKSolverRebuild
     {
 
         //public FingerJoint[] JointList { get; private set; }

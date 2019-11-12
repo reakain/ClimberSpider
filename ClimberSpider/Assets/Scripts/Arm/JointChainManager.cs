@@ -19,7 +19,7 @@ namespace SpiderBot
         protected SolutionList SolutionPathList = null;
 
         protected RobotJoint[] Joints = null;
-        protected IKSolverNew ikSolver = null;
+        protected IKSolverRebuild ikSolver = null;
         protected JointChainController motionController = null;
 
         public int JointNum = 0;
@@ -41,7 +41,7 @@ namespace SpiderBot
             Delta = Toolbox.Instance.GetConnectionDistance();
 
             Joints = GetComponentsInChildren<RobotJoint>();
-            ikSolver = GetComponent<IKSolverNew>();
+            ikSolver = GetComponent<IKSolverRebuild>();
             motionController = GetComponent<JointChainController>();
 
             JointNum = Joints.Length;
@@ -187,8 +187,10 @@ namespace SpiderBot
             //Debug.Log("First soln is: " + printsoln);
             //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
 
-            var movePath = ikSolver.TestPath(newNode.ParentNode.GetSolutionPath(), newNode.ParentNode.Point.Joints, newNode.Point.transform);
-            if (movePath == null) { return; }
+            List<float[]> movePath;
+            //var movePath = ikSolver.TestPath(newNode.ParentNode.GetSolutionPath(), newNode.ParentNode.Point.Joints, newNode.Point.transform);
+            //if (movePath == null) { return; }
+            return;
 
             Debug.Log("Found a point");
 
@@ -207,7 +209,7 @@ namespace SpiderBot
             /* Debug Print Array End */
 
             newNode.AddSolutionSteps(movePath);
-            newNode.Point.AddJointAngles(ikSolver.GetJointPose(movePath));
+            //newNode.Point.AddJointAngles(ikSolver.GetJointPose(movePath));
 
             /* Debug Print Array Start */
             printsoln = "";

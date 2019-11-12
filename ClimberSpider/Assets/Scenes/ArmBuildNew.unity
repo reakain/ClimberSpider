@@ -3694,7 +3694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10130974e74f55f41b4dc2a46bedaca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaximumSteps: 1000
+  MaximumSteps: 1000000
   Joints:
   - {fileID: 1054516572}
   - {fileID: 693721912}
@@ -3730,9 +3730,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36ba8c1b5d187949b59886e7a1ffe65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaximumLoop: 1000
-  DeltaGradient: 0.1
-  LearningRate: 25
+  MaximumLoop: 1000000
+  DeltaGradient: 1
+  LearningRate: 79.6
   StopThreshold: 0.1
   SlowdownThreshold: 0.25
 --- !u!1818360608 &862864227
@@ -3802,7 +3802,7 @@ MonoBehaviour:
   yHigh: 7
   zLow: -7
   zHigh: 7
-  stepSize: 0.5
+  stepSize: 1
   maxIterations: 10000
   timeStep: 0
   overlapRadius: 0.3

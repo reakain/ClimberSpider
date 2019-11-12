@@ -124,7 +124,7 @@ namespace SpiderBot {
             }
         }
 
-        List<float[]> GenerateSolutionStep(List<float[]> solution, PositionRotation[] jointPose, Stack<Vector3> pointsLeft)
+        List<float[]> GenerateSolutionStep(List<float[]> solution, Vector3[] jointPose, Stack<Vector3> pointsLeft)
         {
             var newPath = armSolver.TestPath(solution, jointPose, pointsLeft.Pop());
             if (newPath != null)

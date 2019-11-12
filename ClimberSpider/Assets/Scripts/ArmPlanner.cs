@@ -79,7 +79,7 @@ namespace SpiderBot
 
                 var startNode = new Node(new Configuration(HandObject), null);
                 startNode.AddSolutionSteps(startSoln);
-                startNode.Point.AddJointAngles(armSolver.GetJointPose(startSoln));
+                //startNode.Point.AddJointAngles(armSolver.GetJointPose(startSoln));
                 ArmTree.Add(startNode);
                 Debug.Log("Got first point!");
             }
@@ -160,11 +160,13 @@ namespace SpiderBot
             // Check for collisions
             if (IsCollision(newNode.Point.transform)) { return; }
 
-                //Debug.Log("First soln is: " + printsoln);
-                //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
+            //Debug.Log("First soln is: " + printsoln);
+            //Debug.Log("Solution list is " + newNode.ParentNode.GetSolutionPath().Count + " steps long");
 
-            var movePath = armSolver.TestPath(newNode.ParentNode.GetSolutionPath(), newNode.ParentNode.Point.Joints, newNode.Point.transform);
-            if (movePath == null) { return; }
+            List<float[]> movePath;
+            //var movePath = armSolver.TestPath(newNode.ParentNode.GetSolutionPath(), newNode.ParentNode.Point.Joints, newNode.Point.transform);
+            //if (movePath == null) { return; }
+            return;
             
             Debug.Log("Found a point");
 
@@ -183,7 +185,7 @@ namespace SpiderBot
             /* Debug Print Array End */
 
             newNode.AddSolutionSteps(movePath);
-            newNode.Point.AddJointAngles(armSolver.GetJointPose(movePath));
+            //newNode.Point.AddJointAngles(armSolver.GetJointPose(movePath));
 
             /* Debug Print Array Start */
             printsoln = "";
