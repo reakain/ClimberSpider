@@ -19,7 +19,7 @@ namespace SpiderBot
         protected SolutionList SolutionPathList = null;
 
         protected RobotJoint[] Joints = null;
-        protected IKSolver ikSolver = null;
+        protected IKSolverNew ikSolver = null;
         protected JointChainController motionController = null;
 
         public int JointNum = 0;
@@ -41,7 +41,7 @@ namespace SpiderBot
             Delta = Toolbox.Instance.GetConnectionDistance();
 
             Joints = GetComponentsInChildren<RobotJoint>();
-            ikSolver = GetComponent<IKSolver>();
+            ikSolver = GetComponent<IKSolverNew>();
             motionController = GetComponent<JointChainController>();
 
             JointNum = Joints.Length;

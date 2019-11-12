@@ -101,14 +101,14 @@ namespace SpiderBot {
             //}
             if(isComplete)
             {
-                Stack<Vector3> pointsCopy = new Stack<Vector3>(pointPath);
-                pointsCopy.Pop();
+                //Stack<Vector3> pointsCopy = new Stack<Vector3>(pointPath);
+                pointPath.Pop();
                 var startSoln = new List<float[]>
                 {
                     //GetComponent<IKSolver>().GetStartingAngles()
                     new float[armSolver.GetHomeAngles().Length]
                 };
-                var movePath = GenerateSolutionStep(startSoln, armSolver.GetJointPose(startSoln), pointsCopy);
+                var movePath = GenerateSolutionStep(startSoln, armSolver.GetJointPose(startSoln), pointPath);
                 if(movePath == null)
                 {
                     Debug.Log("FAILED TO FIND SOLUTION");
@@ -126,7 +126,7 @@ namespace SpiderBot {
 
         List<float[]> GenerateSolutionStep(List<float[]> solution, PositionRotation[] jointPose, Stack<Vector3> pointsLeft)
         {
-            var newPath = armSolver.TestPath(solution, jointPose, new PositionRotation(pointsLeft.Pop(), Quaternion.identity));
+            var newPath = armSolver.TestPath(solution, jointPose, pointsLeft.Pop());
             if (newPath != null)
             {
                 if (pointsLeft.Count > 0)
@@ -152,7 +152,7 @@ namespace SpiderBot {
             if (counter < maxIterations && !forwardTree.IsComplete() && !backwardTree.IsComplete() && !isComplete)
             {
                 Vector3 randPoint = GetRandomPoint();
-                Debug.Log("Random Point" + randPoint.ToString());
+                //Debug.Log("Random Point" + randPoint.ToString());
                 PointNode near;
                 if (goForward)
                 {
@@ -233,7 +233,7 @@ namespace SpiderBot {
                     }
                     else
                     {
-                        Debug.Log("Node Added At " + other.position.ToString());
+                        //Debug.Log("Node Added At " + other.position.ToString());
                         if (goForward)
                         {
                             forwardTree.AddLeaf(ref near, ref other);

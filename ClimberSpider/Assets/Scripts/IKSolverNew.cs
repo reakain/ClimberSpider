@@ -42,7 +42,76 @@ namespace SpiderBot {
         {
             
         }
+        public List<float[]> TestPath(List<float[]> SolutionSteps, PositionRotation[] joints, Vector3 endPoint)
+        {
+            List<float[]> m_solutionSteps = new List<float[]>();
+            for (int i = 0; i < SolutionSteps.Count; i++)
+            {
+                float[] steps = new float[SolutionSteps[i].Length];
+                for (int j = 0; j < SolutionSteps[i].Length; j++)
+                {
+                    steps[j] = SolutionSteps[i][j];
+                }
+                m_solutionSteps.Add(steps);
+            }
+            float[] m_Solution = new float[Joints.Length];
+            for (int j = 0; j < SolutionSteps[m_solutionSteps.Count - 1].Length; j++)
+            {
+                m_Solution[j] = m_solutionSteps[m_solutionSteps.Count - 1][j];
+            }
 
+            JointSim = new PositionRotation[Joints.Length];
+            string debugPrint = "";
+            for (var i = 0; i < joints.Length; i++)
+            {
+                JointSim[i] = joints[i];
+                debugPrint += JointSim[i] + "\n";
+            }
+            //JointSim = joints;
+            Debug.Log(debugPrint);
+            Debug.Log("Step point is: " + endPoint);
+            var target = endPoint;
+            for (var i = 0; i < MaximumLoop; i++)
+            {
+                if (ErrorFunction(target, m_Solution) > StopThreshold)
+                {
+                    var newSoln = ApproachTarget(target, m_Solution);
+                    float[] steps = new float[m_Solution.Length];
+                    for (int j = 0; j < m_Solution.Length; j++)
+                    {
+                        steps[j] = m_Solution[j];
+                    }
+                    m_solutionSteps.Add(steps);
+
+                    /* Debug Print Array Start */
+                    debugPrint = "";
+                    foreach (var angle in m_Solution)
+                    {
+                        debugPrint += angle.ToString() + "\n";
+                    }
+                    Debug.Log("Intermediate soln " + i + ":\n" + debugPrint);
+                    Debug.Log("Solution list is " + m_solutionSteps.Count + " steps long");
+                    /* Debug Print Array End */
+
+                    UpdateJointPosition(m_Solution);
+
+                    /* Debug Print Array Start */
+                    debugPrint = "";
+                    foreach (var angle in JointSim)
+                    {
+                        debugPrint += angle.ToString() + "\n";
+                    }
+                    Debug.Log("Joints at " + i + " are: " + debugPrint);
+                    /* Debug Print Array End */
+                }
+                else
+                {
+                    return m_solutionSteps;
+                }
+            }
+            Debug.Log("No path found");
+            return null;
+        }
 
         public List<float[]> TestPath(List<float[]> SolutionSteps, PositionRotation[] joints, PositionRotation endPoint)
         {
@@ -165,7 +234,7 @@ namespace SpiderBot {
             return startAngle;
         }
 
-        public float[] ApproachTarget(PositionRotation target, float[] m_Solution)
+        public float[] ApproachTarget(Vector3 target, float[] m_Solution)
         {
             // Starts from the end, up to the base
             // Starts from joints[end-2]
@@ -219,8 +288,36 @@ namespace SpiderBot {
             return gradient;
         }
 
+        public float CalculateGradient(Vector3 target, float[] m_Solution, int i, float delta)
+        {
+            // Saves the angle,
+            // it will be restored later
+            float solutionAngle = m_Solution[i];
+
+            // Gradient : [F(x+h) - F(x)] / h
+            // Update   : Solution -= LearningRate * Gradient
+            float f_x = ErrorFunction(target, m_Solution);
+
+            m_Solution[i] += delta;
+            float f_x_plus_h = ErrorFunction(target, m_Solution);
+
+            float gradient = (f_x_plus_h - f_x) / delta;
+
+            // Restores
+            m_Solution[i] = solutionAngle;
+
+            return gradient;
+        }
+
         // Returns the distance from the target, given a solution
-        public float DistanceFromTarget(PositionRotation target, float[] m_Solution)
+        //public float DistanceFromTarget(PositionRotation target, float[] m_Solution)
+        //{
+        //    Vector3 point = ForwardKinematics(m_Solution);
+        //    //Debug.Log("Distance from target is: " + Vector3.Distance(point, target));
+        //    return Vector3.Distance(point, target);// + Quaternion.Angle(point,target);
+        //}
+
+        public float DistanceFromTarget(Vector3 target, float[] m_Solution)
         {
             Vector3 point = ForwardKinematics(m_Solution);
             //Debug.Log("Distance from target is: " + Vector3.Distance(point, target));

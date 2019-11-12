@@ -7,7 +7,7 @@ namespace SpiderBot
 {
 
     // A typical error function to minimise
-    public delegate float ErrorFunction(PositionRotation target, float[] solution);
+    public delegate float ErrorFunction(Vector3 target, float[] solution);
 
     public struct PositionRotation
     {

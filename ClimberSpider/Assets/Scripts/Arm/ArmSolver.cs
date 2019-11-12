@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpiderBot
 {
-    public class ArmSolver : IKSolver
+    public class ArmSolver : IKSolverNew
     {
         //public ArmJoint[] JointList { get; private set; }
 

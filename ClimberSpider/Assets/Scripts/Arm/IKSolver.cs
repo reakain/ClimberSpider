@@ -34,7 +34,7 @@ namespace SpiderBot
 
         private void Awake()
         {
-            ErrorFunction = DistanceFromTarget;
+            //ErrorFunction = DistanceFromTarget;
         }
         void Start()
         {

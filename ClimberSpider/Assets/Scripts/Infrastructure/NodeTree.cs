@@ -193,7 +193,7 @@ namespace SpiderBot
 
         public void ViewParent(PointNode x)
         {
-            Debug.Log("Parent is " + x.parent.position);
+            //Debug.Log("Parent is " + x.parent.position);
         }
 
         public PointTree(Vector3 pos, bool forward = true)
@@ -259,21 +259,21 @@ namespace SpiderBot
 
         public void DrawCompletedPath()
         {
-            Debug.Log("Drawing Completed Non Recursive");
+            //Debug.Log("Drawing Completed Non Recursive");
             DrawCompletedPath(finalNode);
             Debug.Log("LINES DRAWN:" + count.ToString());
         }
         private void DrawCompletedPath(PointNode x)
         {
-            Debug.Log("Drawing Completed Recursive");
+            //Debug.Log("Drawing Completed Recursive");
             if (!complete)
             {
-                Debug.Log("Drawing Completed Recursive");
+                //Debug.Log("Drawing Completed Recursive");
                 return;
             }
             if (x.parent == null)
             {
-                Debug.Log("Parent is Null");
+                //Debug.Log("Parent is Null");
                 return;
             }
 
